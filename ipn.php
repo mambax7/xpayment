@@ -21,29 +21,26 @@
  * @translation     Richardo Costa <lusopoemas@gmail.com>
  * @translation     Kris_fr <kris@frxoops.org>
  */
-	include('header.php');
-	
-	$gateways_handler = xoops_getmodulehandler('gateways', 'xpayment');
-	$gateways = $gateways_handler->getObjects(NULL, true);
-	foreach($gateways as $gid => $gateway) {
-		include_once($GLOBALS['xoops']->path('/modules/xpayment/class/gateway/'.$gateway->getVar('class').'/'.$gateway->getVar('class').'.php'));
-		$class = ucfirst($gateway->getVar('class')).'GatewaysPlugin';
-	
-		if (class_exists($class)) {
-			$obj = new $class;
-			$invoice = $obj->goInvoiceObj();
-		}
-		
-		if (is_a($invoice, 'XpaymentInvoice')&&$invoice->getVar('gateway')==$gateway->getVar('class')) {
-			$gateways_handler =& xoops_getmodulehandler('gateways','xpayment');
-			$agateway = $gateways_handler->getGateway($invoice->getVar('gateway'), $invoice);
-			
-			if (is_a($agateway, 'XpaymentGateways')) {
-				$agateway->goIPN($_REQUEST);
-				exit(0);
-			}
-		}
-	}
-		
-		
-?>
+include __DIR__ . '/header.php';
+
+$gatewaysHandler = xoops_getModuleHandler('gateways', 'xpayment');
+$gateways        = $gatewaysHandler->getObjects(null, true);
+foreach ($gateways as $gid => $gateway) {
+    require_once $GLOBALS['xoops']->path('modules/xpayment/class/gateway/' . $gateway->getVar('class') . '/' . $gateway->getVar('class') . '.php');
+    $class = ucfirst($gateway->getVar('class')) . 'GatewaysPlugin';
+
+    if (class_exists($class)) {
+        $obj     = new $class;
+        $invoice = $obj->goInvoiceObj();
+    }
+
+    if (is_a($invoice, 'XpaymentInvoice') && $invoice->getVar('gateway') == $gateway->getVar('class')) {
+        $gatewaysHandler = xoops_getModuleHandler('gateways', 'xpayment');
+        $agateway        = $gatewaysHandler->getGateway($invoice->getVar('gateway'), $invoice);
+
+        if (is_a($agateway, 'XpaymentGateways')) {
+            $agateway->goIPN($_REQUEST);
+            exit(0);
+        }
+    }
+}

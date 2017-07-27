@@ -21,36 +21,133 @@
  * @translation     Richardo Costa <lusopoemas@gmail.com>
  * @translation     Kris_fr <kris@frxoops.org>
  */
-	$gateway=array();
-	
-	xoops_loadLanguage('paypal', 'xpayment');
-	
-	$gateway['name'] = '_XPY_GI_PAYPAL_NAME';
-	$gateway['author'] = '_XPY_GI_PAYPAL_AUTHOR';
-	$gateway['description'] = '_XPY_GI_PAYPAL_DESC';
-	
-	$gateway['testmode'] = false;
-	$gateway['class'] = basename(dirname(__FILE__));
-	
-	srand((((float)('0' . substr(microtime(), strpos(microtime(), ' ') + 1, strlen(microtime()) - strpos(microtime(), ' ') + 1))) * mt_rand(30, 99999)));
-	srand((((float)('0' . substr(microtime(), strpos(microtime(), ' ') + 1, strlen(microtime()) - strpos(microtime(), ' ') + 1))) * mt_rand(30, 99999)));
-	$gateway['salt'] = ((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'').((mt_rand(0,1)==true)?chr(mt_rand(33,122)):'');
-	
-	$gateway['options']['email']['name'] = '_XPY_GI_PAYPAL_NAME_EMAIL';
-	$gateway['options']['email']['value'] = _XPY_GI_PAYPAL_VALUE_EMAIL;
-	
-	$gateway['options']['sandbox']['name'] = '_XPY_GI_PAYPAL_NAME_SANDBOX';
-	$gateway['options']['sandbox']['value'] = _XPY_GI_PAYPAL_VALUE_SANDBOX;
-	
-	$gateway['options']['url']['name'] = '_XPY_GI_PAYPAL_NAME_URL';
-	$gateway['options']['url']['value'] = _XPY_GI_PAYPAL_VALUE_URL;
+$gateway = array();
 
-	$gateway['options']['paywith']['name'] = '_XPY_GI_PAYPAL_NAME_PAYWITH';
-	$gateway['options']['paywith']['value'] = _XPY_GI_PAYPAL_VALUE_PAYWITH;
-	
-	$gateway['options']['image']['name'] = '_XPY_GI_PAYPAL_NAME_IMAGE';
-	$gateway['options']['image']['value'] = _XPY_GI_PAYPAL_VALUE_IMAGE;
-	
-	
-	
-?>
+xoops_loadLanguage('paypal', 'xpayment');
+
+$gateway['name']        = '_XPY_GI_PAYPAL_NAME';
+$gateway['author']      = '_XPY_GI_PAYPAL_AUTHOR';
+$gateway['description'] = '_XPY_GI_PAYPAL_DESC';
+
+$gateway['testmode'] = false;
+$gateway['class']    = basename(__DIR__);
+
+mt_srand(((float)('0' . substr(microtime(), strpos(microtime(), ' ') + 1, strlen(microtime()) - strpos(microtime(), ' ') + 1))) * mt_rand(30, 99999));
+mt_srand(((float)('0' . substr(microtime(), strpos(microtime(), ' ') + 1, strlen(microtime()) - strpos(microtime(), ' ') + 1))) * mt_rand(30, 99999));
+$gateway['salt'] = ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '')
+                   . ((mt_rand(0, 1) === true) ? chr(mt_rand(33, 122)) : '');
+
+$gateway['options']['email']['name']  = '_XPY_GI_PAYPAL_NAME_EMAIL';
+$gateway['options']['email']['value'] = _XPY_GI_PAYPAL_VALUE_EMAIL;
+
+$gateway['options']['sandbox']['name']  = '_XPY_GI_PAYPAL_NAME_SANDBOX';
+$gateway['options']['sandbox']['value'] = _XPY_GI_PAYPAL_VALUE_SANDBOX;
+
+$gateway['options']['url']['name']  = '_XPY_GI_PAYPAL_NAME_URL';
+$gateway['options']['url']['value'] = _XPY_GI_PAYPAL_VALUE_URL;
+
+$gateway['options']['paywith']['name']  = '_XPY_GI_PAYPAL_NAME_PAYWITH';
+$gateway['options']['paywith']['value'] = _XPY_GI_PAYPAL_VALUE_PAYWITH;
+
+$gateway['options']['image']['name']  = '_XPY_GI_PAYPAL_NAME_IMAGE';
+$gateway['options']['image']['value'] = _XPY_GI_PAYPAL_VALUE_IMAGE;

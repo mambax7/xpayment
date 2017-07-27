@@ -21,24 +21,22 @@
  * @translation     Richardo Costa <lusopoemas@gmail.com>
  * @translation     Kris_fr <kris@frxoops.org>
  */
-	include('../../mainfile.php');
-	
-	include_once $GLOBALS['xoops']->path('/modules/xpayment/include/xpayment.functions.php');
-	include_once $GLOBALS['xoops']->path('/modules/xpayment/include/xpayment.objects.php');
-	include_once $GLOBALS['xoops']->path('/modules/xpayment/include/xpayment.forms.php');
+include __DIR__ . '/../../mainfile.php';
 
-	xoops_load('pagenav');	
-	xoops_load('xoopsmailer');
-	
-	$GLOBALS['myts'] = MyTextSanitizer::getInstance();
-	
-	$module_handler = xoops_gethandler('module');
-	$config_handler = xoops_gethandler('config');
-	$GLOBALS['xpaymentModule'] = $module_handler->getByDirname('xpayment');
-	$GLOBALS['xpaymentModuleConfig'] = $config_handler->getConfigList($GLOBALS['xpaymentModule']->getVar('mid')); 
-	
-	include_once $GLOBALS['xoops']->path( "/class/template.php" );
-	$GLOBALS['xoopsTpl'] = new XoopsTpl();
-	
-	
-?>
+require_once $GLOBALS['xoops']->path('modules/xpayment/include/xpayment.functions.php');
+require_once $GLOBALS['xoops']->path('modules/xpayment/include/xpayment.objects.php');
+require_once $GLOBALS['xoops']->path('modules/xpayment/include/xpayment.forms.php');
+
+xoops_load('pagenav');
+//  xoops_load('xoopsmailer');
+
+$GLOBALS['myts'] = MyTextSanitizer::getInstance();
+
+/** @var XoopsModuleHandler $moduleHandler */
+$moduleHandler                   = xoops_getHandler('module');
+$configHandler                   = xoops_getHandler('config');
+$GLOBALS['xpaymentModule']       = $moduleHandler->getByDirname('xpayment');
+$GLOBALS['xpaymentModuleConfig'] = $configHandler->getConfigList($GLOBALS['xpaymentModule']->getVar('mid'));
+
+require_once $GLOBALS['xoops']->path('/class/template.php');
+$GLOBALS['xoopsTpl'] = new XoopsTpl();

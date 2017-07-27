@@ -20,69 +20,74 @@
  * @translation     Ezsky <ezskyyoung@gmail.com>
  * @translation     Richardo Costa <lusopoemas@gmail.com>
  * @translation     Kris_fr <kris@frxoops.org>
+ * @param $key
+ * @return bool
  */
-function profile_checkpasskey($key) {
+function profile_checkpasskey($key)
+{
+    $minseed = strtotime(date('Y-m-d h:i'));
+    $diff    = (int)((120 / 2) * 60);
+    for ($step = ($minseed - $diff); $step < ($minseed + $diff); ++$step) {
+        if ($key == md5(XOOPS_LICENSE_KEY . date('Ymdhi', $step))) {
+            return true;
+        }
+    }
 
-	$minseed = strtotime(date('Y-m-d h:i'));
-	$diff = intval((120/2)*60);
-	for($step=($minseed-$diff);$step<($minseed+$diff);$step++)
-		if ($key==md5(XOOPS_LICENSE_KEY.date('Ymdhi', $step)))
-			return true;
-	return false;
-
+    return false;
 }
 
-include('../../mainfile.php');
+include __DIR__ . '/../../mainfile.php';
 $GLOBALS['xoopsLogger']->activated = false;
 
 xoops_load('XoopsUserUtility');
 $myts = MyTextSanitizer::getInstance();
 
-foreach($_GET as $id => $val)
-	${$id} = $val;
+foreach ($_GET as $id => $val) {
+    ${$id} = $val;
+}
 
 if (!function_exists('json_encode')) {
-	include $GLOBALS['xoops']->path('/modules/xpayment/include/JSON.php');
-	$json = new services_JSON();
+    include $GLOBALS['xoops']->path('modules/xpayment/include/JSON.php');
+    $json = new services_JSON();
 }
 set_time_limit(120);
 
-
-if (!profile_checkpasskey($passkey)) { 
-	$values['innerhtml']['gateway_html'] = _XPY_VALIDATE_PASSKEYFAILED;
-	if (!function_exists('json_encode'))
-		print $json->encode($values);
-	else
-		print json_encode($values);
-	exit(0);
+if (!profile_checkpasskey($passkey)) {
+    $values['innerhtml']['gateway_html'] = _XPY_VALIDATE_PASSKEYFAILED;
+    if (!function_exists('json_encode')) {
+        print $json->encode($values);
+    } else {
+        print json_encode($values);
+    }
+    exit(0);
 }
 
-$invoice_handler = xoops_getmodulehandler('invoice', 'xpayment');
-$gateways_handler = xoops_getmodulehandler('gateways', 'xpayment');
-if (isset($iid)&&$GLOBALS['xoopsModuleConfig']['id_protect']==false) {
-	$invoice =& $invoice_handler->get($iid);
+$invoiceHandler  = xoops_getModuleHandler('invoice', 'xpayment');
+$gatewaysHandler = xoops_getModuleHandler('gateways', 'xpayment');
+if (isset($iid) && $GLOBALS['xoopsModuleConfig']['id_protect'] === false) {
+    $invoice =& $invoiceHandler->get($iid);
 } else {
-	$criteria = new Criteria('offline', time(), '>=');
-	$criteria->setSort('iid');
-	$criteria->setOrder('DESC');
-	$count = $invoice_handler->getCount($criteria);
-	$invoices = $invoice_handler->getObjects($criteria, true);
-	foreach($invoices as $iiid => $inv) {
-		if ($iid==md5($inv->getVar('iid').XOOPS_LICENSE_KEY)) {
-			$invoice = $inv;
-		}
-	}
+    $criteria = new Criteria('offline', time(), '>=');
+    $criteria->setSort('iid');
+    $criteria->setOrder('DESC');
+    $count    = $invoiceHandler->getCount($criteria);
+    $invoices = $invoiceHandler->getObjects($criteria, true);
+    foreach ($invoices as $iiid => $inv) {
+        if ($iid == md5($inv->getVar('iid') . XOOPS_LICENSE_KEY)) {
+            $invoice = $inv;
+        }
+    }
 }
 
-$gateway = $gateways_handler->get($gid);
+$gateway = $gatewaysHandler->get($gid);
 $gateway->loadGateway($invoice);
 $invoice->setGateway($gateway);
 $values['innerhtml']['gateway_html'] = $invoice->getPaymentHtml();
-if ($invoice->getVar('topayment')>time()) {
-	$values['submit']['gateway'] = $gateway->getVar('name'); 
-} 
-if (!function_exists('json_encode'))
-	print $json->encode($values);
-else
-	print json_encode($values);
-?>
+if ($invoice->getVar('topayment') > time()) {
+    $values['submit']['gateway'] = $gateway->getVar('name');
+}
+if (!function_exists('json_encode')) {
+    print $json->encode($values);
+} else {
+    print json_encode($values);
+}

@@ -1,35 +1,70 @@
-========================================
- 2013/03/22 07:43:00 Version 1.52 Beta 1
-========================================
-- converted to XOOPS 2.5.5 Admin GUI (mamba)
-- fixed bugs related to PHP 5.4.x and others (cesag/mamba)
+<h5>1.53 Beta 1  [NOT RELEASED]</h5>
+<hr>
+- XOOPS 2.5.9, PHP 7 (mamba)
+- Converted to XOOPS 2.5.8 Admin GUI (mamba)
+- removed @version (mamba)
+- PSR-2 code cosmetics (mamba)
+- addNavigation(basename(__FILE__))  (mamba)
+- dirname(__FILE__) to __DIR__ (mamba)
+- replaced < br /> with < br > (mamba)
+- Unnecessary double quotes (mamba)
+- reference mismatch (mamba)
+- Hardening to type safe (mamba)
+- update Help (mamba)
+- changed _handler to Handler (mamba)
+- removed '/' from void HTML elements (&lt;br&gt;, &lt;img&gt;, etc) (mamba)
+- HTML 5: removed 'selected' and 'checked' (mamba)
+- updated file headers for consistency (mamba)
+- renamed several $indexAdmin with $adminObject for consistency (mamba)
+- Updates for PayPal changes (zyspec)
+- added Contributing.md (mamba)
+- moved functions to Utility class (mamba)
+- include_once to require_once (mamba)
+- php-cs-fixer updates (mamba)
+- started conversion to XMF (mamba)
+    &nbsp;&nbsp;- updated addInfoBoxLine entries (mamba)
+    &nbsp;&nbsp;- displayNavigation(basename(__FILE__))  (mamba)
+    &nbsp;&nbsp;- changed to ->displayButton('left') (mamba)
 
-========================================
- 2012/03/27 07:43:00 Version 1.45 STABLE
-========================================
+
+<h5>1.52 Beta 2       [2014-04-23]</h5>
+<hr>
+- moved all images, CSS, and JS files to /assets (mamba)
+- renamed .html Smarty templates to .tpl (mamba)
+
+
+<h5>1.52 Beta 1 [2013/03/22]</h5>
+<hr>
+- converted to XOOPS 2.5.5 Admin GUI (mamba)
+- fixed bugs related to PHP 5.4.x and others (cesagonchu/mamba)
+- removed xoops_load('xoopsmailer') (mamba)
+
+
+<h5>1.45 STABLE [2012/03/27]</h5>
+<hr>
  - Changed class/gateways/paypal/paypal.php Form given name and id (Wishcraft)
  - Changed class/gateways/twocheckout/twocheckout.php Form given name and id (Wishcraft)
  - Changed class/gateways/ccbill/ccbill.php Form given name and id (Wishcraft)
  - Changed class/gateways/zombaio/zombaio.php Form given name and id (Wishcraft)
  - Changed sql/mysql.sql topayment time field added to invoice table (Wishcraft)
- - Changed include/update.sql topayment time field added to invoice table (Wishcraft) 
+ - Changed include/update.sql topayment time field added to invoice table (Wishcraft)
  - Changed class/invoice.php topayment time field added to invoice object (Wishcraft)
  - Changed index.php topayment time field added to invoice object (Wishcraft)
  - Changed cancel.php changed to php 5.x (Wishcraft)
  - Changed return.php changed to php 5.x (Wishcraft)
  - Changed ipn.php changed to php 5.x (Wishcraft)
- 
-========================================
- 2011/11/08 04:59:00 Version 1.39 STABLE
-========================================
+
+
+<h5>1.39 STABLE    [2011/11/08]</h5>
+<hr>
  - Changed $pathImageAdmin renamed to $GLOBALS['xtransamImageAdmin']  (Wishcraft)
  - Changed $pathImageIcon renamed to $GLOBALS['xtransamImageIcon']  (Wishcraft)
  - Changed $GLOBALS['xoopsModule'] in module renamed to $GLOBALS['xpaymentModule'] (Wishcraft)
  - Changed $GLOBALS['xoopsModuleConfig'] in module renamed to $GLOBALS['xpaymentModuleConfig'] (Wishcraft)
- 
-========================================
- 2011/11/05 01:01:01 Version 1.38 STABLE
-========================================
+
+
+<h5>1.38 STABLE   [2011/11/05]</h5>
+<hr>
  - Added 32x32 System Icons Added to the Frameworks Module Class (wishcraft)
  - Added 16x16 System Icons Added to the Frameworks Module Class (wishcraft)
  - Added More informative InfoBox on Dashboard index.php (wishcraft)

@@ -22,68 +22,65 @@
  * @translation     Kris_fr <kris@frxoops.org>
  */
 
+// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-
-if (!defined('XOOPS_ROOT_PATH')) {
-	exit();
-}
 /**
  * Class for Blue Room Xcenter
- * @author Simon Roberts <simon@xoops.org>
+ * @author    Simon Roberts <simon@xoops.org>
  * @copyright copyright (c) 2009-2003 XOOPS.org
- * @package kernel
+ * @package   kernel
  */
 class XpaymentAutotax extends XoopsObject
 {
-	
-    function XpaymentAutotax($id = null)
+    public function __construct($id = null)
     {
         $this->initVar('id', XOBJ_DTYPE_INT, null, false);
-		$this->initVar('country', XOBJ_DTYPE_TXTBOX, null, false, 128);
-		$this->initVar('code', XOBJ_DTYPE_TXTBOX, null, false, 3);
-		$this->initVar('rate', XOBJ_DTYPE_DECIMAL, 0, false);		
-	}
-	
-	function toArray() {
-		$ret = parent::toArray();
-		xoops_load('xoopsformloader');
-		$ret['form']['id'] = new XoopsFormHidden('id['.$this->getVar('id').']', $this->getVar('id'));
-		$ret['form']['country'] = new XoopsFormText('', $this->getVar('id').'[country]', 45, 128, $this->getVar('country'));
-		$ret['form']['code'] = new XoopsFormText('', $this->getVar('id').'[code]', 5, 3, $this->getVar('code'));
-		$ret['form']['rate'] = new XoopsFormText('', $this->getVar('id').'[rate]', 15, 30, $this->getVar('rate'));
-		$ret['form']['id'] = $ret['form']['id']->render();
-		$ret['form']['country'] = $ret['form']['country']->render();
-		$ret['form']['code'] = $ret['form']['code']->render();
-		$ret['form']['rate'] = $ret['form']['rate']->render();
-		return $ret;
-	}
-}
+        $this->initVar('country', XOBJ_DTYPE_TXTBOX, null, false, 128);
+        $this->initVar('code', XOBJ_DTYPE_TXTBOX, null, false, 3);
+        $this->initVar('rate', XOBJ_DTYPE_DECIMAL, 0, false);
+    }
 
+    public function toArray()
+    {
+        $ret = parent::toArray();
+        xoops_load('xoopsformloader');
+        $ret['form']['id']      = new XoopsFormHidden('id[' . $this->getVar('id') . ']', $this->getVar('id'));
+        $ret['form']['country'] = new XoopsFormText('', $this->getVar('id') . '[country]', 45, 128, $this->getVar('country'));
+        $ret['form']['code']    = new XoopsFormText('', $this->getVar('id') . '[code]', 5, 3, $this->getVar('code'));
+        $ret['form']['rate']    = new XoopsFormText('', $this->getVar('id') . '[rate]', 15, 30, $this->getVar('rate'));
+        $ret['form']['id']      = $ret['form']['id']->render();
+        $ret['form']['country'] = $ret['form']['country']->render();
+        $ret['form']['code']    = $ret['form']['code']->render();
+        $ret['form']['rate']    = $ret['form']['rate']->render();
+
+        return $ret;
+    }
+}
 
 /**
-* XOOPS policies handler class.
-* This class is responsible for providing data access mechanisms to the data source
-* of XOOPS user class objects.
-*
-* @author  Simon Roberts <simon@chronolabs.coop>
-* @package kernel
-*/
+ * XOOPS policies handler class.
+ * This class is responsible for providing data access mechanisms to the data source
+ * of XOOPS user class objects.
+ *
+ * @author  Simon Roberts <simon@chronolabs.coop>
+ * @package kernel
+ */
 class XpaymentAutotaxHandler extends XoopsPersistableObjectHandler
 {
-    function __construct(&$db) 
+    public function __construct(XoopsDatabase $db)
     {
-		$this->db = $db;
-        parent::__construct($db, 'xpayment_autotax', 'XpaymentAutotax', "id", "country");
+        $this->db = $db;
+        parent::__construct($db, 'xpayment_autotax', 'XpaymentAutotax', 'id', 'country');
     }
-    
-    function getTaxRate($code) {
-    	$criteria = new Criteria('code', $code);
-    	$objects = $this->getObjects($criteria, false);
-    	if (is_object($objects[0]))
-    		return $objects[0]->getVar('rate');
-    	else
-    		return 0;
+
+    public function getTaxRate($code)
+    {
+        $criteria = new Criteria('code', $code);
+        $objects  = $this->getObjects($criteria, false);
+        if (is_object($objects[0])) {
+            return $objects[0]->getVar('rate');
+        } else {
+            return 0;
+        }
     }
 }
-
-?>

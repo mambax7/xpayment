@@ -21,88 +21,87 @@
  * @translation     Richardo Costa <lusopoemas@gmail.com>
  * @translation     Kris_fr <kris@frxoops.org>
  */
-	include('../header.php');
-	
-	$invoice_handler =& xoops_getmodulehandler('invoice', 'xpayment');
+include __DIR__ . '/../header.php';
 
-	$criteria = new CriteriaCompo(new Criteria('due', time(), '<'));
-	$criteria->add(new Criteria('mode', 'UNPAID'));
-	$criteria->add(new Criteria('remittion', "('NONE', 'NOTICE')", 'IN'));
-	$invoices = $invoice_handler->getObjects($criteria, true);
-	 
-	foreach($invoices as $iid => $obj) {
-		switch ($obj->getVar('remittion')){
-			case "NONE":
-				$obj->setVar('remittion', 'NOTICE');
-				break;
-			case "NOTICE":
-				if ($obj->getVar('collect')<time()) {
-					$obj->setVar('remittion', 'COLLECT');
-					break;
-				}
-			
-		}
-		$invoice_handler->insert($obj, true);
-	}
-	
-	$module_handler =& xoops_gethandler('module');
-	$config_handler =& xoops_gethandler('config');
-	$xoMod = $module_handler->getByDirname('xpayment');
-	if (is_object($xoMod)) {
-		$xoConfig = $config_handler->getConfigList($xoMod->getVar('mid'));	
-		
-		$criteria = new CriteriaCompo(new Criteria('reoccurence', 0, '>'));
-		$criteria->add(new Criteria('mode', 'PAID'));
-		$criteria->add(new Criteria('occurence', time(), '<'));
-		$criteria->add(new Criteria('remittion', "('NONE', 'NOTICE')", 'IN'));
-		$invoices = $invoice_handler->getObjects($criteria, true);
-		 
-		foreach($invoices as $iid => $obj) {
-			if (($obj->getVar('reoccurence')>$obj->getVar('reoccurences'))) {
-				$obj->setVar('reoccurences', $obj->getVar('reoccurences')+1);
-				$obj->setVar('previous', $obj->getVar('occurence'));
-				$obj->setVar('occurence', time()+($obj->getVar('reoccurence_period_days')*(60*60*24)));
-				$obj->setVar('due', time()+$xoConfig['due']);
-				$obj->setVar('collect', time()+$xoConfig['due']+$xoConfig['collect']);
-				$obj->setVar('wait', time()+$xoConfig['due']+$xoConfig['collect']+$xoConfig['wait']);
-				$obj->setVar('offline', time()+$xoConfig['due']+$xoConfig['collect']+$xoConfig['wait']+$xoConfig['offline']);
-				$obj->setVar('mode', 'UNPAID');
-				$obj->setVar('remittion', 'NONE');
-				$obj->setVar('remitted', 0);
-				$obj->setVar('paid', '0.00');
-				$invoice_handler->insert($obj, true);
-			}
-		}
-		
-		$criteria = new CriteriaCompo(new Criteria('reoccurence', -1, '='));
-		$criteria->add(new Criteria('mode', 'PAID'));
-		$criteria->add(new Criteria('occurence', time(), '<'));
-		$criteria->add(new Criteria('remittion', "('NONE', 'NOTICE')", 'IN'));
-		$invoices = $invoice_handler->getObjects($criteria, true);
-		 
-		foreach($invoices as $iid => $obj) {
-			$obj->setVar('reoccurences', $obj->getVar('reoccurences')+1);
-			$obj->setVar('previous', $obj->getVar('occurence'));
-			$obj->setVar('occurence', time()+($obj->getVar('reoccurence_period_days')*(60*60*24)));
-			$obj->setVar('due', time()+$xoConfig['due']);
-			$obj->setVar('collect', time()+$xoConfig['due']+$xoConfig['collect']);
-			$obj->setVar('wait', time()+$xoConfig['due']+$xoConfig['collect']+$xoConfig['wait']);
-			$obj->setVar('offline', time()+$xoConfig['due']+$xoConfig['collect']+$xoConfig['wait']+$xoConfig['offline']);
-			$obj->setVar('mode', 'UNPAID');
-			$obj->setVar('remittion', 'NONE');
-			$obj->setVar('remitted', 0);
-			$obj->setVar('paid', '0.00');
-			$invoice_handler->insert($obj, true);
-		}
-	}
-		
-	$criteria = new CriteriaCompo(new Criteria('mode', 'UNPAID'));
-	$criteria->add(new Criteria('wait', time(), '<'));
-	$criteria->add(new Criteria('remittion', "('COLLECT', 'NOTICE', 'SETTLED')", 'IN'));
-	$invoices = $invoice_handler->getObjects($criteria, true);
-	foreach($invoices as $iid => $obj) {
-		$obj->setVar('mode', 'CANCEL');	
-		$invoice_handler->insert($obj, true);
-	}
-	
-?>
+$invoiceHandler = xoops_getModuleHandler('invoice', 'xpayment');
+
+$criteria = new CriteriaCompo(new Criteria('due', time(), '<'));
+$criteria->add(new Criteria('mode', 'UNPAID'));
+$criteria->add(new Criteria('remittion', "('NONE', 'NOTICE')", 'IN'));
+$invoices = $invoiceHandler->getObjects($criteria, true);
+
+foreach ($invoices as $iid => $obj) {
+    switch ($obj->getVar('remittion')) {
+        case 'NONE':
+            $obj->setVar('remittion', 'NOTICE');
+            break;
+        case 'NOTICE':
+            if ($obj->getVar('collect') < time()) {
+                $obj->setVar('remittion', 'COLLECT');
+                break;
+            }
+
+    }
+    $invoiceHandler->insert($obj, true);
+}
+
+/** @var XoopsModuleHandler $moduleHandler */
+$moduleHandler = xoops_getHandler('module');
+$configHandler = xoops_getHandler('config');
+$xoMod         = $moduleHandler->getByDirname('xpayment');
+if (is_object($xoMod)) {
+    $xoConfig = $configHandler->getConfigList($xoMod->getVar('mid'));
+
+    $criteria = new CriteriaCompo(new Criteria('reoccurence', 0, '>'));
+    $criteria->add(new Criteria('mode', 'PAID'));
+    $criteria->add(new Criteria('occurence', time(), '<'));
+    $criteria->add(new Criteria('remittion', "('NONE', 'NOTICE')", 'IN'));
+    $invoices = $invoiceHandler->getObjects($criteria, true);
+
+    foreach ($invoices as $iid => $obj) {
+        if ($obj->getVar('reoccurence') > $obj->getVar('reoccurences')) {
+            $obj->setVar('reoccurences', $obj->getVar('reoccurences') + 1);
+            $obj->setVar('previous', $obj->getVar('occurence'));
+            $obj->setVar('occurence', time() + ($obj->getVar('reoccurence_period_days') * (60 * 60 * 24)));
+            $obj->setVar('due', time() + $xoConfig['due']);
+            $obj->setVar('collect', time() + $xoConfig['due'] + $xoConfig['collect']);
+            $obj->setVar('wait', time() + $xoConfig['due'] + $xoConfig['collect'] + $xoConfig['wait']);
+            $obj->setVar('offline', time() + $xoConfig['due'] + $xoConfig['collect'] + $xoConfig['wait'] + $xoConfig['offline']);
+            $obj->setVar('mode', 'UNPAID');
+            $obj->setVar('remittion', 'NONE');
+            $obj->setVar('remitted', 0);
+            $obj->setVar('paid', '0.00');
+            $invoiceHandler->insert($obj, true);
+        }
+    }
+
+    $criteria = new CriteriaCompo(new Criteria('reoccurence', -1, '='));
+    $criteria->add(new Criteria('mode', 'PAID'));
+    $criteria->add(new Criteria('occurence', time(), '<'));
+    $criteria->add(new Criteria('remittion', "('NONE', 'NOTICE')", 'IN'));
+    $invoices = $invoiceHandler->getObjects($criteria, true);
+
+    foreach ($invoices as $iid => $obj) {
+        $obj->setVar('reoccurences', $obj->getVar('reoccurences') + 1);
+        $obj->setVar('previous', $obj->getVar('occurence'));
+        $obj->setVar('occurence', time() + ($obj->getVar('reoccurence_period_days') * (60 * 60 * 24)));
+        $obj->setVar('due', time() + $xoConfig['due']);
+        $obj->setVar('collect', time() + $xoConfig['due'] + $xoConfig['collect']);
+        $obj->setVar('wait', time() + $xoConfig['due'] + $xoConfig['collect'] + $xoConfig['wait']);
+        $obj->setVar('offline', time() + $xoConfig['due'] + $xoConfig['collect'] + $xoConfig['wait'] + $xoConfig['offline']);
+        $obj->setVar('mode', 'UNPAID');
+        $obj->setVar('remittion', 'NONE');
+        $obj->setVar('remitted', 0);
+        $obj->setVar('paid', '0.00');
+        $invoiceHandler->insert($obj, true);
+    }
+}
+
+$criteria = new CriteriaCompo(new Criteria('mode', 'UNPAID'));
+$criteria->add(new Criteria('wait', time(), '<'));
+$criteria->add(new Criteria('remittion', "('COLLECT', 'NOTICE', 'SETTLED')", 'IN'));
+$invoices = $invoiceHandler->getObjects($criteria, true);
+foreach ($invoices as $iid => $obj) {
+    $obj->setVar('mode', 'CANCEL');
+    $invoiceHandler->insert($obj, true);
+}

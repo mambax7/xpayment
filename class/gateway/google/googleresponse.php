@@ -16,51 +16,55 @@
  * limitations under the License.
  */
 
- /* This class is instantiated everytime any notification or
-  * order processing commands are received.
-  *
-  * Refer demo/responsehandlerdemo.php for different use case scenarios
-  * for this code
-  */
+/* This class is instantiated everytime any notification or
+ * order processing commands are received.
+ *
+ * Refer demo/responsehandlerdemo.php for different use case scenarios
+ * for this code
+ */
 
+/**
+ * Handles the response to notifications sent by the Google Checkout server.
+ */
+class googleresponse
+{
+    public $merchant_id;
+    public $merchant_key;
+    public $schema_url;
 
-  /**
-   * Handles the response to notifications sent by the Google Checkout server.
-   */
-  class GoogleResponse {
-    var $merchant_id;
-    var $merchant_key;
-    var $schema_url;
-
-    var $log;
-    var $response;
-    var $root='';
-    var $data=array();
-    var $xml_parser;
+    public $log;
+    public $response;
+    public $root = '';
+    public $data = array();
+    public $xml_parser;
 
     /**
-     * @param string $id the merchant id
+     * @param string $id  the merchant id
      * @param string $key the merchant key
+     * @return googleresponse
      */
-    function GoogleResponse($id=null, $key=null) {
-      $this->merchant_id = $id;
-      $this->merchant_key = $key;
-      $this->schema_url = "http://checkout.google.com/schema/2";
-      require_once(dirname(__FILE__).'/googlelog.php');
-      $this->log = new GoogleLog('', '', L_OFF);
+    public function GoogleResponse($id = null, $key = null)
+    {
+        $this->merchant_id  = $id;
+        $this->merchant_key = $key;
+        $this->schema_url   = 'http://checkout.google.com/schema/2';
+        require_once __DIR__ . '/googlelog.php';
+        $this->log = new GoogleLog('', '', L_OFF);
     }
 
     /**
-     * @param string $id the merchant id
+     * @param string $id  the merchant id
      * @param string $key the merchant key
      */
-    function SetMerchantAuthentication($id, $key){
-      $this->merchant_id = $id;
-      $this->merchant_key = $key;
+    public function SetMerchantAuthentication($id, $key)
+    {
+        $this->merchant_id  = $id;
+        $this->merchant_key = $key;
     }
 
-    function SetLogFiles($errorLogFile, $messageLogFile, $logLevel=L_ERR_RQST) {
-      $this->log = new GoogleLog($errorLogFile, $messageLogFile, $logLevel);
+    public function SetLogFiles($errorLogFile, $messageLogFile, $logLevel = L_ERR_RQST)
+    {
+        $this->log = new GoogleLog($errorLogFile, $messageLogFile, $logLevel);
     }
 
     /**
@@ -68,70 +72,85 @@
      * merchant id and key
      *
      * @param string $headers the headers from the request
+     * @param bool   $die
+     * @return bool
      */
-    function HttpAuthentication($headers=null, $die=true) {
-      if(!is_null($headers)) {
-        $_SERVER = $headers;
-      }
-      if(isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])) {
-        $compare_mer_id = $_SERVER['PHP_AUTH_USER'];
-        $compare_mer_key = $_SERVER['PHP_AUTH_PW'];
-      }
-  //  IIS Note::  For HTTP Authentication to work with IIS,
-  // the PHP directive cgi.rfc2616_headers must be set to 0 (the default value).
-      else if(isset($_SERVER['HTTP_AUTHORIZATION'])){
-        list($compare_mer_id, $compare_mer_key) = explode(':',
-            base64_decode(substr($_SERVER['HTTP_AUTHORIZATION'],
-            strpos($_SERVER['HTTP_AUTHORIZATION'], " ") + 1)));
-      } else if(isset($_SERVER['Authorization'])) {
-        list($compare_mer_id, $compare_mer_key) = explode(':',
-            base64_decode(substr($_SERVER['Authorization'],
-            strpos($_SERVER['Authorization'], " ") + 1)));
-      } else {
-        $this->SendFailAuthenticationStatus(
-              "Failed to Get Basic Authentication Headers",$die);
-        return false;
-      }
-      if($compare_mer_id != $this->merchant_id
-         || $compare_mer_key != $this->merchant_key) {
-        $this->SendFailAuthenticationStatus("Invalid Merchant Id/Key Pair",$die);
-        return false;
-      }
-      return true;
+    public function HttpAuthentication($headers = null, $die = true)
+    {
+        if (!is_null($headers)) {
+            $_SERVER = $headers;
+        }
+        if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])) {
+            $compare_mer_id  = $_SERVER['PHP_AUTH_USER'];
+            $compare_mer_key = $_SERVER['PHP_AUTH_PW'];
+        }
+        //  IIS Note::  For HTTP Authentication to work with IIS,
+        // the PHP directive cgi.rfc2616_headers must be set to 0 (the default value).
+        elseif (isset($_SERVER['HTTP_AUTHORIZATION'])) {
+            list($compare_mer_id, $compare_mer_key) = explode(':', base64_decode(substr($_SERVER['HTTP_AUTHORIZATION'], strpos($_SERVER['HTTP_AUTHORIZATION'], ' ') + 1)));
+        } elseif (isset($_SERVER['Authorization'])) {
+            list($compare_mer_id, $compare_mer_key) = explode(':', base64_decode(substr($_SERVER['Authorization'], strpos($_SERVER['Authorization'], ' ') + 1)));
+        } else {
+            $this->SendFailAuthenticationStatus('Failed to Get Basic Authentication Headers', $die);
+
+            return false;
+        }
+        if ($compare_mer_id != $this->merchant_id || $compare_mer_key != $this->merchant_key) {
+            $this->SendFailAuthenticationStatus('Invalid Merchant Id/Key Pair', $die);
+
+            return false;
+        }
+
+        return true;
     }
 
-    function ProcessMerchantCalculations($merchant_calc) {
-      $this->SendOKStatus();
-      $result = $merchant_calc->GetXML();
-      echo $result;
+    public function ProcessMerchantCalculations($merchant_calc)
+    {
+        $this->SendOKStatus();
+        $result = $merchant_calc->GetXML();
+        echo $result;
     }
 
-// Notification API
-    function ProcessNewOrderNotification() {
-      $this->SendAck();
-    }
-    function ProcessRiskInformationNotification() {
-      $this->SendAck();
-    }
-    function ProcessOrderStateChangeNotification() {
-      $this->SendAck();
-    }
-//   Amount Notifications
-    function ProcessChargeAmountNotification() {
-      $this->SendAck();
-    }
-    function ProcessRefundAmountNotification() {
-      $this->SendAck();
-    }
-    function ProcessChargebackAmountNotification() {
-      $this->SendAck();
-    }
-    function ProcessAuthorizationAmountNotification() {
-      $this->SendAck();
+    // Notification API
+    public function ProcessNewOrderNotification()
+    {
+        $this->SendAck();
     }
 
-    function SendOKStatus() {
-      header('HTTP/1.0 200 OK');
+    public function ProcessRiskInformationNotification()
+    {
+        $this->SendAck();
+    }
+
+    public function ProcessOrderStateChangeNotification()
+    {
+        $this->SendAck();
+    }
+
+    //   Amount Notifications
+    public function ProcessChargeAmountNotification()
+    {
+        $this->SendAck();
+    }
+
+    public function ProcessRefundAmountNotification()
+    {
+        $this->SendAck();
+    }
+
+    public function ProcessChargebackAmountNotification()
+    {
+        $this->SendAck();
+    }
+
+    public function ProcessAuthorizationAmountNotification()
+    {
+        $this->SendAck();
+    }
+
+    public function SendOKStatus()
+    {
+        header('HTTP/1.0 200 OK');
     }
 
     /**
@@ -139,17 +158,18 @@
      * Google Checkout
      *
      * @param string $msg the message to log
+     * @param bool   $die
      */
-    function SendFailAuthenticationStatus($msg="401 Unauthorized Access",
-                                                                   $die=true) {
-      $this->log->logError($msg);
-      header('WWW-Authenticate: Basic realm="GoogleCheckout PHPSample Code"');
-      header('HTTP/1.0 401 Unauthorized');
-      if($die) {
-       die($msg);
-      } else {
-      echo $msg;
-      }
+    public function SendFailAuthenticationStatus($msg = '401 Unauthorized Access', $die = true)
+    {
+        $this->log->LogError($msg);
+        header('WWW-Authenticate: Basic realm="GoogleCheckout PHPSample Code"');
+        header('HTTP/1.0 401 Unauthorized');
+        if ($die) {
+            die($msg);
+        } else {
+            echo $msg;
+        }
     }
 
     /**
@@ -157,15 +177,17 @@
      * Checkout
      *
      * @param string $msg the message to log
+     * @param bool   $die
      */
-    function SendBadRequestStatus($msg="400 Bad Request", $die=true) {
-      $this->log->logError($msg);
-      header('HTTP/1.0 400 Bad Request');
-      if($die) {
-       die($msg);
-      } else {
-      echo $msg;
-      }
+    public function SendBadRequestStatus($msg = '400 Bad Request', $die = true)
+    {
+        $this->log->LogError($msg);
+        header('HTTP/1.0 400 Bad Request');
+        if ($die) {
+            die($msg);
+        } else {
+            echo $msg;
+        }
     }
 
     /**
@@ -173,53 +195,57 @@
      * the notification sent by Google Checkout can't be processed right now
      *
      * @param string $msg the message to log
+     * @param bool   $die
      */
-    function SendServerErrorStatus($msg="500 Internal Server Error",
-                                                                   $die=true) {
-      $this->log->logError($msg);
-      header('HTTP/1.0 500 Internal Server Error');
-      if($die) {
-       die($msg);
-      } else {
-        echo $msg;
-      }
+    public function SendServerErrorStatus($msg = '500 Internal Server Error', $die = true)
+    {
+        $this->log->LogError($msg);
+        header('HTTP/1.0 500 Internal Server Error');
+        if ($die) {
+            die($msg);
+        } else {
+            echo $msg;
+        }
     }
-    
+
     /**
      * Send an acknowledgement in response to Google Checkout's request
-     * @param string $serial serial number of notification for acknowledgement 
+     * @param string $serial serial number of notification for acknowledgement
+     * @param bool   $die
      */
-    function SendAck($serial=null, $die=true) {
-      $this->SendOKStatus();
-      $acknowledgment = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" .
-                        "<notification-acknowledgment xmlns=\"" .
-                        $this->schema_url . "\"";
-      if(isset($serial)) {
-        $acknowledgment .=" serial-number=\"" . $serial."\"";
-      }                  
-      $acknowledgment .= " />";
-      $this->log->LogResponse($acknowledgment);
-      if($die) {
-        die($acknowledgment);
-      } else {
-        echo $acknowledgment;
-      }
+    public function SendAck($serial = null, $die = true)
+    {
+        $this->SendOKStatus();
+        $acknowledgment = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" . "<notification-acknowledgment xmlns=\"" . $this->schema_url . "\"";
+        if (isset($serial)) {
+            $acknowledgment .= " serial-number=\"" . $serial . "\"";
+        }
+        $acknowledgment .= '>';
+        $this->log->LogResponse($acknowledgment);
+        if ($die) {
+            die($acknowledgment);
+        } else {
+            echo $acknowledgment;
+        }
     }
 
     /**
      * @access private
+     * @param null $request
+     * @return array
      */
-    function GetParsedXML($request=null){
-      if(!is_null($request)) {
-        $this->log->LogRequest($request);
-        $this->response = $request;
-        require_once(dirname(__FILE__).'/xml-processing/gc_xmlparser.php');
+    public function getParsedXML($request = null)
+    {
+        if (!is_null($request)) {
+            $this->log->LogRequest($request);
+            $this->response = $request;
+            require_once __DIR__ . '/xml-processing/gc_xmlparser.php';
 
-        $this->xml_parser = new gc_XmlParser($request);
-        $this->root = $this->xml_parser->GetRoot();
-        $this->data = $this->xml_parser->GetData();
-      }
-      return array($this->root, $this->data);
+            $this->xml_parser = new gc_XmlParser($request);
+            $this->root       = $this->xml_parser->getRoot();
+            $this->data       = $this->xml_parser->getData();
+        }
+
+        return array($this->root, $this->data);
     }
-  }
-?>
+}

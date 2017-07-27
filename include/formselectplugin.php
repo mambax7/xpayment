@@ -22,20 +22,20 @@
  * @translation     Kris_fr <kris@frxoops.org>
  */
 
-defined('XOOPS_ROOT_PATH') or die('Restricted access');
+// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 xoops_load('XoopsFormElement');
 
 /**
  * A select field
  *
- * @author 		Kazumi Ono <onokazu@xoops.org>
- * @author 		Taiwen Jiang <phppp@users.sourceforge.net>
- * @author 		John Neill <catzwolf@xoops.org>
- * @copyright   XOOPS Project (https://xoops.org)
- * @package 	kernel
- * @subpackage 	form
- * @access 		public
+ * @author      Kazumi Ono <onokazu@xoops.org>
+ * @author      Taiwen Jiang <phppp@users.sourceforge.net>
+ * @author      John Neill <catzwolf@xoops.org>
+ * @copyright   {@link https://xoops.org/ XOOPS Project}
+ * @package     kernel
+ * @subpackage  form
+ * @access      public
  */
 class XoopsFormSelectPlugin extends XoopsFormElement
 {
@@ -45,7 +45,7 @@ class XoopsFormSelectPlugin extends XoopsFormElement
      * @var array
      * @access private
      */
-    var $_options = array();
+    public $_options = array();
 
     /**
      * Allow multiple selections?
@@ -53,7 +53,7 @@ class XoopsFormSelectPlugin extends XoopsFormElement
      * @var bool
      * @access private
      */
-    var $_multiple = false;
+    public $_multiple = false;
 
     /**
      * Number of rows. "1" makes a dropdown list.
@@ -61,7 +61,7 @@ class XoopsFormSelectPlugin extends XoopsFormElement
      * @var int
      * @access private
      */
-    var $_size;
+    public $_size;
 
     /**
      * Pre-selcted values
@@ -69,36 +69,35 @@ class XoopsFormSelectPlugin extends XoopsFormElement
      * @var array
      * @access private
      */
-    var $_value = array();
+    public $_value = array();
 
     /**
      * Constructor
      *
-     * @param string $caption Caption
-     * @param string $name "name" attribute
-     * @param mixed $value Pre-selected value (or array of them).
-     * @param int $size Number or rows. "1" makes a drop-down-list
-     * @param bool $multiple Allow multiple selections?
+     * @param string $caption  Caption
+     * @param string $name     "name" attribute
+     * @param mixed  $value    Pre-selected value (or array of them).
+     * @param int    $size     Number or rows. "1" makes a drop-down-list
+     * @param bool   $multiple Allow multiple selections?
      */
-    function XoopsFormSelectPlugin($caption, $name, $value = null, $size = 1, $multiple = false)
+    public function __construct($caption, $name, $value = null, $size = 1, $multiple = false)
     {
         $this->setCaption($caption);
         $this->setName($name);
         $this->_multiple = $multiple;
-        $this->_size = intval($size);
+        $this->_size     = (int)$size;
         if (isset($value)) {
             $this->setValue($value);
         }
-        
+
         $this->addOption('*', '*********');
-        
+
         xoops_load('XoopsLists');
-		$plugins = XoopsLists::getFileListAsArray($GLOBALS['xoops']->path('/modules/xpayment/plugin/'));
-		foreach($plugins as $plugin) {
-			$name = substr($plugin, 0, strlen($plugin)-4);
-			$this->addOption($name, ucfirst($name));
-		}
-		
+        $plugins = XoopsLists::getFileListAsArray($GLOBALS['xoops']->path('modules/xpayment/plugin/'));
+        foreach ($plugins as $plugin) {
+            $name = substr($plugin, 0, strlen($plugin) - 4);
+            $this->addOption($name, ucfirst($name));
+        }
     }
 
     /**
@@ -106,7 +105,7 @@ class XoopsFormSelectPlugin extends XoopsFormElement
      *
      * @return bool
      */
-    function isMultiple()
+    public function isMultiple()
     {
         return $this->_multiple;
     }
@@ -116,7 +115,7 @@ class XoopsFormSelectPlugin extends XoopsFormElement
      *
      * @return int
      */
-    function getSize()
+    public function getSize()
     {
         return $this->_size;
     }
@@ -124,18 +123,19 @@ class XoopsFormSelectPlugin extends XoopsFormElement
     /**
      * Get an array of pre-selected values
      *
-     * @param bool $encode To sanitizer the text?
+     * @param  bool $encode To sanitizer the text?
      * @return array
      */
-    function getValue($encode = false)
+    public function getValue($encode = false)
     {
-        if (! $encode) {
+        if (!$encode) {
             return $this->_value;
         }
         $value = array();
-        foreach($this->_value as $val) {
+        foreach ($this->_value as $val) {
             $value[] = $val ? htmlspecialchars($val, ENT_QUOTES) : $val;
         }
+
         return $value;
     }
 
@@ -144,10 +144,10 @@ class XoopsFormSelectPlugin extends XoopsFormElement
      *
      * @param  $value mixed
      */
-    function setValue($value)
+    public function setValue($value)
     {
         if (is_array($value)) {
-            foreach($value as $v) {
+            foreach ($value as $v) {
                 $this->_value[] = $v;
             }
         } elseif (isset($value)) {
@@ -159,9 +159,9 @@ class XoopsFormSelectPlugin extends XoopsFormElement
      * Add an option
      *
      * @param string $value "value" attribute
-     * @param string $name "name" attribute
+     * @param string $name  "name" attribute
      */
-    function addOption($value, $name = '')
+    public function addOption($value, $name = '')
     {
         if ($name != '') {
             $this->_options[$value] = $name;
@@ -175,10 +175,10 @@ class XoopsFormSelectPlugin extends XoopsFormElement
      *
      * @param array $options Associative array of value->name pairs
      */
-    function addOptionArray($options)
+    public function addOptionArray($options)
     {
         if (is_array($options)) {
-            foreach($options as $k => $v) {
+            foreach ($options as $k => $v) {
                 $this->addOption($k, $v);
             }
         }
@@ -189,18 +189,19 @@ class XoopsFormSelectPlugin extends XoopsFormElement
      *
      * Note: both name and value should be sanitized. However for backward compatibility, only value is sanitized for now.
      *
-     * @param int $encode To sanitizer the text? potential values: 0 - skip; 1 - only for value; 2 - for both value and name
+     * @param bool|int $encode To sanitizer the text? potential values: 0 - skip; 1 - only for value; 2 - for both value and name
      * @return array Associative array of value->name pairs
      */
-    function getOptions($encode = false)
+    public function getOptions($encode = false)
     {
-        if (! $encode) {
+        if (!$encode) {
             return $this->_options;
         }
         $value = array();
-        foreach($this->_options as $val => $name) {
+        foreach ($this->_options as $val => $name) {
             $value[$encode ? htmlspecialchars($val, ENT_QUOTES) : $val] = ($encode > 1) ? htmlspecialchars($name, ENT_QUOTES) : $name;
         }
+
         return $value;
     }
 
@@ -209,26 +210,27 @@ class XoopsFormSelectPlugin extends XoopsFormElement
      *
      * @return string HTML
      */
-    function render()
+    public function render()
     {
-        $ele_name = $this->getName();
-		$ele_title = $this->getTitle();
-        $ele_value = $this->getValue();
+        $ele_name    = $this->getName();
+        $ele_title   = $this->getTitle();
+        $ele_value   = $this->getValue();
         $ele_options = $this->getOptions();
-        $ret = '<select size="' . $this->getSize() . '"' . $this->getExtra();
-        if ($this->isMultiple() != false) {
-            $ret .= ' name="' . $ele_name . '[]" id="' . $ele_name . '" title="'. $ele_title. '" multiple="multiple">' ;
+        $ret         = '<select size="' . $this->getSize() . '"' . $this->getExtra();
+        if ($this->isMultiple() !== false) {
+            $ret .= ' name="' . $ele_name . '[]" id="' . $ele_name . '" title="' . $ele_title . '" multiple="multiple">';
         } else {
-            $ret .= ' name="' . $ele_name . '" id="' . $ele_name . '" title="'. $ele_title. '">' ;
+            $ret .= ' name="' . $ele_name . '" id="' . $ele_name . '" title="' . $ele_title . '">';
         }
-        foreach($ele_options as $value => $name) {
+        foreach ($ele_options as $value => $name) {
             $ret .= '<option value="' . htmlspecialchars($value, ENT_QUOTES) . '"';
             if (count($ele_value) > 0 && in_array($value, $ele_value)) {
-                $ret .= ' selected="selected"';
+                $ret .= ' selected';
             }
-            $ret .= '>' . $name . '</option>' ;
+            $ret .= '>' . $name . '</option>';
         }
         $ret .= '</select>';
+
         return $ret;
     }
 
@@ -237,21 +239,23 @@ class XoopsFormSelectPlugin extends XoopsFormElement
      *
      * @seealso XoopsForm::renderValidationJS
      */
-    function renderValidationJS()
+    public function renderValidationJS()
     {
         // render custom validation code if any
-        if (! empty($this->customValidationCode)) {
+        if (!empty($this->customValidationCode)) {
             return implode("\n", $this->customValidationCode);
             // generate validation code if required
         } elseif ($this->isRequired()) {
-            $eltname = $this->getName();
+            $eltname    = $this->getName();
             $eltcaption = $this->getCaption();
-            $eltmsg = empty($eltcaption) ? sprintf(_FORM_ENTER, $eltname) : sprintf(_FORM_ENTER, $eltcaption);
-            $eltmsg = str_replace('"', '\"', stripslashes($eltmsg));
-            return "\nvar hasSelected = false; var selectBox = myform.{$eltname};" . "for (i = 0; i < selectBox.options.length; i++ ) { if (selectBox.options[i].selected == true) { hasSelected = true; break; } }" . "if (!hasSelected) { window.alert(\"{$eltmsg}\"); selectBox.focus(); return false; }";
+            $eltmsg     = empty($eltcaption) ? sprintf(_FORM_ENTER, $eltname) : sprintf(_FORM_ENTER, $eltcaption);
+            $eltmsg     = str_replace('"', '\"', stripslashes($eltmsg));
+
+            return "\nvar hasSelected = false; var selectBox = myform.{$eltname};"
+                   . 'for (i = 0; i < selectBox.options.length; i++) { if (selectBox.options[i].selected === true) { hasSelected = true; break; } }'
+                   . "if (!hasSelected) { window.alert(\"{$eltmsg}\"); selectBox.focus(); return false; }";
         }
+
         return '';
     }
 }
-
-?>

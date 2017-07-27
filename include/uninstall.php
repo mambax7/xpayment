@@ -20,17 +20,16 @@
  * @translation     Ezsky <ezskyyoung@gmail.com>
  * @translation     Richardo Costa <lusopoemas@gmail.com>
  * @translation     Kris_fr <kris@frxoops.org>
+ * @param XoopsModule $module
+ * @return bool
  */
-function xoops_module_uninstall_xpayment(&$module) {
+function xoops_module_uninstall_xpayment(XoopsModule $module)
+{
+    xoops_loadLanguage('modinfo', 'xpayment');
+    $groupsHandler = xoops_getHandler('group');
 
-	xoops_loadLanguage('modinfo', 'xpayment');
-	$groups_handler =& xoops_gethandler('group');
+    $sql = 'DELETE FROM ' . $GLOBALS['xoopsDB']->prefix('groups') . " WHERE `group_type` IN ('" . _XPY_MI_GROUP_TYPE_BROKER . "','" . _XPY_MI_GROUP_TYPE_ACCOUNTS . "','" . _XPY_MI_GROUP_TYPE_OFFICER . "')";
+    $GLOBALS['xoopsDB']->queryF($sql);
 
-	$sql = "DELETE FROM ".$GLOBALS['xoopsDB']->prefix('groups'). " WHERE `group_type` IN ('"._XPY_MI_GROUP_TYPE_BROKER."','"._XPY_MI_GROUP_TYPE_ACCOUNTS."','"._XPY_MI_GROUP_TYPE_OFFICER."')";
-	$GLOBALS['xoopsDB']->queryF($sql);
-	
-	return true;
-	
+    return true;
 }
-	
-?>

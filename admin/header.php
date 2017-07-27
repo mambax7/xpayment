@@ -21,30 +21,33 @@
  * @translation     Richardo Costa <lusopoemas@gmail.com>
  * @translation     Kris_fr <kris@frxoops.org>
  */
-	include('../../../mainfile.php');
-	include('../../../include/cp_header.php');
 	
-	if (!defined('_CHARSET'))
-		define ("_CHARSET","UTF-8");
-	if (!defined('_CHARSET_ISO'))
-		define ("_CHARSET_ISO","ISO-8859-1");
+require_once __DIR__ . '/../../../include/cp_header.php';
+
+if (!defined('_CHARSET')) {
+    define('_CHARSET', 'UTF-8');
+}
+if (!defined('_CHARSET_ISO')) {
+    define('_CHARSET_ISO', 'ISO-8859-1');
+}
 		
 	$GLOBALS['myts'] = MyTextSanitizer::getInstance();
 	
-	$module_handler = xoops_gethandler('module');
-	$config_handler = xoops_gethandler('config');
-	$GLOBALS['xpaymentModule'] = $module_handler->getByDirname('xpayment');
-	$GLOBALS['xpaymentModuleConfig'] = $config_handler->getConfigList($GLOBALS['xpaymentModule']->getVar('mid')); 
+/** @var XoopsModuleHandler $moduleHandler */
+$moduleHandler                   = xoops_getHandler('module');
+$configHandler                   = xoops_getHandler('config');
+$GLOBALS['xpaymentModule']       = $moduleHandler->getByDirname('xpayment');
+$GLOBALS['xpaymentModuleConfig'] = $configHandler->getConfigList($GLOBALS['xpaymentModule']->getVar('mid'));
 		
 	xoops_load('pagenav');	
 	xoops_load('xoopslists');
 	xoops_load('xoopsformloader');
 	
-	include_once $GLOBALS['xoops']->path('class'.DS.'xoopsmailer.php');
-	include_once $GLOBALS['xoops']->path('class'.DS.'xoopstree.php');
+require_once $GLOBALS['xoops']->path('class/xoopsmailer.php');
+require_once $GLOBALS['xoops']->path('class/xoopstree.php');
 	
-	if ( file_exists($GLOBALS['xoops']->path('/Frameworks/moduleclasses/moduleadmin/moduleadmin.php'))){
-	        include_once $GLOBALS['xoops']->path('/Frameworks/moduleclasses/moduleadmin/moduleadmin.php');
+if (file_exists($GLOBALS['xoops']->path('Frameworks/moduleclasses/moduleadmin/moduleadmin.php'))) {
+    require_once $GLOBALS['xoops']->path('Frameworks/moduleclasses/moduleadmin/moduleadmin.php');
 	        //return true;
 	    }else{
 	        echo xoops_error("Error: You don't use the Frameworks \"admin module\". Please install this Frameworks");
@@ -54,29 +57,26 @@
 	$GLOBALS['xpaymentImageAdmin'] = XOOPS_URL .'/'. $GLOBALS['xpaymentModule']->getInfo('icons32');
 	
 	if ($GLOBALS['xoopsUser']) {
-	    $moduleperm_handler =& xoops_gethandler('groupperm');
-	    if (!$moduleperm_handler->checkRight('module_admin', $GLOBALS['xpaymentModule']->getVar( 'mid' ), $GLOBALS['xoopsUser']->getGroups())) {
+    $modulepermHandler = xoops_getHandler('groupperm');
+    if (!$modulepermHandler->checkRight('module_admin', $GLOBALS['xpaymentModule']->getVar('mid'), $GLOBALS['xoopsUser']->getGroups())) {
 	        redirect_header(XOOPS_URL, 1, _NOPERM);
-	        exit();
 	    }
 	} else {
-	    redirect_header(XOOPS_URL . "/user.php", 1, _NOPERM);
-	    exit();
+    redirect_header(XOOPS_URL . '/user.php', 1, _NOPERM);
 	}
 	
 	if (!isset($GLOBALS['xoopsTpl']) || !is_object($GLOBALS['xoopsTpl'])) {
-		include_once(XOOPS_ROOT_PATH."/class/template.php");
+    require_once XOOPS_ROOT_PATH . '/class/template.php';
 		$GLOBALS['xoopsTpl'] = new XoopsTpl();
 	}
 	
 	$GLOBALS['xoopsTpl']->assign('pathImageIcon', $GLOBALS['xpaymentImageIcon']);
 	
-	include_once $GLOBALS['xoops']->path('/modules/xpayment/include/xpayment.functions.php');
-	include_once $GLOBALS['xoops']->path('/modules/xpayment/include/xpayment.objects.php');
-	include_once $GLOBALS['xoops']->path('/modules/xpayment/include/xpayment.forms.php');
+require_once $GLOBALS['xoops']->path('modules/xpayment/include/xpayment.functions.php');
+require_once $GLOBALS['xoops']->path('modules/xpayment/include/xpayment.objects.php');
+require_once $GLOBALS['xoops']->path('modules/xpayment/include/xpayment.forms.php');
 
-	xoops_load('pagenav');	
-	xoops_load('xoopsmailer');
+//  xoops_load('xoopsmailer');
 	/*
 	IF (!@ include_once XOOPS_ROOT_PATH."/Frameworks/art/functions.admin.php"):    
 	function loadModuleAdminMenu($currentoption, $breadcrumb = "")
@@ -130,7 +130,7 @@
 		$adminmenu_text .= '
 		 </ul>
 		</div>
-		<br style="clear:both;" />';
+    <br style="clear:both;">';
 		
 		echo $adminmenu_text;
 	}

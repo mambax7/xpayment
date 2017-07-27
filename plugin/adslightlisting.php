@@ -1,23 +1,24 @@
 <?php
 
-	
-	function PaidAdslightlistingHook($invoice) {
+function PaidAdslightlistingHook($invoice)
+{
+    $sql = 'update ' . $GLOBALS['xoopsDB']->prefix('adslight_listing') . ' set `valid` = \'Yes\' where `lid`= "' . $invoice->getVar('key') . '"';
+    $GLOBALS['xoopsDB']->queryF($sql);
+    require_once $GLOBALS['xoops']->path('modules/xpayment/plugin/xpayment.php');
 
-		$sql = "update ".$GLOBALS['xoopsDB']->prefix('adslight_listing').' set `valid` = \'Yes\' where `lid`= "'.$invoice->getVar('key').'"';
-		$GLOBALS['xoopsDB']->queryF($sql);
-		include_once $GLOBALS['xoops']->path('/modules/xpayment/plugin/xpayment.php');		
-		return PaidXPaymentHook($invoice);
-		
-	}
-	
-	function UnpaidAdslightlistingHook($invoice) {
-		include_once $GLOBALS['xoops']->path('/modules/xpayment/plugin/xpayment.php');
-		return UnpaidXPaymentHook($invoice);		
-	}
-	
-	function CancelAdslightlistingHook($invoice) {
-		include_once $GLOBALS['xoops']->path('/modules/xpayment/plugin/xpayment.php');
-		return CancelXPaymentHook($invoice);
-	}
-	
-?>
+    return PaidXpaymentHook($invoice);
+}
+
+function UnpaidAdslightlistingHook($invoice)
+{
+    require_once $GLOBALS['xoops']->path('modules/xpayment/plugin/xpayment.php');
+
+    return UnpaidXpaymentHook($invoice);
+}
+
+function CancelAdslightlistingHook($invoice)
+{
+    require_once $GLOBALS['xoops']->path('modules/xpayment/plugin/xpayment.php');
+
+    return CancelXpaymentHook($invoice);
+}
