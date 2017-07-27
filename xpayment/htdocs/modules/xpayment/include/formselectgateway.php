@@ -32,7 +32,7 @@ xoops_load('XoopsFormElement');
  * @author 		Kazumi Ono <onokazu@xoops.org>
  * @author 		Taiwen Jiang <phppp@users.sourceforge.net>
  * @author 		John Neill <catzwolf@xoops.org>
- * @copyright   The XOOPS Project http://sourceforge.net/projects/xoops/
+ * @copyright   XOOPS Project (https://xoops.org)
  * @package 	kernel
  * @subpackage 	form
  * @access 		public

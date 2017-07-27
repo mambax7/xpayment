@@ -23,7 +23,7 @@
  */
 	function xpayment_adminpayment($invoice) {
 
-		$sform = new XoopsThemeForm(_XPY_AM_PAYMENT, 'payment', $_SERVER['PHP_SELF'], 'post');
+		$sform = new XoopsThemeForm(_XPY_AM_PAYMENT, 'payment', $_SERVER['PHP_SELF'], 'post', true);
 		$formobj = array();	
 		$eletray = array();
 				
@@ -59,7 +59,7 @@
 
 	function xpayment_adminsettle($invoice) {
 
-		$sform = new XoopsThemeForm(_XPY_AM_SETTLE, 'settle', $_SERVER['PHP_SELF'], 'post');
+		$sform = new XoopsThemeForm(_XPY_AM_SETTLE, 'settle', $_SERVER['PHP_SELF'], 'post', true);
 		$formobj = array();	
 		$eletray = array();
 				
@@ -94,7 +94,7 @@
 	
 	function xpayment_adminrule($rid, $group_id) {
 
-		$sform = new XoopsThemeForm(_XPY_AM_ADDRULE, 'rule', $_SERVER['PHP_SELF'], 'post');
+		$sform = new XoopsThemeForm(_XPY_AM_ADDRULE, 'rule', $_SERVER['PHP_SELF'], 'post', true);
 		$formobj = array();	
 		$eletray = array();
 		
@@ -135,7 +135,7 @@
 	
 	function xpayment_userdiscount($invoice) {
 
-		$sform = new XoopsThemeForm(_XPY_MF_DISCOUNT, 'discount', $_SERVER['PHP_SELF'], 'post');
+		$sform = new XoopsThemeForm(_XPY_MF_DISCOUNT, 'discount', $_SERVER['PHP_SELF'], 'post', true);
 		$formobj = array();	
 		$eletray = array();
 		
@@ -166,7 +166,7 @@
 	}
 	
 	function xpayment_admincreatediscounts() {
-		$sform = new XoopsThemeForm(_XPY_AM_CREATE_DISCOUNT_CODES, 'create_discount', $_SERVER['PHP_SELF'], 'post');
+		$sform = new XoopsThemeForm(_XPY_AM_CREATE_DISCOUNT_CODES, 'create_discount', $_SERVER['PHP_SELF'], 'post', true);
 		$formobj = array();	
 		$eletray = array();
 		
