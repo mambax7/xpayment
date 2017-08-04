@@ -179,3 +179,17 @@ define('_XPY_MI_MANUALCODE', 'Prefix for manual payment reference!');
 define('_XPY_MI_MANUALCODE_DESC', 'This is the prefix for manual payment reference which is the invoice number and this prefix.');
 
 define('_XPY_ADMENU0', 'Home');
+
+//1.53
+//Help
+define('_MI_XPY_DIRNAME', basename(dirname(dirname(__DIR__))));
+define('_MI_XPY_HELP_HEADER', __DIR__.'/help/helpheader.tpl');
+define('_MI_XPY_BACK_2_ADMIN', 'Back to Administration of ');
+define('_MI_XPY_OVERVIEW', 'Overview');
+
+//define('_MI_XPY_HELP_DIR', __DIR__);
+
+//help multi-page
+define('_MI_XPY_DISCLAIMER', 'Disclaimer');
+define('_MI_XPY_LICENSE', 'License');
+define('_MI_XPY_SUPPORT', 'Support');

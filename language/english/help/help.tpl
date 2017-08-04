@@ -1,11 +1,5 @@
 <div id="help-template" class="outer">
-    <h1 class="head">Help:
-        <a class="ui-corner-all tooltip" href="<{$xoops_url}>/modules/xpayment/admin/index.php"
-           title="Back to the administration of xPayment"> xPayment <img src="<{xoAdminIcons home.png}>"
-                                                                         alt="Back to the Administration of xPayment">
-        </a></h1>
-    <!-- -----Help Content ---------- -->
-
+    <{include file=$smarty.const._MI_XPY_HELP_HEADER}>
     <h4 class="odd">DESCRIPTION</h4>
 
     <p class="even">

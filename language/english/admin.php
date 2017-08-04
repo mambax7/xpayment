@@ -488,3 +488,12 @@ define('_XPY_EMAIL_REMINDER_SUBJECT', 'Reminder of a Generated Invoice for %s %s
 define('_XPY_AM_TH_INTEREST', 'Interest Charged');
 define('_XPY_AM_INVOICES_SUMARE_INTEREST', 'Sum of interest earned: %s');
 define('_XPY_AM_XPAYMENT_ABOUT_MAKEDONATE', 'Make XPayment Better Donate Today!');
+
+//1.53
+define('_AM_XPY_UPGRADEFAILED0', "Update failed - couldn't rename field '%s'");
+define('_AM_XPY_UPGRADEFAILED1', "Update failed - couldn't add new fields");
+define('_AM_XPY_UPGRADEFAILED2', "Update failed - couldn't rename table '%s'");
+define('_AM_XPY_ERROR_COLUMN', 'Could not create column in database : %s');
+define('_AM_XPY_ERROR_BAD_XOOPS', 'This module requires XOOPS %s+ (%s installed)');
+define('_AM_XPY_ERROR_BAD_PHP', 'This module requires PHP version %s+ (%s installed)');
+define('_AM_XPY_ERROR_TAG_REMOVAL', 'Could not remove tags from Tag Module');

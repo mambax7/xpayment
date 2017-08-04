@@ -112,6 +112,14 @@ $modversion['onUpdate'] = 'include/onupdate.php';
 // Update Script
 $modversion['onUninstall'] = 'include/uninstall.php';
 
+// ------------------- Help files ------------------- //
+$modversion['helpsection'] = array(
+    ['name' => _MI_XPY_OVERVIEW, 'link' => 'page=help'],
+    ['name' => _MI_XPY_DISCLAIMER, 'link' => 'page=disclaimer'],
+    ['name' => _MI_XPY_LICENSE, 'link' => 'page=license'],
+    ['name' => _MI_XPY_SUPPORT, 'link' => 'page=support'],
+);
+
 xoops_load('XoopsLists');
 $gateways = XoopsLists::getDirListAsArray($GLOBALS['xoops']->path('modules/xpayment/class/gateway/'));
 foreach ($gateways as $gateway) {
