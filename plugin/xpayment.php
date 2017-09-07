@@ -1709,7 +1709,7 @@ function setEmailXpaymentReceiever($xoopsMailer, $invoice, $itemid)
     $moduleHandler    = xoops_getHandler('module');
     $grouppermHandler = xoops_getHandler('groupperm');
     $xpMod            = $moduleHandler->getByDirname('xpayment');
-    $ttlgroups        = array();
+    $ttlgroups        = [];
 
     foreach ($invoice->getVar('broker_uids') as $id => $uid) {
         $user = $userHandler->get($uid);
@@ -1723,7 +1723,7 @@ function setEmailXpaymentReceiever($xoopsMailer, $invoice, $itemid)
             if (is_array($groups)) {
                 $ttlgroups = array_unique(array_merge($ttlgroups, $groups));
             } else {
-                $ttlgroups = array_unique(array_merge($ttlgroups, array($groups)));
+                $ttlgroups = array_unique(array_merge($ttlgroups, [$groups]));
             }
         }
     }
@@ -1740,7 +1740,7 @@ function setEmailXpaymentReceiever($xoopsMailer, $invoice, $itemid)
             if (is_array($groups)) {
                 $ttlgroups = array_unique(array_merge($ttlgroups, $groups));
             } else {
-                $ttlgroups = array_unique(array_merge($ttlgroups, array($groups)));
+                $ttlgroups = array_unique(array_merge($ttlgroups, [$groups]));
             }
         }
     }
@@ -1757,7 +1757,7 @@ function setEmailXpaymentReceiever($xoopsMailer, $invoice, $itemid)
             if (is_array($groups)) {
                 $ttlgroups = array_unique(array_merge($ttlgroups, $groups));
             } else {
-                $ttlgroups = array_unique(array_merge($ttlgroups, array($groups)));
+                $ttlgroups = array_unique(array_merge($ttlgroups, [$groups]));
             }
         }
     }
@@ -1779,7 +1779,7 @@ function setEmailXpaymentReceiever($xoopsMailer, $invoice, $itemid)
         if (is_array($groups)) {
             $ttlgroups = array_unique(array_merge($ttlgroups, $groups));
         } else {
-            $ttlgroups = array_unique(array_merge($ttlgroups, array($groups)));
+            $ttlgroups = array_unique(array_merge($ttlgroups, [$groups]));
         }
     }
 

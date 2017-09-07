@@ -61,7 +61,7 @@ class GoogleCart
 
     public $googleAnalytics_id      = false;
     public $thirdPartyTackingUrl    = false;
-    public $thirdPartyTackingParams = array();
+    public $thirdPartyTackingParams = [];
 
     // For HTML API Conversion
 
@@ -72,38 +72,38 @@ class GoogleCart
      * tags that can be used more than once, so they need to be numbered
      * ("-#" suffix)
      */
-    public $multiple_tags = array(
-        'flat-rate-shipping'           => array(),
-        'merchant-calculated-shipping' => array(),
-        'pickup'                       => array(),
-        'parameterized-url'            => array(),
-        'url-parameter'                => array(),
-        'item'                         => array(),
-        'us-state-area'                => array('tax-area'),
-        'us-zip-area'                  => array('tax-area'),
-        'us-country-area'              => array('tax-area'),
-        'postal-area'                  => array('tax-area'),
-        'alternate-tax-table'          => array(),
-        'world-area'                   => array('tax-area'),
-        'default-tax-rule'             => array(),
-        'alternate-tax-rule'           => array(),
-        'gift-certificate-adjustment'  => array(),
-        'coupon-adjustment'            => array(),
-        'coupon-result'                => array(),
-        'gift-certificate-result'      => array(),
-        'method'                       => array(),
-        'anonymous-address'            => array(),
-        'result'                       => array(),
-        'string'                       => array(),
-    );
+    public $multiple_tags = [
+        'flat-rate-shipping'           => [],
+        'merchant-calculated-shipping' => [],
+        'pickup'                       => [],
+        'parameterized-url'            => [],
+        'url-parameter'                => [],
+        'item'                         => [],
+        'us-state-area'                => ['tax-area'],
+        'us-zip-area'                  => ['tax-area'],
+        'us-country-area'              => ['tax-area'],
+        'postal-area'                  => ['tax-area'],
+        'alternate-tax-table'          => [],
+        'world-area'                   => ['tax-area'],
+        'default-tax-rule'             => [],
+        'alternate-tax-rule'           => [],
+        'gift-certificate-adjustment'  => [],
+        'coupon-adjustment'            => [],
+        'coupon-result'                => [],
+        'gift-certificate-result'      => [],
+        'method'                       => [],
+        'anonymous-address'            => [],
+        'result'                       => [],
+        'string'                       => [],
+    ];
 
-    public $ignore_tags = array(
+    public $ignore_tags = [
         'xmlns'                      => true,
         'checkout-shopping-cart'     => true,
         // Dont know how to translate these tag yet
         'merchant-private-data'      => true,
         'merchant-private-item-data' => true,
-    );
+    ];
 
     /**
      * Has all the logic to build the cart's xml (or html) request to be
@@ -136,9 +136,9 @@ class GoogleCart
         $this->checkoutForm_url = $this->base_url . 'checkoutForm/Merchant/' . $this->merchant_id;
 
         //The item, shipping and tax table arrays are initialized
-        $this->item_arr                 = array();
-        $this->shipping_arr             = array();
-        $this->alternate_tax_tables_arr = array();
+        $this->item_arr                 = [];
+        $this->shipping_arr             = [];
+        $this->alternate_tax_tables_arr = [];
     }
 
     /**
@@ -398,7 +398,7 @@ class GoogleCart
      *                             'shipping-country-code')
      *                             More info http://code.google.com/apis/checkout/developer/checkout_pixel_tracking.html#googleCheckout_tag_url-parameter
      */
-    public function AddThirdPartyTracking($url, $tracking_param_types = array())
+    public function AddThirdPartyTracking($url, $tracking_param_types = [])
     {
         $this->thirdPartyTackingUrl    = $url;
         $this->thirdPartyTackingParams = $tracking_param_types;
@@ -415,7 +415,7 @@ class GoogleCart
 
         $xml_data = new gc_XmlBuilder();
 
-        $xml_data->Push('checkout-shopping-cart', array('xmlns' => $this->schema_url));
+        $xml_data->Push('checkout-shopping-cart', ['xmlns' => $this->schema_url]);
         $xml_data->Push('shopping-cart');
 
         //Add cart expiration if set
@@ -431,7 +431,7 @@ class GoogleCart
             $xml_data->Push('item');
             $xml_data->Element('item-name', $item->item_name);
             $xml_data->Element('item-description', $item->item_description);
-            $xml_data->Element('unit-price', $item->unit_price, array('currency' => $this->currency));
+            $xml_data->Element('unit-price', $item->unit_price, ['currency' => $this->currency]);
             $xml_data->Element('quantity', $item->quantity);
             if ($item->merchant_private_item_data != '') {
                 //          echo get_class($item->merchant_private_item_data);
@@ -449,10 +449,10 @@ class GoogleCart
             }
             //      Carrier calculation
             if ($item->item_weight != '' && $item->numeric_weight !== '') {
-                $xml_data->EmptyElement('item-weight', array(
+                $xml_data->EmptyElement('item-weight', [
                     'unit'  => $item->item_weight,
                     'value' => $item->numeric_weight
-                ));
+                ]);
             }
             //      Digital Delivery Tags
             if ($item->digital_content) {
@@ -474,15 +474,15 @@ class GoogleCart
             //      BETA Subscription Tags
             if ($item->subscription) {
                 $sub = $item->subscription;
-                $xml_data->Push('subscription', array(
+                $xml_data->Push('subscription', [
                     'type'            => $sub->subscription_type,
                     'period'          => $sub->subscription_period,
                     'start-date'      => $sub->subscription_start_date,
                     'no-charge-after' => $sub->subscription_no_charge_after
-                ));
+                ]);
                 $xml_data->Push('payments');
-                $xml_data->Push('subscription-payment', array('times' => $sub->subscription_payment_times));
-                $xml_data->Element('maximum-charge', $sub->maximum_charge, array('currency' => $this->currency));
+                $xml_data->Push('subscription-payment', ['times' => $sub->subscription_payment_times]);
+                $xml_data->Element('maximum-charge', $sub->maximum_charge, ['currency' => $this->currency]);
                 $xml_data->Pop('subscription-payment');
                 $xml_data->Pop('payments');
                 if (!empty($sub->recurrent_item)) {
@@ -492,7 +492,7 @@ class GoogleCart
                         $xml_data->Push('recurrent-item');
                         $xml_data->Element('item-name', $recurrent_item->item_name);
                         $xml_data->Element('item-description', $recurrent_item->item_description);
-                        $xml_data->Element('unit-price', $recurrent_item->unit_price, array('currency' => $this->currency));
+                        $xml_data->Element('unit-price', $recurrent_item->unit_price, ['currency' => $this->currency]);
                         $xml_data->Element('quantity', $recurrent_item->quantity);
                         if ($recurrent_item->merchant_private_item_data != '') {
                             //          echo get_class($item->merchant_private_item_data);
@@ -510,10 +510,10 @@ class GoogleCart
                         }
                         //     recurring Carrier calculation
                         if ($recurrent_item->item_weight != '' && $recurrent_item->numeric_weight !== '') {
-                            $xml_data->EmptyElement('item-weight', array(
+                            $xml_data->EmptyElement('item-weight', [
                                 'unit'  => $recurrent_item->item_weight,
                                 'value' => $recurrent_item->numeric_weight
-                            ));
+                            ]);
                         }
                         //     recurring Digital Delivery Tags
                         if ($recurrent_item->digital_content) {
@@ -570,8 +570,8 @@ class GoogleCart
                 //  If shipping-company calc support addr-filtering and shipping restrictions as a subatag of shipping-company-calculated-shipping
                 //           ||$ship->type == "shipping-company-calculated-shipping"
             ) {
-                $xml_data->Push($ship->type, array('name' => $ship->name));
-                $xml_data->Element('price', $ship->price, array('currency' => $this->currency));
+                $xml_data->Push($ship->type, ['name' => $ship->name]);
+                $xml_data->Element('price', $ship->price, ['currency' => $this->currency]);
 
                 $shipping_restrictions = $ship->shipping_restrictions;
                 if (isset($shipping_restrictions)) {
@@ -587,9 +587,9 @@ class GoogleCart
                     if ($shipping_restrictions->allowed_restrictions) {
                         $xml_data->Push('allowed-areas');
                         if ($shipping_restrictions->allowed_country_area != '') {
-                            $xml_data->EmptyElement('us-country-area', array(
+                            $xml_data->EmptyElement('us-country-area', [
                                 'country-area' => $shipping_restrictions->allowed_country_area
-                            ));
+                            ]);
                         }
                         foreach ($shipping_restrictions->allowed_state_areas_arr as $current) {
                             $xml_data->Push('us-state-area');
@@ -623,9 +623,9 @@ class GoogleCart
                         }
                         $xml_data->Push('excluded-areas');
                         if ($shipping_restrictions->excluded_country_area != '') {
-                            $xml_data->EmptyElement('us-country-area', array(
+                            $xml_data->EmptyElement('us-country-area', [
                                 'country-area' => $shipping_restrictions->excluded_country_area
-                            ));
+                            ]);
                         }
                         foreach ($shipping_restrictions->excluded_state_areas_arr as $current) {
                             $xml_data->Push('us-state-area');
@@ -667,9 +667,9 @@ class GoogleCart
                         if ($address_filters->allowed_restrictions) {
                             $xml_data->Push('allowed-areas');
                             if ($address_filters->allowed_country_area != '') {
-                                $xml_data->EmptyElement('us-country-area', array(
+                                $xml_data->EmptyElement('us-country-area', [
                                     'country-area' => $address_filters->allowed_country_area
-                                ));
+                                ]);
                             }
                             foreach ($address_filters->allowed_state_areas_arr as $current) {
                                 $xml_data->Push('us-state-area');
@@ -703,9 +703,9 @@ class GoogleCart
                             }
                             $xml_data->Push('excluded-areas');
                             if ($address_filters->excluded_country_area != '') {
-                                $xml_data->EmptyElement('us-country-area', array(
+                                $xml_data->EmptyElement('us-country-area', [
                                     'country-area' => $address_filters->excluded_country_area
-                                ));
+                                ]);
                             }
                             foreach ($address_filters->excluded_state_areas_arr as $current) {
                                 $xml_data->Push('us-state-area');
@@ -740,12 +740,12 @@ class GoogleCart
                 $CCSoptions = $ship->CarrierCalculatedShippingOptions;
                 foreach ($CCSoptions as $CCSoption) {
                     $xml_data->Push('carrier-calculated-shipping-option');
-                    $xml_data->Element('price', $CCSoption->price, array('currency' => $this->currency));
+                    $xml_data->Element('price', $CCSoption->price, ['currency' => $this->currency]);
                     $xml_data->Element('shipping-company', $CCSoption->shipping_company);
                     $xml_data->Element('shipping-type', $CCSoption->shipping_type);
                     $xml_data->Element('carrier-pickup', $CCSoption->carrier_pickup);
                     if (!empty($CCSoption->additional_fixed_charge)) {
-                        $xml_data->Element('additional-fixed-charge', $CCSoption->additional_fixed_charge, array('currency' => $this->currency));
+                        $xml_data->Element('additional-fixed-charge', $CCSoption->additional_fixed_charge, ['currency' => $this->currency]);
                     }
                     if (!empty($CCSoption->additional_variable_charge_percent)) {
                         $xml_data->Element('additional-variable-charge-percent', $CCSoption->additional_variable_charge_percent);
@@ -756,33 +756,33 @@ class GoogleCart
                 //          $ShippingPackage = $ship->ShippingPackage;
                 $xml_data->Push('shipping-packages');
                 $xml_data->Push('shipping-package');
-                $xml_data->Push('ship-from', array('id' => $ship->ShippingPackage->ship_from->id));
+                $xml_data->Push('ship-from', ['id' => $ship->ShippingPackage->ship_from->id]);
                 $xml_data->Element('city', $ship->ShippingPackage->ship_from->city);
                 $xml_data->Element('region', $ship->ShippingPackage->ship_from->region);
                 $xml_data->Element('postal-code', $ship->ShippingPackage->ship_from->postal_code);
                 $xml_data->Element('country-code', $ship->ShippingPackage->ship_from->country_code);
                 $xml_data->Pop('ship-from');
 
-                $xml_data->EmptyElement('width', array(
+                $xml_data->EmptyElement('width', [
                     'unit'  => $ship->ShippingPackage->unit,
                     'value' => $ship->ShippingPackage->width
-                ));
-                $xml_data->EmptyElement('length', array(
+                ]);
+                $xml_data->EmptyElement('length', [
                     'unit'  => $ship->ShippingPackage->unit,
                     'value' => $ship->ShippingPackage->length
-                ));
-                $xml_data->EmptyElement('height', array(
+                ]);
+                $xml_data->EmptyElement('height', [
                     'unit'  => $ship->ShippingPackage->unit,
                     'value' => $ship->ShippingPackage->height
-                ));
+                ]);
                 $xml_data->Element('delivery-address-category', $ship->ShippingPackage->delivery_address_category);
                 $xml_data->Pop('shipping-package');
                 $xml_data->Pop('shipping-packages');
 
                 $xml_data->Pop($ship->type);
             } elseif ($ship->type === 'pickup') {
-                $xml_data->Push('pickup', array('name' => $ship->name));
-                $xml_data->Element('price', $ship->price, array('currency' => $this->currency));
+                $xml_data->Push('pickup', ['name' => $ship->name]);
+                $xml_data->Element('price', $ship->price, ['currency' => $this->currency]);
                 $xml_data->Pop('pickup');
             }
         }
@@ -808,14 +808,14 @@ class GoogleCart
         //Set Third party Tracking
         if ($this->thirdPartyTackingUrl) {
             $xml_data->Push('parameterized-urls');
-            $xml_data->Push('parameterized-url', array('url' => $this->thirdPartyTackingUrl));
+            $xml_data->Push('parameterized-url', ['url' => $this->thirdPartyTackingUrl]);
             if (is_array($this->thirdPartyTackingParams) && count($this->thirdPartyTackingParams) > 0) {
                 $xml_data->Push('parameters');
                 foreach ($this->thirdPartyTackingParams as $tracking_param_name => $tracking_param_type) {
-                    $xml_data->EmptyElement('url-parameter', array(
+                    $xml_data->EmptyElement('url-parameter', [
                         'name' => $tracking_param_name,
                         'type' => $tracking_param_type
-                    ));
+                    ]);
                 }
                 $xml_data->Pop('parameters');
             }
@@ -826,7 +826,7 @@ class GoogleCart
         //Set Default and Alternate tax tables
         if ((count($this->alternate_tax_tables_arr) != 0) || (count($this->default_tax_rules_arr) != 0)) {
             if ($this->merchant_calculated_tax != '') {
-                $xml_data->Push('tax-tables', array('merchant-calculated' => $this->merchant_calculated_tax));
+                $xml_data->Push('tax-tables', ['merchant-calculated' => $this->merchant_calculated_tax]);
             } else {
                 $xml_data->Push('tax-tables');
             }
@@ -839,7 +839,7 @@ class GoogleCart
                         $xml_data->Element('shipping-taxed', $curr_rule->shipping_taxed);
                         $xml_data->Element('rate', $curr_rule->tax_rate);
                         $xml_data->Push('tax-area');
-                        $xml_data->EmptyElement('us-country-area', array('country-area' => $curr_rule->country_area));
+                        $xml_data->EmptyElement('us-country-area', ['country-area' => $curr_rule->country_area]);
                         $xml_data->Pop('tax-area');
                         $xml_data->Pop('default-tax-rule');
                     }
@@ -902,10 +902,10 @@ class GoogleCart
             if (count($this->alternate_tax_tables_arr) != 0) {
                 $xml_data->Push('alternate-tax-tables');
                 foreach ($this->alternate_tax_tables_arr as $curr_table) {
-                    $xml_data->Push('alternate-tax-table', array(
+                    $xml_data->Push('alternate-tax-table', [
                         'standalone' => $curr_table->standalone,
                         'name'       => $curr_table->name
-                    ));
+                    ]);
                     $xml_data->Push('alternate-tax-rules');
 
                     foreach ($curr_table->tax_rules_arr as $curr_rule) {
@@ -913,7 +913,7 @@ class GoogleCart
                             $xml_data->Push('alternate-tax-rule');
                             $xml_data->Element('rate', $curr_rule->tax_rate);
                             $xml_data->Push('tax-area');
-                            $xml_data->EmptyElement('us-country-area', array('country-area' => $curr_rule->country_area));
+                            $xml_data->EmptyElement('us-country-area', ['country-area' => $curr_rule->country_area]);
                             $xml_data->Pop('tax-area');
                             $xml_data->Pop('alternate-tax-rule');
                         }
@@ -1025,7 +1025,7 @@ class GoogleCart
      * @return array with the returned http status code (200 if OK) in index 0
      *               and the redirect url returned by the server in index 1
      */
-    public function CheckoutServer2Server($proxy = array(), $certPath = '')
+    public function CheckoutServer2Server($proxy = [], $certPath = '')
     {
         require_once __DIR__ . '/googlerequest.php';
         $GRequest = new GoogleRequest($this->merchant_id, $this->merchant_key, $this->server_url === 'https://checkout.google.com/' ? 'Production' : 'sandbox', $this->currency);
@@ -1530,7 +1530,7 @@ class GoogleCart
      * @param array  $parents
      * @return bool
      */
-    public function isChildOf($path = '', $parents = array())
+    public function isChildOf($path = '', $parents = [])
     {
         $intersect = array_intersect(explode('.', $path), $parents);
 
@@ -1715,7 +1715,7 @@ class MerchantPrivateData extends MerchantPrivate
      *                    </stuff>
      *                    </my-order-id>
      */
-    public function __construct($data = array())
+    public function __construct($data = [])
     {
         $this->data = $data;
         $this->type = 'merchant-private-data';
@@ -1744,7 +1744,7 @@ class MerchantPrivateItemData extends MerchantPrivate
      *                    </stuff>
      *                    </my-item-id>
      */
-    public function __construct($data = array())
+    public function __construct($data = [])
     {
         $this->data = $data;
         $this->type = 'merchant-private-item-data';

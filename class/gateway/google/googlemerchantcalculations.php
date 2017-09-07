@@ -39,7 +39,7 @@ class googlemerchantcalculations
      */
     public function GoogleMerchantCalculations($currency = 'USD')
     {
-        $this->results_arr = array();
+        $this->results_arr = [];
         $this->currency    = $currency;
     }
 
@@ -66,23 +66,23 @@ class googlemerchantcalculations
         require_once __DIR__ . '/xml-processing/gc_xmlbuilder.php';
 
         $xml_data = new gc_XmlBuilder();
-        $xml_data->Push('merchant-calculation-results', array('xmlns' => $this->schema_url));
+        $xml_data->Push('merchant-calculation-results', ['xmlns' => $this->schema_url]);
         $xml_data->Push('results');
 
         foreach ($this->results_arr as $result) {
             if ($result->shipping_name != '') {
-                $xml_data->Push('result', array(
+                $xml_data->Push('result', [
                     'shipping-name' => $result->shipping_name,
                     'address-id'    => $result->address_id
-                ));
-                $xml_data->Element('shipping-rate', $result->ship_price, array('currency' => $this->currency));
+                ]);
+                $xml_data->Element('shipping-rate', $result->ship_price, ['currency' => $this->currency]);
                 $xml_data->Element('shippable', $result->shippable);
             } else {
-                $xml_data->Push('result', array('address-id' => $result->address_id));
+                $xml_data->Push('result', ['address-id' => $result->address_id]);
             }
 
             if ($result->tax_amount != '') {
-                $xml_data->Element('total-tax', $result->tax_amount, array('currency' => $this->currency));
+                $xml_data->Element('total-tax', $result->tax_amount, ['currency' => $this->currency]);
             }
 
             if ((count($result->coupon_arr) != 0) || (count($result->giftcert_arr) != 0)) {
@@ -92,7 +92,7 @@ class googlemerchantcalculations
                     $xml_data->Push('coupon-result');
                     $xml_data->Element('valid', $curr_coupon->coupon_valid);
                     $xml_data->Element('code', $curr_coupon->coupon_code);
-                    $xml_data->Element('calculated-amount', $curr_coupon->coupon_amount, array('currency' => $this->currency));
+                    $xml_data->Element('calculated-amount', $curr_coupon->coupon_amount, ['currency' => $this->currency]);
                     $xml_data->Element('message', $curr_coupon->coupon_message);
                     $xml_data->Pop('coupon-result');
                 }
@@ -100,7 +100,7 @@ class googlemerchantcalculations
                     $xml_data->Push('gift-certificate-result');
                     $xml_data->Element('valid', $curr_gift->gift_valid);
                     $xml_data->Element('code', $curr_gift->gift_code);
-                    $xml_data->Element('calculated-amount', $curr_gift->gift_amount, array('currency' => $this->currency));
+                    $xml_data->Element('calculated-amount', $curr_gift->gift_amount, ['currency' => $this->currency]);
                     $xml_data->Element('message', $curr_gift->gift_message);
                     $xml_data->Pop('gift-certificate-result');
                 }

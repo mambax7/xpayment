@@ -40,7 +40,7 @@ class XpaymentGroupPermForm extends XoopsGroupPermForm
     {
         // load all child ids for javascript codes
         foreach (array_keys($this->_itemTree) as $item_id) {
-            $this->_itemTree[$item_id]['allchild'] = array();
+            $this->_itemTree[$item_id]['allchild'] = [];
             $this->_loadAllChildItemIds($item_id, $this->_itemTree[$item_id]['allchild']);
         }
         $gpermHandler  = xoops_getHandler('groupperm');
@@ -124,7 +124,7 @@ class XpaymentGroupFormCheckBox extends XoopsGroupFormCheckBox
         return $ret;
     }
 
-    public function _renderOptionTree(&$tree, $option, $prefix, $parentIds = array())
+    public function _renderOptionTree(&$tree, $option, $prefix, $parentIds = [])
     {
         if ($option['id'] > 0):
             $tree .= $prefix . "<input type=\"checkbox\" name=\"" . $this->getName() . '[groups][' . $this->_groupId . '][' . $option['id'] . "]\" id=\"" . $this->getName() . '[groups][' . $this->_groupId . '][' . $option['id'] . "]\" onclick=\"";

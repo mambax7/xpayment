@@ -22,7 +22,7 @@
  * @translation     Kris_fr <kris@frxoops.org>
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 /**
  * Class for Blue Room Xcenter
@@ -44,7 +44,7 @@ class XpaymentDiscounts extends XoopsObject
         $this->initVar('redeems', XOBJ_DTYPE_INT, null, false);
         $this->initVar('discount', XOBJ_DTYPE_DECIMAL, null, false);
         $this->initVar('redeemed', XOBJ_DTYPE_INT, null, false);
-        $this->initVar('iids', XOBJ_DTYPE_ARRAY, array(), false);
+        $this->initVar('iids', XOBJ_DTYPE_ARRAY, [], false);
         $this->initVar('sent', XOBJ_DTYPE_INT, null, false);
         $this->initVar('created', XOBJ_DTYPE_INT, null, false);
         $this->initVar('updated', XOBJ_DTYPE_INT, null, false);
@@ -191,7 +191,7 @@ class XpaymentDiscountsHandler extends XoopsPersistableObjectHandler
         if (!$asobject) {
             return $user_ids;
         } else {
-            $ret = array();
+            $ret = [];
             foreach ($user_ids as $u_id) {
                 $user = $this->_uHandler->get($u_id);
                 if (is_object($user)) {

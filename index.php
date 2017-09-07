@@ -287,7 +287,7 @@ if (isset($_POST) && !empty($_POST)) {
     if ($invoice->getVar('mode') === 'UNPAID') {
         $GLOBALS['xoTheme']->addScript(XOOPS_URL . '/browse.php?Frameworks/jquery/jquery.js');
         $GLOBALS['xoTheme']->addScript(XOOPS_URL . '/modules/xpayment/assets/js/jquery.json.gateway.js');
-        $GLOBALS['xoTheme']->addScript(null, array('type' => 'text/javascript'), 'function ChangeGateway(element) {
+        $GLOBALS['xoTheme']->addScript(null, ['type' => 'text/javascript'], 'function ChangeGateway(element) {
     var params = new Array();
     $.getJSON("' . XOOPS_URL . '/modules/xpayment/dojsongateway.php?passkey=' . md5(XOOPS_LICENSE_KEY . date('Ymdhi')) . '&gid=" + $(\'#\' + element).val() + "&iid=' . $_GET['iid'] . '", params, refreshformdesc);
 }');

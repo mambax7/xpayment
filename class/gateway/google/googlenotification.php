@@ -51,8 +51,8 @@ class googlenotification
     public function getNotifications(
         $start_date = '',
         $end_date = '',
-        $orders = array(),
-        $notification_types = array(),
+        $orders = [],
+        $notification_types = [],
         $continue_token = ''
     ) {
         require_once __DIR__ . '/xml-processing/gc_xmlparser.php';
@@ -64,13 +64,13 @@ class googlenotification
         $this->notification_types = $notification_types;
         $this->continue_token     = $continue_token;
 
-        $notifications         = array();
-        $invalid_order_numbers = array();
+        $notifications         = [];
+        $invalid_order_numbers = [];
 
         do {
             list($status, $response) = $this->_doReportsRequest();
             if ($status != '200') {
-                $this->error = array($status, $response);
+                $this->error = [$status, $response];
 
                 return null;
             }
@@ -84,13 +84,13 @@ class googlenotification
             $invalid_order_numbers = $data[$root]['invalid-order-numbers'];
         } while ($data[$root]['has-more-notifications']['VALUE'] === 'true');
 
-        return array($notifications, $invalid_order_numbers);
+        return [$notifications, $invalid_order_numbers];
     }
 
     public function _doReportsRequest()
     {
         $xml_data = new gc_XmlBuilder();
-        $xml_data->Push('notification-history-request', array('xmlns' => $this->schema_url));
+        $xml_data->Push('notification-history-request', ['xmlns' => $this->schema_url]);
 
         if (!empty($this->continue_token)) {
             $xml_data->Element('continue-token', trim($this->continue_token));
@@ -133,17 +133,17 @@ class googlenotification
             $error = $this->error[1];
         }
 
-        return array('status_code' => $this->error[0], 'message' => $error);
+        return ['status_code' => $this->error[0], 'message' => $error];
     }
 
     public function getAuthenticationHeaders()
     {
-        $headers = array(
+        $headers = [
             'Authorization: Basic ' . base64_encode($this->merchant_id . ':' . $this->merchant_key),
             'Content-Type: application/xml; charset=UTF-8',
             'Accept: application/xml; charset=UTF-8',
             'User-Agent: gc-php4-sample-code v1.2.5b'
-        );
+        ];
 
         return $headers;
     }
@@ -172,7 +172,7 @@ class googlenotification
         if (curl_errno($ch)) {
             $this->log->LogError($body);
 
-            return array('CURLERR', curl_error($ch));
+            return ['CURLERR', curl_error($ch)];
         } else {
             $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             curl_close($ch);
@@ -185,6 +185,6 @@ class googlenotification
             $this->log->LogError($body);
         }
 
-        return array($status_code, $body);
+        return [$status_code, $body];
     }
 }

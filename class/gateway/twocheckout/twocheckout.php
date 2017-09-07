@@ -294,7 +294,7 @@ class TwocheckoutGatewaysPlugin
             $request = $_REQUEST;
         }
 
-        return array(
+        return [
             'iid'            => $this->_invoice->getVar('iid'),
             'transactionid'  => $this->getTransactionId($request),
             'email'          => $this->getEmail($request),
@@ -319,7 +319,7 @@ class TwocheckoutGatewaysPlugin
             'payer_status'   => $this->getPayerStatus($request),
             'gateway'        => $this->_invoice->getVar('gateway'),
             'plugin'         => $this->_invoice->getVar('plugin')
-        );
+        ];
     }
 
     public function checkHash($request)
@@ -473,6 +473,7 @@ class TwocheckoutGatewaysPlugin
                         }
                     }
                 }
+                // no break
             case 'RECURRING_INSTALLMENT_FAILED':
             case 'RECURRING_STOPPED':
             case 'RECURRING_COMPLETE':

@@ -31,7 +31,7 @@ if (false !== ($moduleHelper = Helper::getHelper($moduleDirName))) {
 } else {
     $moduleHelper = Helper::getHelper('system');
 }
-//$adminObject = \Xmf\Module\Admin::getInstance();
+//
 
 $path = dirname(dirname(dirname(__DIR__)));
 require_once $path . '/mainfile.php';
@@ -55,7 +55,7 @@ $moduleInfo                = $moduleHandler->get($GLOBALS['xpaymentModule']->get
 $pathIcon32                = Admin::menuIconPath('');
 $pathModIcon32             = $moduleHelper->getModule()->getInfo('modicons32');
 
-$adminmenu = array();
+$adminmenu = [];
 $i         = 0;
 //$adminmenu[$i]["title"] = _XPY_ADMENU0;
 //$adminmenu[$i]['link'] = "admin/index.php";

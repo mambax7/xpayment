@@ -50,7 +50,7 @@ class GoogleRequest
     public $report_url;
     public $request_diagnose_url;
     public $merchant_checkout;
-    public $proxy = array();
+    public $proxy = [];
 
     public $certPath = '';
     public $log;
@@ -125,7 +125,7 @@ class GoogleRequest
     {
         list($status, $body) = $this->SendReq($this->merchant_checkout, $this->getAuthenticationHeaders(), $xml_cart);
         if ($status != 200) {
-            return array($status, $body);
+            return [$status, $body];
         } else {
             require_once __DIR__ . '/xml-processing/gc_xmlparser.php';
 
@@ -142,7 +142,7 @@ class GoogleRequest
             if ($die) {
                 die($redirect_url);
             } else {
-                return array(200, $redirect_url);
+                return [200, $redirect_url];
             }
         }
     }
@@ -461,7 +461,7 @@ class GoogleRequest
      *
      */
 
-    public function SendShipItems($google_order, $items_list = array(), $send_mail = 'true')
+    public function SendShipItems($google_order, $items_list = [], $send_mail = 'true')
     {
         $postargs = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
                   <ship-items xmlns=\"" . $this->schema_url . "\" google-order-number=\"" . $google_order . "\">" . "<item-shipping-information-list>\n";
@@ -503,7 +503,7 @@ class GoogleRequest
      *                             defaults to "true"
      *
      */
-    public function SendBackorderItems($google_order, $items_list = array(), $send_mail = 'true')
+    public function SendBackorderItems($google_order, $items_list = [], $send_mail = 'true')
     {
         $postargs = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
                   <backorder-items xmlns=\"" . $this->schema_url . "\" google-order-number=\"" . $google_order . "\">";
@@ -536,7 +536,7 @@ class GoogleRequest
      *                             defaults to "true"
      *
      */
-    public function SendCancelItems($google_order, $items_list = array(), $reason, $comment = '', $send_mail = 'true')
+    public function SendCancelItems($google_order, $items_list = [], $reason, $comment = '', $send_mail = 'true')
     {
         $postargs = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
                   <cancel-items xmlns=\"" . $this->schema_url . "\" google-order-number=\"" . $google_order . "\">";
@@ -569,7 +569,7 @@ class GoogleRequest
      *                             defaults to "true"
      *
      */
-    public function SendReturnItems($google_order, $items_list = array(), $send_mail = 'true')
+    public function SendReturnItems($google_order, $items_list = [], $send_mail = 'true')
     {
         $postargs = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
                   <return-items xmlns=\"" . $this->schema_url . "\" google-order-number=\"" . $google_order . "\">";
@@ -600,7 +600,7 @@ class GoogleRequest
      *                             defaults to "true"
      *
      */
-    public function SendResetItemsShippingInformation($google_order, $items_list = array(), $send_mail = 'true')
+    public function SendResetItemsShippingInformation($google_order, $items_list = [], $send_mail = 'true')
     {
         $postargs = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
                   <reset-items-shipping-information xmlns=\"" . $this->schema_url . "\" google-order-number=\"" . $google_order . "\">";
@@ -632,7 +632,7 @@ class GoogleRequest
      */
     public function getAuthenticationHeaders()
     {
-        $headers   = array();
+        $headers   = [];
         $headers[] = 'Authorization: Basic ' . base64_encode($this->merchant_id . ':' . $this->merchant_key);
         $headers[] = 'Content-Type: application/xml; charset=UTF-8';
         $headers[] = 'Accept: application/xml; charset=UTF-8';
@@ -647,7 +647,7 @@ class GoogleRequest
      * @param array $proxy Array('host' => 'proxy-host', 'port' => 'proxy-port')
      *
      */
-    public function SetProxy($proxy = array())
+    public function SetProxy($proxy = [])
     {
         if (is_array($proxy) && count($proxy)) {
             $this->proxy['host'] = $proxy['host'];
@@ -691,7 +691,7 @@ class GoogleRequest
         if (curl_errno($session)) {
             $this->log->LogError(curl_error($session));
 
-            return array('CURL_ERR', curl_error($session));
+            return ['CURL_ERR', curl_error($session)];
         } else {
             curl_close($session);
         }
@@ -707,7 +707,7 @@ class GoogleRequest
             //$body = htmlentities($b_x);
         }
         // Get HTTP Status code from the response
-        $status_code = array();
+        $status_code = [];
         preg_match('/\d\d\d/', $heads[0], $status_code);
 
         // Check for errors
@@ -716,27 +716,27 @@ class GoogleRequest
                 // Success
                 $this->log->LogResponse($response);
 
-                return array(200, $body_xml);
+                return [200, $body_xml];
                 break;
             case 503:
                 $this->log->LogError($response);
 
-                return array(503, htmlentities($body));
+                return [503, htmlentities($body)];
                 break;
             case 403:
                 $this->log->LogError($response);
 
-                return array(403, htmlentities($body));
+                return [403, htmlentities($body)];
                 break;
             case 400:
                 $this->log->LogError($response);
 
-                return array(400, htmlentities($body));
+                return [400, htmlentities($body)];
                 break;
             default:
                 $this->log->LogError($response);
 
-                return array('ERR', htmlentities($body));
+                return ['ERR', htmlentities($body)];
                 break;
         }
     }
@@ -823,7 +823,7 @@ class GoogleShipItem
     public $tracking_data_list;
     public $tracking_no;
 
-    public function __construct($merchant_item_id, $tracking_data_list = array())
+    public function __construct($merchant_item_id, $tracking_data_list = [])
     {
         $this->merchant_item_id   = $merchant_item_id;
         $this->tracking_data_list = $tracking_data_list;
@@ -832,10 +832,10 @@ class GoogleShipItem
     public function AddTrackingData($carrier, $tracking_no)
     {
         if ($carrier != '' && $tracking_no != '') {
-            $this->tracking_data_list[] = array(
+            $this->tracking_data_list[] = [
                 'carrier'         => $carrier,
                 'tracking-number' => $tracking_no
-            );
+            ];
         }
     }
 }

@@ -22,7 +22,7 @@
  * @translation     Kris_fr <kris@frxoops.org>
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 /**
  * Class for Blue Room Xcenter
@@ -34,7 +34,7 @@ class XpaymentGateways extends XoopsObject
 {
     public $_classname = '';
     public $_gateway   = '';
-    public $_options   = array();
+    public $_options   = [];
 
     public function __construct($id = null)
     {

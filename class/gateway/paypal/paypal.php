@@ -282,7 +282,7 @@ class PaypalGatewaysPlugin
             $request = $_REQUEST;
         }
 
-        return array(
+        return [
             'iid'            => $this->_invoice->getVar('iid'),
             'transactionid'  => $this->getTransactionId($request),
             'email'          => $this->getEmail($request),
@@ -306,7 +306,7 @@ class PaypalGatewaysPlugin
             'payer_status'   => $this->getPayerStatus($request),
             'gateway'        => $this->_invoice->getVar('gateway'),
             'plugin'         => $this->_invoice->getVar('plugin')
-        );
+        ];
     }
 
     public function checkCustom($request)

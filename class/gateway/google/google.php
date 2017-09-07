@@ -73,7 +73,7 @@ class GoogleGatewaysPlugin
             $request = $_REQUEST;
         }
 
-        return array();
+        return [];
     }
 
     // INBOUND FUNCTIONS
@@ -153,7 +153,7 @@ class GoogleGatewaysPlugin
         //If serial-number-notification pull serial number and request xml
         if (strpos($xml_response, 'xml') === false) {
             //Find serial-number ack notification
-            $serial_array = array();
+            $serial_array = [];
             parse_str($xml_response, $serial_array);
             $serial_number = $serial_array['serial-number'];
 
@@ -235,7 +235,7 @@ class GoogleGatewaysPlugin
     */
     public function get_arr_result($child_node)
     {
-        $result = array();
+        $result = [];
         if (isset($child_node)) {
             if (is_associative_array($child_node)) {
                 $result[] = $child_node;
@@ -280,7 +280,7 @@ class GoogleGatewaysPlugin
             foreach ($items as $item) {
                 ++$itm;
                 $it[$itm] = new GoogleItem($item->getVar('name'), $item->getVar('description'), $item->getVar('quantity'), $item->getVar('amount') + $item->getVar('handling'));
-                $it[$itm]->SetMerchantPrivateItemData(new MerchantPrivateItemData(array('weight' => $item->getVar('weight'))));
+                $it[$itm]->SetMerchantPrivateItemData(new MerchantPrivateItemData(['weight' => $item->getVar('weight')]));
                 $it[$itm]->SetMerchantItemId($item->getVar('cat'));
             }
         }
@@ -302,10 +302,10 @@ class GoogleGatewaysPlugin
         $cart->AddAlternateTaxTables($tax_table);
 
         // Add <merchant-private-data>
-        $cart->SetMerchantPrivateData(new MerchantPrivateData(array(
+        $cart->SetMerchantPrivateData(new MerchantPrivateData([
                                                                   'cart-id'       => $this->_invoice->getVar('iid'),
                                                                   'serial-number' => $this->_invoice->getVar('key')
-                                                              )));
+                                                              ]));
 
         // Define rounding policy
         $cart->AddRoundingPolicy('CEILING', 'TOTAL');

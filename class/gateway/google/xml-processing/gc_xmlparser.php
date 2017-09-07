@@ -81,7 +81,7 @@
 // XML to Array
 class gc_XmlParser
 {
-    public $params       = array(); //Stores the object representation of XML data
+    public $params       = []; //Stores the object representation of XML data
     public $root         = null;
     public $global_index = -1;
     public $fold         = false;
@@ -89,7 +89,7 @@ class gc_XmlParser
     /* Constructor for the class
      * Takes in XML data as input( do not include the <xml> tag
      */
-    public function __construct($input, $xmlParams = array(XML_OPTION_CASE_FOLDING => 0))
+    public function __construct($input, $xmlParams = [XML_OPTION_CASE_FOLDING => 0])
     {
         $xmlp = xml_parser_create();
 
@@ -127,22 +127,22 @@ class gc_XmlParser
      */
     public function xml2ary($vals)
     {
-        $mnary = array();
+        $mnary = [];
         $ary   =& $mnary;
         foreach ($vals as $r) {
             $t = $r['tag'];
             if ($r['type'] === 'open') {
                 if (isset($ary[$t]) && !empty($ary[$t])) {
                     if (isset($ary[$t][0])) {
-                        $ary[$t][] = array();
+                        $ary[$t][] = [];
                     } else {
-                        $ary[$t] = array($ary[$t], array());
+                        $ary[$t] = [$ary[$t], []];
                     }
                     $cv =& $ary[$t][count($ary[$t]) - 1];
                 } else {
                     $cv =& $ary[$t];
                 }
-                $cv = array();
+                $cv = [];
                 if (isset($r['attributes'])) {
                     foreach ($r['attributes'] as $k => $v) {
                         $cv[$k] = $v;
@@ -154,9 +154,9 @@ class gc_XmlParser
             } elseif ($r['type'] === 'complete') {
                 if (isset($ary[$t]) && !empty($ary[$t])) { // same as open
                     if (isset($ary[$t][0])) {
-                        $ary[$t][] = array();
+                        $ary[$t][] = [];
                     } else {
-                        $ary[$t] = array($ary[$t], array());
+                        $ary[$t] = [$ary[$t], []];
                     }
                     $cv =& $ary[$t][count($ary[$t]) - 1];
                 } else {

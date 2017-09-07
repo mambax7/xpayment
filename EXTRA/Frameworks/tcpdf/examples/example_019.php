@@ -3,12 +3,12 @@
 // File name   : example_019.php
 // Begin       : 2008-03-07
 // Last Update : 2009-09-30
-// 
+//
 // Description : Example 019 for TCPDF class
 //               Non unicode with alternative config file
-// 
+//
 // Author: Nicola Asuni
-// 
+//
 // (c) Copyright:
 //               Nicola Asuni
 //               Tecnick.com s.r.l.
@@ -52,8 +52,8 @@ $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
 $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
 
 // set header and footer fonts
-$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+$pdf->setHeaderFont([PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN]);
+$pdf->setFooterFont([PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA]);
 
 // set default monospaced font
 $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
@@ -64,20 +64,20 @@ $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
 $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
 //set auto page breaks
-$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+$pdf->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM);
 
 //set image scale factor
-$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO); 
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
 // set some language dependent data:
-$lg = Array();
+$lg = [];
 $lg['a_meta_charset'] = 'ISO-8859-1';
 $lg['a_meta_dir'] = 'ltr';
 $lg['a_meta_language'] = 'en';
 $lg['w_page'] = 'page';
 
 //set some language-dependent strings
-$pdf->setLanguageArray($lg);  
+$pdf->setLanguageArray($lg);
 
 // ---------------------------------------------------------
 
@@ -101,6 +101,5 @@ $pdf->MultiCell(80, 0, 'Cras eros leo, porttitor porta, accumsan fermentum, orna
 $pdf->Output('example_019.pdf', 'I');
 
 //============================================================+
-// END OF FILE                                                 
+// END OF FILE
 //============================================================+
-?>

@@ -22,7 +22,7 @@
  * @translation     Kris_fr <kris@frxoops.org>
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 $modversion['version']       = '1.53';
 $modversion['module_status'] = 'Beta 1';
@@ -80,7 +80,7 @@ $modversion['module_website_name'] = 'XOOPS';
 $modversion['min_php']             = '5.5';
 $modversion['min_xoops']           = '2.5.9';
 $modversion['min_admin']           = '1.2';
-$modversion['min_db']              = array('mysql' => '5.5');
+$modversion['min_db']              = ['mysql' => '5.5'];
 
 // Mysql file
 $modversion['sqlfile']['mysql'] = 'sql/mysql.sql';
@@ -113,12 +113,12 @@ $modversion['onUpdate'] = 'include/onupdate.php';
 $modversion['onUninstall'] = 'include/uninstall.php';
 
 // ------------------- Help files ------------------- //
-$modversion['helpsection'] = array(
+$modversion['helpsection'] = [
     ['name' => _MI_XPY_OVERVIEW, 'link' => 'page=help'],
     ['name' => _MI_XPY_DISCLAIMER, 'link' => 'page=disclaimer'],
     ['name' => _MI_XPY_LICENSE, 'link' => 'page=license'],
     ['name' => _MI_XPY_SUPPORT, 'link' => 'page=support'],
-);
+];
 
 xoops_load('XoopsLists');
 $gateways = XoopsLists::getDirListAsArray($GLOBALS['xoops']->path('modules/xpayment/class/gateway/'));
@@ -161,7 +161,7 @@ $modversion['config'][$i]['formtype']    = 'yesno';
 $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default']     = true;
 
-$options                          = array();
+$options                          = [];
 $options[_XPY_MI_SECONDS_1DAYS]   = 60 * 60 * 24 * 1;
 $options[_XPY_MI_SECONDS_3DAYS]   = 60 * 60 * 24 * 3;
 $options[_XPY_MI_SECONDS_7DAYS]   = 60 * 60 * 24 * 7;
@@ -189,7 +189,7 @@ $modversion['config'][$i]['description'] = '_XPY_MI_INTEREST_RATE_DESC';
 $modversion['config'][$i]['formtype']    = 'text';
 $modversion['config'][$i]['valuetype']   = 'text';
 $modversion['config'][$i]['default']     = '7.95';
-$modversion['config'][$i]['options']     = array();
+$modversion['config'][$i]['options']     = [];
 
 ++$i;
 $modversion['config'][$i]['name']        = 'due';
@@ -236,7 +236,7 @@ $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default']     = 60 * 60 * 24 * 30;
 $modversion['config'][$i]['options']     = $options;
 
-$options                      = array();
+$options                      = [];
 $options[_XPY_MI_SECONDS_10]  = 10;
 $options[_XPY_MI_SECONDS_30]  = 30;
 $options[_XPY_MI_SECONDS_60]  = 60;
@@ -272,7 +272,7 @@ $modversion['config'][$i]['description'] = '_XPY_MI_WEIGHTUNIT_DESC';
 $modversion['config'][$i]['formtype']    = 'select';
 $modversion['config'][$i]['valuetype']   = 'text';
 $modversion['config'][$i]['default']     = 'kgs';
-$modversion['config'][$i]['options']     = array('kgs' => 'kgs', 'lbs' => 'lbs');
+$modversion['config'][$i]['options']     = ['kgs' => 'kgs', 'lbs' => 'lbs'];
 
 $groupsHandler = xoops_getHandler('group');
 ++$i;
@@ -342,7 +342,7 @@ $modversion['config'][$i]['description'] = '_XPY_MI_AUTOTAX_DESC';
 $modversion['config'][$i]['formtype']    = 'yesno';
 $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default']     = false;
-$modversion['config'][$i]['options']     = array();
+$modversion['config'][$i]['options']     = [];
 
 ++$i;
 $modversion['config'][$i]['name']        = 'ipdb_apikey';
@@ -351,9 +351,9 @@ $modversion['config'][$i]['description'] = '_XPY_MI_IPDB_APIKEY_DESC';
 $modversion['config'][$i]['formtype']    = 'text';
 $modversion['config'][$i]['valuetype']   = 'text';
 $modversion['config'][$i]['default']     = '';
-$modversion['config'][$i]['options']     = array();
+$modversion['config'][$i]['options']     = [];
 
-$options = array(
+$options = [
     'AFGHANISTAN'                                  => 'AF',
     'ALAND ISLANDS'                                => 'AX',
     'ALBANIA'                                      => 'AL',
@@ -602,7 +602,7 @@ $options = array(
     'YEMEN'                                        => 'YE0',
     'ZAMBIA'                                       => 'ZM',
     'ZIMBABWE'                                     => 'ZW'
-);
+];
 ++$i;
 $modversion['config'][$i]['name']        = 'countrycode';
 $modversion['config'][$i]['title']       = '_XPY_MI_COUNTRYCODE';
@@ -619,7 +619,7 @@ $modversion['config'][$i]['description'] = '_XPY_MI_DISTRICT_DESC';
 $modversion['config'][$i]['formtype']    = 'text';
 $modversion['config'][$i]['valuetype']   = 'text';
 $modversion['config'][$i]['default']     = '2000';
-$modversion['config'][$i]['options']     = array();
+$modversion['config'][$i]['options']     = [];
 
 ++$i;
 $modversion['config'][$i]['name']        = 'city';
@@ -628,9 +628,9 @@ $modversion['config'][$i]['description'] = '_XPY_MI_CITY_DESC';
 $modversion['config'][$i]['formtype']    = 'text';
 $modversion['config'][$i]['valuetype']   = 'text';
 $modversion['config'][$i]['default']     = 'Sydney';
-$modversion['config'][$i]['options']     = array();
+$modversion['config'][$i]['options']     = [];
 
-$options = array();
+$options = [];
 for ($d = 0; $d < 100; ++$d) {
     $options[$d . '%'] = $d;
 }
@@ -650,7 +650,7 @@ $modversion['config'][$i]['description'] = '_XPY_MI_FRAUD_KILL_DESC';
 $modversion['config'][$i]['formtype']    = 'yesno';
 $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default']     = true;
-$modversion['config'][$i]['options']     = array();
+$modversion['config'][$i]['options']     = [];
 
 ++$i;
 $modversion['config'][$i]['name']        = 'id_protect';
@@ -659,7 +659,7 @@ $modversion['config'][$i]['description'] = '_XPY_MI_ID_PROTECT_DESC';
 $modversion['config'][$i]['formtype']    = 'yesno';
 $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default']     = true;
-$modversion['config'][$i]['options']     = array();
+$modversion['config'][$i]['options']     = [];
 
 ++$i;
 $modversion['config'][$i]['name']        = 'htaccess';
@@ -825,7 +825,7 @@ $modversion['config'][$i]['formtype']    = 'text';
 $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default']     = 60 * 60 * 24 * 9;
 
-$options                      = array();
+$options                      = [];
 $options[_XPY_MI_SECONDS_10]  = 10;
 $options[_XPY_MI_SECONDS_30]  = 30;
 $options[_XPY_MI_SECONDS_60]  = 60;

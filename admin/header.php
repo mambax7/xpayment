@@ -78,10 +78,10 @@ require_once $GLOBALS['xoops']->path('modules/xpayment/include/xpayment.forms.ph
 
 //  xoops_load('xoopsmailer');
 /*
-	IF (!@ include_once XOOPS_ROOT_PATH."/Frameworks/art/functions.admin.php"):    
+    IF (!@ include_once XOOPS_ROOT_PATH."/Frameworks/art/functions.admin.php"):
 function loadModuleAdminMenu($currentoption, $breadcrumb = "")
 {
-		if (!$adminmenu = $GLOBALS['xpaymentModule']->getAdminMenu()) {
+        if (!$adminmenu = $GLOBALS['xpaymentModule']->getAdminMenu()) {
         return false;
     }
 
@@ -89,7 +89,7 @@ function loadModuleAdminMenu($currentoption, $breadcrumb = "")
     $module_link = XOOPS_URL."/modules/".$GLOBALS['xpaymentModule']->getVar("dirname")."/";
     $image_link = XOOPS_URL."/modules/".$GLOBALS['xpaymentModule']->getVar("dirname")."/images";
 
-		$adminmenu_text ='
+        $adminmenu_text ='
     <style type="text/css">
     <!--
     #buttontop { float:left; width:100%; background: #e7e7e7; font-size:93%; line-height:normal; border-top: 1px solid black; border-left: 1px solid black; border-right: 1px solid black; margin: 0;}

@@ -33,8 +33,8 @@ class GoogleResult
 
     public $tax_amount;
 
-    public $coupon_arr   = array();
-    public $giftcert_arr = array();
+    public $coupon_arr   = [];
+    public $giftcert_arr = [];
 
     /**
      * @param integer $address_id the id of the anonymous address sent by

@@ -132,7 +132,7 @@ function xpayment_getFilterElement($filter, $field, $sort = 'created', $fct = 'i
 function xpayment_getFilterURLComponents($filter, $field, $sort = 'created')
 {
     $parts     = explode('|', $filter);
-    $ret       = array();
+    $ret       = [];
     $value     = '';
     $ele_value = '';
     $operator  = '';
@@ -149,25 +149,25 @@ function xpayment_getFilterURLComponents($filter, $field, $sort = 'created')
             }
         }
     }
-    $pagenav          = array();
+    $pagenav          = [];
     $pagenav['op']    = isset($_REQUEST['op']) ? $_REQUEST['op'] : 'shops';
     $pagenav['fct']   = isset($_REQUEST['fct']) ? $_REQUEST['fct'] : 'list';
     $pagenav['limit'] = !empty($_REQUEST['limit']) ? (int)$_REQUEST['limit'] : 30;
     $pagenav['start'] = 0;
     $pagenav['order'] = !empty($_REQUEST['order']) ? $_REQUEST['order'] : 'DESC';
     $pagenav['sort']  = !empty($_REQUEST['sort']) ? '' . $_REQUEST['sort'] . '' : $sort;
-    $retb             = array();
+    $retb             = [];
     foreach ($pagenav as $key => $value) {
         $retb[] = "$key=$value";
     }
 
-    return array(
+    return [
         'value'    => $ele_value,
         'field'    => $field,
         'operator' => $operator,
         'filter'   => implode('|', $ret),
         'extra'    => implode('&', $retb)
-    );
+    ];
 }
 
 function xpayment_install_gateway($class)
@@ -259,7 +259,7 @@ function xpayment_update_gateway($class)
 if (!function_exists('getIPData')) {
     function getIPData($ip = false)
     {
-        $ret = array();
+        $ret = [];
         if (is_object($GLOBALS['xoopsUser'])) {
             $ret['uid']   = $GLOBALS['xoopsUser']->getVar('uid');
             $ret['uname'] = $GLOBALS['xoopsUser']->getVar('uname');

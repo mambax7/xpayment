@@ -21,7 +21,7 @@
  * @translation     Richardo Costa <lusopoemas@gmail.com>
  * @translation     Kris_fr <kris@frxoops.org>
  */
-$gateway = array();
+$gateway = [];
 
 xoops_loadLanguage('ccbill', 'xpayment');
 

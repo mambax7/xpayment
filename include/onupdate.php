@@ -21,11 +21,11 @@
  * @translation     Richardo Costa <lusopoemas@gmail.com>
  * @translation     Kris_fr <kris@frxoops.org>
  */
-defined('XOOPS_ROOT_PATH') || exit('XOOPS Root Path not defined');
+defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 function xoops_module_update_xpayment($module, $oldversion)
 {
-    $sql = array();
+    $sql = [];
 
     $sql[] = 'ALTER TABLE ' . $GLOBALS['xoopsDB']->prefix('xpayment_invoice') . ' ADD COLUMN `paid` DECIMAL(45,2) DEFAULT \'0.00\'';
     $sql[] = 'ALTER TABLE ' . $GLOBALS['xoopsDB']->prefix('xpayment_invoice') . ' ADD COLUMN `reoccurrence` INT(8) DEFAULT \'0\'';

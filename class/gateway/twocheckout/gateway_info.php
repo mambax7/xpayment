@@ -22,7 +22,7 @@
  * @translation     Kris_fr <kris@frxoops.org>
  */
 
-$gateway = array();
+$gateway = [];
 
 xoops_loadLanguage('twocheckout', 'xpayment');
 

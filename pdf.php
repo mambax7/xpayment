@@ -80,7 +80,7 @@ if ($invoice->getVar('mode') == 'UNPAID') {
 $criteria = new Criteria('iid', $invoice->getVar('iid'));
 $items    = $invoice_itemsHandler->getObjects($criteria, true);
 foreach ($items as $iiid => $item) {
-    $GLOBALS['xoopsTpl']->append('items', array_merge(array('totals' => $item->getTotalsArray($invoice->getVar('did') != 0)), $item->toArray($invoice->getVar('did') != 0)));
+    $GLOBALS['xoopsTpl']->append('items', array_merge(['totals' => $item->getTotalsArray($invoice->getVar('did') != 0)], $item->toArray($invoice->getVar('did') != 0)));
 }
 
 ob_start();
@@ -156,11 +156,11 @@ $pdf->setImageScale(1); //set image scale factor
 
 //DNPROSSI ADDED FOR SCHINESE
 if (_LANGCODE == 'cn') {
-    $pdf->setHeaderFont(array('gbsn00lp', '', 10));
-    $pdf->setFooterFont(array('gbsn00lp', '', 10));
+    $pdf->setHeaderFont(['gbsn00lp', '', 10]);
+    $pdf->setFooterFont(['gbsn00lp', '', 10]);
 } else {
-    $pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-    $pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+    $pdf->setHeaderFont([PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN]);
+    $pdf->setFooterFont([PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA]);
 }
 
 $pdf->setLanguageArray($l); //set language items

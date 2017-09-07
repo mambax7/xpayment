@@ -35,7 +35,7 @@ class googleresponse
     public $log;
     public $response;
     public $root = '';
-    public $data = array();
+    public $data = [];
     public $xml_parser;
 
     /**
@@ -246,6 +246,6 @@ class googleresponse
             $this->data       = $this->xml_parser->getData();
         }
 
-        return array($this->root, $this->data);
+        return [$this->root, $this->data];
     }
 }

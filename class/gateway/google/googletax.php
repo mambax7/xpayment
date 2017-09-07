@@ -59,7 +59,7 @@ class GoogleTaxRule
         if (is_array($areas)) {
             $this->state_areas_arr = $areas;
         } else {
-            $this->state_areas_arr = array($areas);
+            $this->state_areas_arr = [$areas];
         }
     }
 
@@ -68,7 +68,7 @@ class GoogleTaxRule
         if (is_array($zips)) {
             $this->zip_patterns_arr = $zips;
         } else {
-            $this->zip_patterns_arr = array($zips);
+            $this->zip_patterns_arr = [$zips];
         }
     }
 
@@ -101,10 +101,10 @@ class GoogleDefaultTaxRule extends GoogleTaxRule
         $this->tax_rate       = $tax_rate;
         $this->shipping_taxed = $shipping_taxed;
 
-        $this->country_codes_arr   = array();
-        $this->postal_patterns_arr = array();
-        $this->state_areas_arr     = array();
-        $this->zip_patterns_arr    = array();
+        $this->country_codes_arr   = [];
+        $this->postal_patterns_arr = [];
+        $this->state_areas_arr     = [];
+        $this->zip_patterns_arr    = [];
     }
 }
 
@@ -119,10 +119,10 @@ class GoogleAlternateTaxRule extends GoogleTaxRule
     {
         $this->tax_rate = $tax_rate;
 
-        $this->country_codes_arr   = array();
-        $this->postal_patterns_arr = array();
-        $this->state_areas_arr     = array();
-        $this->zip_patterns_arr    = array();
+        $this->country_codes_arr   = [];
+        $this->postal_patterns_arr = [];
+        $this->state_areas_arr     = [];
+        $this->zip_patterns_arr    = [];
     }
 }
 
@@ -141,7 +141,7 @@ class GoogleAlternateTaxTable
     {
         if ($name != '') {
             $this->name          = $name;
-            $this->tax_rules_arr = array();
+            $this->tax_rules_arr = [];
             $this->standalone    = $standalone;
         }
     }

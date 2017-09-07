@@ -24,14 +24,14 @@
  */
 class htmlSignatureGen
 {
-    public $html_param_names  = array();
-    public $html_param_values = array();
+    public $html_param_names  = [];
+    public $html_param_values = [];
     public $merchant_key;
     public $param_string;
     public $signature;
 
     //Parameter names not to be used when generating the signature
-    public $excluded_param_names = array('_charset_', 'analyticsdata', 'urchindata');
+    public $excluded_param_names = ['_charset_', 'analyticsdata', 'urchindata'];
 
     //This function adds parameters to an array
     public function AddCartParameter($param_name, $param_value)

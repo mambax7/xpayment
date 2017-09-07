@@ -22,7 +22,7 @@
  * @translation     Kris_fr <kris@frxoops.org>
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 /**
  * Class for Blue Room Xcenter
@@ -45,7 +45,7 @@ class XpaymentInvoice_items extends XoopsObject
         $this->initVar('weight', XOBJ_DTYPE_DECIMAL, null, false);
         $this->initVar('tax', XOBJ_DTYPE_DECIMAL, null, false);
         $this->initVar('description', XOBJ_DTYPE_TXTBOX, null, false, 5000);
-        $this->initVar('mode', XOBJ_DTYPE_ENUM, 'PURCHASED', false, false, false, array('PURCHASED', 'REFUNDED', 'UNDELIVERED', 'DAMAGED', 'EXPRESS'));
+        $this->initVar('mode', XOBJ_DTYPE_ENUM, 'PURCHASED', false, false, false, ['PURCHASED', 'REFUNDED', 'UNDELIVERED', 'DAMAGED', 'EXPRESS']);
         $this->initVar('created', XOBJ_DTYPE_INT, 0, false);
         $this->initVar('updated', XOBJ_DTYPE_INT, 0, false);
         $this->initVar('actioned', XOBJ_DTYPE_INT, 0, false);
@@ -137,7 +137,7 @@ class XpaymentInvoice_items extends XoopsObject
 
     public function getTotalsArray($apply_discount = true)
     {
-        return array(
+        return [
             'amount'            => $this->getTotalAmount($apply_discount === true
                                                          && $GLOBALS['xoopsModuleConfig']['discount_amount'] === true),
             'handling'          => $this->getTotalHandling($apply_discount === true
@@ -162,7 +162,7 @@ class XpaymentInvoice_items extends XoopsObject
                                                                                                                                                            && $GLOBALS['xoopsModuleConfig']['discount_handling'] === true) + $this->getDiscountAmount($apply_discount === true
                                                                                                                                                                                                                                                       && $GLOBALS['xoopsModuleConfig']['discount_amount']
                                                                                                                                                                                                                                                          === true)
-        );
+        ];
     }
 
     public function runPlugin()
@@ -225,7 +225,7 @@ class XpaymentInvoice_itemsHandler extends XoopsPersistableObjectHandler
                 }
             }
 
-            return array(
+            return [
                 'amount'            => $amount,
                 'shipping'          => $shipping,
                 'handling'          => $handling,
@@ -235,7 +235,7 @@ class XpaymentInvoice_itemsHandler extends XoopsPersistableObjectHandler
                 'discount_handling' => $discount_handling,
                 'discount_shipping' => $discount_shipping,
                 'discount_grand'    => $discount_grand
-            );
+            ];
         }
     }
 

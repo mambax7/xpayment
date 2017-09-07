@@ -58,7 +58,7 @@ switch ($_REQUEST['op']) {
                 $pagenav = new XoopsPageNav($ttl, $limit, $start, 'start', 'limit=' . $limit . '&sort=' . $sort . '&order=' . $order . '&op=' . $_REQUEST['op'] . '&fct=' . $_REQUEST['fct']);
                 $GLOBALS['xoopsTpl']->assign('pagenav', $pagenav->renderNav());
 
-                foreach (array(
+                foreach ([
                              'mode',
                              'invoicenumber',
                              'drawfor',
@@ -101,7 +101,7 @@ switch ($_REQUEST['op']) {
                              'wait',
                              'offline',
                              'remittion'
-                         ) as $id => $key) {
+                         ] as $id => $key) {
                     $GLOBALS['xoopsTpl']->assign(strtolower($key . '_th'), '<a href="'
                                                                            . $_SERVER['PHP_SELF']
                                                                            . '?start='
@@ -167,12 +167,12 @@ switch ($_REQUEST['op']) {
                 $GLOBALS['xoopsTpl']->assign('php_self', $_SERVER['PHP_SELF']);
 
                 if (!isset($_POST['confirm'])) {
-                    xoops_confirm(array(
+                    xoops_confirm([
                                       'confirm' => true,
                                       'op'      => $_REQUEST['op'],
                                       'fct'     => $_REQUEST['fct'],
                                       'iid'     => $_REQUEST['iid']
-                                  ), $_SERVER['PHP_SELF'], _XPY_MSG_CONFIRM_CANCEL);
+                                  ], $_SERVER['PHP_SELF'], _XPY_MSG_CONFIRM_CANCEL);
                     include $GLOBALS['xoops']->path('footer.php');
                     exit(0);
                 }
@@ -268,7 +268,7 @@ switch ($_REQUEST['op']) {
                 }
 
                 if ($_GET['iid'] == 0) {
-                    foreach (array(
+                    foreach ([
                                  'transactionid',
                                  'email',
                                  'invoice',
@@ -290,7 +290,7 @@ switch ($_REQUEST['op']) {
                                  'payer_status',
                                  'gateway',
                                  'plugin'
-                             ) as $id => $key) {
+                             ] as $id => $key) {
                         $GLOBALS['xoopsTpl']->assign($key . '_th', '<a href="'
                                                                    . $_SERVER['PHP_SELF']
                                                                    . '?'
@@ -311,7 +311,7 @@ switch ($_REQUEST['op']) {
                                                                    . '</a>');
                     }
                 } else {
-                    foreach (array(
+                    foreach ([
                                  'transactionid',
                                  'email',
                                  'invoice',
@@ -333,7 +333,7 @@ switch ($_REQUEST['op']) {
                                  'payer_status',
                                  'gateway',
                                  'plugin'
-                             ) as $id => $key) {
+                             ] as $id => $key) {
                         $GLOBALS['xoopsTpl']->assign($key . '_th', '<a href="'
                                                                    . $_SERVER['PHP_SELF']
                                                                    . '?'

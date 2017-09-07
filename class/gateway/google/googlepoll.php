@@ -33,7 +33,7 @@ class GooglePoll
     public $environment;
     public $poll_request_xml;
     public $poll_result;
-    public $notifications = array();
+    public $notifications = [];
     public $certificate_path;
 
     public $schema_url              = 'http://checkout.google.com/schema/2';
@@ -148,7 +148,7 @@ class GooglePoll
         require_once __DIR__ . '/xml-processing/gc_xmlbuilder.php';
         $xml_data = new gc_XmlBuilder();
 
-        $xml_data->Push('notification-data-request', array('xmlns' => $this->schema_url));
+        $xml_data->Push('notification-data-request', ['xmlns' => $this->schema_url]);
         $xml_data->Element('continue-token', $this->continue_token);
         $xml_data->Pop('notification-data-request');
 
@@ -239,7 +239,7 @@ class ContinueTokenRequest
         require_once __DIR__ . '/xml-processing/gc_xmlbuilder.php';
         $xml_data = new gc_XmlBuilder();
 
-        $xml_data->Push('notification-data-token-request', array('xmlns' => $this->schema_url));
+        $xml_data->Push('notification-data-token-request', ['xmlns' => $this->schema_url]);
         $xml_data->Element('start-time', $this->start_time);
         $xml_data->Pop('notification-data-token-request');
 

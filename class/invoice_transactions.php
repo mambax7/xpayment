@@ -22,7 +22,7 @@
  * @translation     Kris_fr <kris@frxoops.org>
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 /**
  * Class for Blue Room Xcenter
@@ -59,7 +59,7 @@ class XpaymentInvoice_transactions extends XoopsObject
         $this->initVar('payer_status', XOBJ_DTYPE_TXTBOX, null, false, 255);
         $this->initVar('gateway', XOBJ_DTYPE_TXTBOX, null, false, 255);
         $this->initVar('plugin', XOBJ_DTYPE_TXTBOX, null, false, 255);
-        $this->initVar('mode', XOBJ_DTYPE_ENUM, 'PAYMENT', false, false, false, array('PAYMENT', 'REFUND', 'PENDING', 'NOTICE', 'OTHER'));
+        $this->initVar('mode', XOBJ_DTYPE_ENUM, 'PAYMENT', false, false, false, ['PAYMENT', 'REFUND', 'PENDING', 'NOTICE', 'OTHER']);
     }
 
     public function toArray()
@@ -93,6 +93,7 @@ class XpaymentInvoice_transactions extends XoopsObject
                         return false;
                         break;
                 }
+                // no break
             default:
                 return false;
                 break;

@@ -65,8 +65,8 @@ class GoogleNotificationHistoryRequest
     public function SendNotificationHistoryRequest(
         $sn = null,
         $npt = null,
-        $orders = array(),
-        $nt = array(),
+        $orders = [],
+        $nt = [],
         $st = null,
         $et = null,
         $cp = null

@@ -22,7 +22,7 @@
  * @translation     Kris_fr <kris@frxoops.org>
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 require_once __DIR__ . '/ip2locationlite.class.php';
 
@@ -42,7 +42,7 @@ class XpaymentInvoice extends XoopsObject
     public function __construct($id = null)
     {
         $this->initVar('iid', XOBJ_DTYPE_INT, null, false);
-        $this->initVar('mode', XOBJ_DTYPE_ENUM, 'UNPAID', false, false, false, array('PAID', 'CANCEL', 'UNPAID'));
+        $this->initVar('mode', XOBJ_DTYPE_ENUM, 'UNPAID', false, false, false, ['PAID', 'CANCEL', 'UNPAID']);
         $this->initVar('plugin', XOBJ_DTYPE_TXTBOX, null, false, 128);
         $this->initVar('return', XOBJ_DTYPE_TXTBOX, null, false, 1000);
         $this->initVar('cancel', XOBJ_DTYPE_TXTBOX, null, false, 1000);
@@ -57,7 +57,7 @@ class XpaymentInvoice extends XoopsObject
         $this->initVar('shipping', XOBJ_DTYPE_DECIMAL, null, false);
         $this->initVar('handling', XOBJ_DTYPE_DECIMAL, null, false);
         $this->initVar('weight', XOBJ_DTYPE_DECIMAL, null, false);
-        $this->initVar('weight_unit', XOBJ_DTYPE_ENUM, null, false, false, false, array('lbs', 'kgs'));
+        $this->initVar('weight_unit', XOBJ_DTYPE_ENUM, null, false, false, false, ['lbs', 'kgs']);
         $this->initVar('tax', XOBJ_DTYPE_DECIMAL, null, false);
         $this->initVar('discount', XOBJ_DTYPE_DECIMAL, null, false);
         $this->initVar('discount_amount', XOBJ_DTYPE_DECIMAL, null, false);
@@ -82,17 +82,17 @@ class XpaymentInvoice extends XoopsObject
         $this->initVar('occurrence_shipping', XOBJ_DTYPE_DECIMAL, null, false);
         $this->initVar('occurrence_handling', XOBJ_DTYPE_DECIMAL, null, false);
         $this->initVar('occurrence_weight', XOBJ_DTYPE_DECIMAL, null, false);
-        $this->initVar('remittion', XOBJ_DTYPE_ENUM, 'NONE', false, false, false, array('NONE', 'PENDING', 'NOTICE', 'COLLECT', 'FRAUD', 'SETTLED', 'DISCOUNTED'));
+        $this->initVar('remittion', XOBJ_DTYPE_ENUM, 'NONE', false, false, false, ['NONE', 'PENDING', 'NOTICE', 'COLLECT', 'FRAUD', 'SETTLED', 'DISCOUNTED']);
         $this->initVar('remittion_settled', XOBJ_DTYPE_DECIMAL, null, false);
         $this->initVar('donation', XOBJ_DTYPE_INT, 0, false);
         $this->initVar('comment', XOBJ_DTYPE_TXTBOX, null, false, 5000);
         $this->initVar('user_ip', XOBJ_DTYPE_TXTBOX, null, false, 128);
         $this->initVar('user_netaddy', XOBJ_DTYPE_TXTBOX, null, false, 255);
         $this->initVar('user_uid', XOBJ_DTYPE_INT, 0, false);
-        $this->initVar('user_uids', XOBJ_DTYPE_ARRAY, array(), false);
-        $this->initVar('broker_uids', XOBJ_DTYPE_ARRAY, array(), false);
-        $this->initVar('accounts_uids', XOBJ_DTYPE_ARRAY, array(), false);
-        $this->initVar('officer_uids', XOBJ_DTYPE_ARRAY, array(), false);
+        $this->initVar('user_uids', XOBJ_DTYPE_ARRAY, [], false);
+        $this->initVar('broker_uids', XOBJ_DTYPE_ARRAY, [], false);
+        $this->initVar('accounts_uids', XOBJ_DTYPE_ARRAY, [], false);
+        $this->initVar('officer_uids', XOBJ_DTYPE_ARRAY, [], false);
         $this->initVar('remitted', XOBJ_DTYPE_INT, 0, false);
         $this->initVar('due', XOBJ_DTYPE_INT, 0, false);
         $this->initVar('collect', XOBJ_DTYPE_INT, 0, false);
@@ -140,7 +140,7 @@ class XpaymentInvoice extends XoopsObject
             if ($discount->getVar('redeems') > $discount->getVar('redeemed')) {
                 if (!in_array($this->getVar('iid'), $discount->getVar('iids'))) {
                     $discount->setVar('redeemed', $discount->getVar('redeemed') + 1);
-                    $discount->setVar('iids', array_merge($discount->getVar('iids'), array($this->getVar('iid') => $this->getVar('iid'))));
+                    $discount->setVar('iids', array_merge($discount->getVar('iids'), [$this->getVar('iid') => $this->getVar('iid')]));
                     $this->_discounts_h->insert($discount, true);
                     $this->setVar('did', $discount->getVar('did'));
                     $this->setVar('discount', $discount->getVar('discount'));
@@ -170,7 +170,7 @@ class XpaymentInvoice extends XoopsObject
 
     public function toArray()
     {
-        $ret = array();
+        $ret = [];
         foreach (parent::toArray() as $field => $value) {
             if ($this->vars[$field]['data_type'] == XOBJ_DTYPE_DECIMAL) {
                 if ($field === 'weight') {
@@ -341,6 +341,7 @@ class XpaymentInvoice extends XoopsObject
                         return false;
                         break;
                 }
+                // no break
             default:
                 return false;
                 break;
@@ -385,14 +386,14 @@ class XpaymentInvoice extends XoopsObject
 
     public function getOccurencesPaidArray()
     {
-        return array(
+        return [
             'amount'   => $this->getOccurencesPaidAmount(),
             'handling' => $this->getOccurencesPaidHandling(),
             'weight'   => $this->getOccurencesPaidWeight(),
             'shipping' => $this->getOccurencesPaidShipping(),
             'tax'      => $this->getOccurencesPaidTax(),
             'grand'    => $this->getOccurencesPaidTax() + $this->getOccurencesPaidShipping() + $this->getOccurencesPaidHandling() + $this->getOccurencesPaidAmount()
-        );
+        ];
     }
 
     public function getOccurencesLeftGrand()
@@ -427,14 +428,14 @@ class XpaymentInvoice extends XoopsObject
 
     public function getOccurencesLeftArray()
     {
-        return array(
+        return [
             'amount'   => $this->getOccurencesLeftAmount(),
             'handling' => $this->getOccurencesLeftHandling(),
             'weight'   => $this->getOccurencesLeftWeight(),
             'shipping' => $this->getOccurencesLeftShipping(),
             'tax'      => $this->getOccurencesLeftTax(),
             'grand'    => $this->getOccurencesLeftTax() + $this->getOccurencesLeftShipping() + $this->getOccurencesLeftHandling() + $this->getOccurencesLeftAmount()
-        );
+        ];
     }
 
     public function getOccurencesTotalInterest()
@@ -474,14 +475,14 @@ class XpaymentInvoice extends XoopsObject
 
     public function getOccurencesTotalsArray()
     {
-        return array(
+        return [
             'amount'   => $this->getOccurencesTotalAmount(),
             'handling' => $this->getOccurencesTotalHandling(),
             'weight'   => $this->getOccurencesTotalWeight(),
             'shipping' => $this->getOccurencesTotalShipping(),
             'tax'      => $this->getOccurencesTotalTax(),
             'grand'    => $this->getOccurencesTotalTax() + $this->getOccurencesTotalShipping() + $this->getOccurencesTotalHandling() + $this->getOccurencesTotalAmount() + $this->getOccurencesTotalInterest()
-        );
+        ];
     }
 }
 
@@ -610,8 +611,13 @@ class XpaymentInvoiceHandler extends XoopsPersistableObjectHandler
                     $issue_discount = true;
                 }
                 if ($issue_discount === true) {
-                    $obj->sendDiscountCode($obj->getVar('drawto_email'), ($GLOBALS['xoopsModuleConfig']['discount_validtill'] == 0 ? 0 : time() + $GLOBALS['xoopsModuleConfig']['discount_validtill']), $GLOBALS['xoopsModuleConfig']['discount_redeems'],
-                                           $GLOBALS['xoopsModuleConfig']['discount_percentage'], $GLOBALS['xoopsModuleConfig']['discount_prefix']);
+                    $obj->sendDiscountCode(
+                        $obj->getVar('drawto_email'),
+                        ($GLOBALS['xoopsModuleConfig']['discount_validtill'] == 0 ? 0 : time() + $GLOBALS['xoopsModuleConfig']['discount_validtill']),
+                        $GLOBALS['xoopsModuleConfig']['discount_redeems'],
+                                           $GLOBALS['xoopsModuleConfig']['discount_percentage'],
+                        $GLOBALS['xoopsModuleConfig']['discount_prefix']
+                    );
                 }
             }
         }
@@ -684,13 +690,13 @@ class XpaymentInvoiceHandler extends XoopsPersistableObjectHandler
     {
         $sql = 'SELECT DISTINCT `currency` FROM ' . $GLOBALS['xoopsDB']->prefix('xpayment_invoice');
         if (count($range)) {
-            $where = array();
+            $where = [];
             foreach ($range as $field => $comparison) {
                 $where[$field] = "$field " . (isset($comparison['operator']) ? $comparison['operator'] : '=') . ' ' . $GLOBALS['xoopsDB']->quote($comparison['value']);
             }
             $sql .= ' WHERE ' . implode(' ' . $operator . ' ', $where);
         }
-        $ret    = array();
+        $ret    = [];
         $result = $GLOBALS['xoopsDB']->queryF($sql);
         while ($row = $GLOBALS['xoopsDB']->fetchArray($result)) {
             $ret[$row['currency']] = $row['currency'];
@@ -704,7 +710,7 @@ class XpaymentInvoiceHandler extends XoopsPersistableObjectHandler
         $sql = "SELECT sum($opfield) as result FROM " . $GLOBALS['xoopsDB']->prefix('xpayment_invoice');
         $sql .= " WHERE $field = " . $GLOBALS['xoopsDB']->quote($value);
         if (count($range)) {
-            $where = array();
+            $where = [];
             foreach ($range as $field => $comparison) {
                 $where[$field] = "$field " . (isset($comparison['operator']) ? $comparison['operator'] : '=') . ' ' . $GLOBALS['xoopsDB']->quote($comparison['value']);
             }
@@ -721,7 +727,7 @@ class XpaymentInvoiceHandler extends XoopsPersistableObjectHandler
         $sql = "SELECT avg($opfield) as result FROM " . $GLOBALS['xoopsDB']->prefix('xpayment_invoice');
         $sql .= " WHERE $field = " . $GLOBALS['xoopsDB']->quote($value);
         if (count($range)) {
-            $where = array();
+            $where = [];
             foreach ($range as $field => $comparison) {
                 $where[$field] = "$field " . (isset($comparison['operator']) ? $comparison['operator'] : '=') . ' ' . $GLOBALS['xoopsDB']->quote($comparison['value']);
             }
@@ -738,7 +744,7 @@ class XpaymentInvoiceHandler extends XoopsPersistableObjectHandler
         $sql = "SELECT max($opfield) as result FROM " . $GLOBALS['xoopsDB']->prefix('xpayment_invoice');
         $sql .= " WHERE $field = " . $GLOBALS['xoopsDB']->quote($value);
         if (count($range)) {
-            $where = array();
+            $where = [];
             foreach ($range as $field => $comparison) {
                 $where[$field] = "$field " . (isset($comparison['operator']) ? $comparison['operator'] : '=') . ' ' . $GLOBALS['xoopsDB']->quote($comparison['value']);
             }
@@ -755,7 +761,7 @@ class XpaymentInvoiceHandler extends XoopsPersistableObjectHandler
         $sql = "SELECT count($opfield) as result FROM " . $GLOBALS['xoopsDB']->prefix('xpayment_invoice');
         $sql .= " WHERE $field = " . $GLOBALS['xoopsDB']->quote($value);
         if (count($range)) {
-            $where = array();
+            $where = [];
             foreach ($range as $field => $comparison) {
                 $where[$field] = "$field " . (isset($comparison['operator']) ? $comparison['operator'] : '=') . ' ' . $GLOBALS['xoopsDB']->quote($comparison['value']);
             }

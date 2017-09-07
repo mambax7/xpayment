@@ -265,7 +265,7 @@ class ZombaioGatewaysPlugin
             $request = $_REQUEST;
         }
 
-        return array(
+        return [
             'iid'            => $this->_invoice->getVar('iid'),
             'transactionid'  => $this->getTransactionId($request),
             'email'          => $this->getEmail($request),
@@ -290,7 +290,7 @@ class ZombaioGatewaysPlugin
             'payer_status'   => $this->getPayerStatus($request),
             'gateway'        => $this->_invoice->getVar('gateway'),
             'plugin'         => $this->_invoice->getVar('plugin')
-        );
+        ];
     }
 
     // INBOUND FUNCTIONS
@@ -375,7 +375,7 @@ class ZombaioGatewaysPlugin
         $authFile       = $path . '/' . $catalog . '/.htaccess';
         $cfghtpasswdEXE = 'C:\Program Files\Apache Group\Apache\bin\htpasswd.exe';
 
-        $htpUser = array();
+        $htpUser = [];
 
         //Kollar om katalogen existerar
         if (!file_exists($memberPath)) {
@@ -603,7 +603,7 @@ class ZombaioGatewaysPlugin
     {
         global $cfgHTPasswd, $htpUser, $passFile;
 
-        $htpUser = array();
+        $htpUser = [];
 
         if (!($fpHt = fopen($passFile, 'r'))) {
             echo 'PASSWD_FILE_NOT_READABLE|Password file not readable!';

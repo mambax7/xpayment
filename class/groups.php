@@ -22,7 +22,7 @@
  * @translation     Kris_fr <kris@frxoops.org>
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 /**
  * Class for Blue Room Xcenter
@@ -35,7 +35,7 @@ class XpaymentGroups extends XoopsObject
     public function __construct($id = null)
     {
         $this->initVar('rid', XOBJ_DTYPE_INT, null, false);
-        $this->initVar('mode', XOBJ_DTYPE_ENUM, null, false, false, false, array('BROKERS', 'ACCOUNTS', 'OFFICERS'));
+        $this->initVar('mode', XOBJ_DTYPE_ENUM, null, false, false, false, ['BROKERS', 'ACCOUNTS', 'OFFICERS']);
         $this->initVar('plugin', XOBJ_DTYPE_TXTBOX, '*', false, 128);
         $this->initVar('uid', XOBJ_DTYPE_INT, null, false);
         $this->initVar('limit', XOBJ_DTYPE_INT, null, false);
@@ -72,7 +72,7 @@ class XpaymentGroupsHandler extends XoopsPersistableObjectHandler
 
     public function getUids($mode, $plugin, $grand)
     {
-        $ret = array();
+        $ret = [];
 
         $criteria = new CriteriaCompo(new Criteria('`mode`', $mode));
         $criteria->add(new Criteria('`plugin`', '*'));

@@ -26,8 +26,8 @@
 function xpayment_adminpayment($invoice)
 {
     $sform   = new XoopsThemeForm(_XPY_AM_PAYMENT, 'payment', $_SERVER['PHP_SELF'], 'post', true);
-    $formobj = array();
-    $eletray = array();
+    $formobj = [];
+    $eletray = [];
 
     $formobj['transactionid']    = new XoopsFormText(_XPY_AM_TH_TRANSACTIONID, 'transactionid', 45, 128, '');
     $invoice_transactionsHandler = xoops_getModuleHandler('invoice_transactions', 'xpayment');
@@ -44,7 +44,7 @@ function xpayment_adminpayment($invoice)
     $eletray['buttons']->addElement($sformobj['buttons']['save']);
     $formobj['buttons'] = $eletray['buttons'];
 
-    $required = array('transactionid', 'amount');
+    $required = ['transactionid', 'amount'];
 
     foreach ($formobj as $id => $obj) {
         if (in_array($id, $required)) {
@@ -64,8 +64,8 @@ function xpayment_adminpayment($invoice)
 function xpayment_adminsettle($invoice)
 {
     $sform   = new XoopsThemeForm(_XPY_AM_SETTLE, 'settle', $_SERVER['PHP_SELF'], 'post', true);
-    $formobj = array();
-    $eletray = array();
+    $formobj = [];
+    $eletray = [];
 
     $invoice_transactionsHandler = xoops_getModuleHandler('invoice_transactions', 'xpayment');
     $gross                       = $invoice_transactionsHandler->sumOfGross($invoice->getVar('iid'));
@@ -81,7 +81,7 @@ function xpayment_adminsettle($invoice)
     $eletray['buttons']->addElement($sformobj['buttons']['save']);
     $formobj['buttons'] = $eletray['buttons'];
 
-    $required = array('settlement');
+    $required = ['settlement'];
 
     foreach ($formobj as $id => $obj) {
         if (in_array($id, $required)) {
@@ -101,8 +101,8 @@ function xpayment_adminsettle($invoice)
 function xpayment_adminrule($rid, $group_id)
 {
     $sform   = new XoopsThemeForm(_XPY_AM_ADDRULE, 'rule', $_SERVER['PHP_SELF'], 'post', true);
-    $formobj = array();
-    $eletray = array();
+    $formobj = [];
+    $eletray = [];
 
     $groupsHandler = xoops_getModuleHandler('groups', 'xpayment');
     if ($rid == 0) {
@@ -122,7 +122,7 @@ function xpayment_adminrule($rid, $group_id)
     $eletray['buttons']->addElement($sformobj['buttons']['save']);
     $formobj['buttons'] = $eletray['buttons'];
 
-    $required = array('plugin', 'uid');
+    $required = ['plugin', 'uid'];
 
     foreach ($formobj as $id => $obj) {
         if (in_array($id, $required)) {
@@ -145,8 +145,8 @@ function xpayment_adminrule($rid, $group_id)
 function xpayment_userdiscount($invoice)
 {
     $sform   = new XoopsThemeForm(_XPY_MF_DISCOUNT, 'discount', $_SERVER['PHP_SELF'], 'post', true);
-    $formobj = array();
-    $eletray = array();
+    $formobj = [];
+    $eletray = [];
 
     if ($invoice->getVar('did') > 0) {
         $formobj['discount'] = new XoopsFormLabel(_XPY_MF_DISCOUNT_CODE, str_replace('%amount', $invoice->getVar('discount_amount') . ' ' . $invoice->getVar('currency'), str_replace('%discount', $invoice->getVar('discount'), _XPY_MF_DISCOUNT_CODE_APPLIED)));
@@ -158,7 +158,7 @@ function xpayment_userdiscount($invoice)
         $formobj['buttons'] = $eletray['buttons'];
     }
 
-    $required = array('code');
+    $required = ['code'];
 
     foreach ($formobj as $id => $obj) {
         if (in_array($id, $required)) {
@@ -178,8 +178,8 @@ function xpayment_userdiscount($invoice)
 function xpayment_admincreatediscounts()
 {
     $sform   = new XoopsThemeForm(_XPY_AM_CREATE_DISCOUNT_CODES, 'create_discount', $_SERVER['PHP_SELF'], 'post', true);
-    $formobj = array();
-    $eletray = array();
+    $formobj = [];
+    $eletray = [];
 
     $formobj['prefix']    = new XoopsFormText(_XPY_AM_PREFIX_DISCOUNT_CODE, 'prefix', 15, 25, $GLOBALS['xoopsModuleConfig']['discount_prefix']);
     $formobj['discount']  = new XoopsFormText(_XPY_AM_AMOUNT_DISCOUNT_CODE, 'discount', 15, 25, $GLOBALS['xoopsModuleConfig']['discount_percentage']);
@@ -192,7 +192,7 @@ function xpayment_admincreatediscounts()
     $formobj['scan']   = new XoopsFormRadioYN(_XPY_AM_SCAN_DISCOUNT_CODE, 'scan', false);
     $formobj['groups'] = new XoopsFormElementTray(_XPY_AM_GROUPS_DISCOUNT_CODE, '&nbsp;');
     //$formobj['groups']->addElement(new XoopsFormRadioYN('', 'groups', false));
-    $formobj['groups']->addElement(new XoopsFormSelectGroup('', 'groups[]', false, array(XOOPS_GROUP_USERS), 6, true));
+    $formobj['groups']->addElement(new XoopsFormSelectGroup('', 'groups[]', false, [XOOPS_GROUP_USERS], 6, true));
     $formobj['since'] = new XoopsFormElementTray(_XPY_AM_SINCE_DISCOUNT_CODE, '&nbsp;');
     $formobj['since']->addElement(new XoopsFormRadioYN('', 'since', false));
     $formobj['since']->addElement(new XoopsFormDateTime('', 'since_datetime', 15, time()));
@@ -205,7 +205,7 @@ function xpayment_admincreatediscounts()
     $eletray['buttons']->addElement($sformobj['buttons']['save']);
     $formobj['buttons'] = $eletray['buttons'];
 
-    $required = array('discount', 'redeems', 'prefix');
+    $required = ['discount', 'redeems', 'prefix'];
 
     foreach ($formobj as $id => $obj) {
         if (in_array($id, $required)) {

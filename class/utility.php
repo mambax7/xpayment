@@ -119,7 +119,7 @@ class XPaymentUtility extends XoopsObject
             }
         }
 
-        if (!$success) {
+        if (false === $success) {
             $module->setErrors(sprintf(_AM_XPY_ERROR_BAD_XOOPS, $requiredVer, $currentVer));
         }
 

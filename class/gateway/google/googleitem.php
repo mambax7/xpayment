@@ -200,7 +200,7 @@ class googleitem
         $xml_data->Push('item');
         $xml_data->Element('item-name', $this->item_name);
         $xml_data->Element('item-description', $this->item_description);
-        $xml_data->Element('unit-price', $this->unit_price, array('currency' => $this->currency));
+        $xml_data->Element('unit-price', $this->unit_price, ['currency' => $this->currency]);
         $xml_data->Element('quantity', $this->quantity);
         if ($this->merchant_private_item_data != '') {
             //          echo get_class($item->merchant_private_item_data);
@@ -218,10 +218,10 @@ class googleitem
         }
         //     recurring Carrier calculation
         if ($this->item_weight != '' && $this->numeric_weight !== '') {
-            $xml_data->EmptyElement('item-weight', array(
+            $xml_data->EmptyElement('item-weight', [
                 'unit'  => $this->item_weight,
                 'value' => $this->numeric_weight
-            ));
+            ]);
         }
         //     recurring Digital Delivery Tags
         if ($this->digital_content) {

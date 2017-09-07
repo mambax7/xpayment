@@ -3,12 +3,12 @@
 // File name   : example_035.php
 // Begin       : 2008-07-22
 // Last Update : 2009-09-30
-// 
+//
 // Description : Example 035 for TCPDF class
 //               Line styles with cells and multicells
-// 
+//
 // Author: Nicola Asuni
-// 
+//
 // (c) Copyright:
 //               Nicola Asuni
 //               Tecnick.com s.r.l.
@@ -34,7 +34,7 @@ require_once('../config/lang/eng.php');
 require_once('../tcpdf.php');
 
 // create new PDF document
-$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false); 
+$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
@@ -47,8 +47,8 @@ $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
 $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
 
 // set header and footer fonts
-$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+$pdf->setHeaderFont([PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN]);
+$pdf->setFooterFont([PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA]);
 
 // set default monospaced font
 $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
@@ -59,13 +59,13 @@ $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
 $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
 //set auto page breaks
-$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+$pdf->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM);
 
 //set image scale factor
-$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO); 
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
 //set some language-dependent strings
-$pdf->setLanguageArray($l); 
+$pdf->setLanguageArray($l);
 
 // ---------------------------------------------------------
 
@@ -80,9 +80,9 @@ $pdf->Cell(0, 12, 'Example 035', 1, 1, 'C');
 
 $pdf->Ln();
 
-$pdf->SetLineStyle(array('width' => 0.5, 'cap' => 'butt', 'join' => 'miter', 'dash' => 4, 'color' => array(255, 0, 0)));
-$pdf->SetFillColor(255,255,128);
-$pdf->SetTextColor(0,0,128);
+$pdf->SetLineStyle(['width' => 0.5, 'cap' => 'butt', 'join' => 'miter', 'dash' => 4, 'color' => [255, 0, 0]]);
+$pdf->SetFillColor(255, 255, 128);
+$pdf->SetTextColor(0, 0, 128);
 
 $text="DUMMY";
 
@@ -90,19 +90,19 @@ $pdf->Cell(0, 0, $text, 1, 1, 'L', 1, 0);
 
 $pdf->Ln();
 
-$pdf->SetLineStyle(array('width' => 0.5, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(0, 0, 255)));
-$pdf->SetFillColor(255,255,0);
-$pdf->SetTextColor(0,0,255);
+$pdf->SetLineStyle(['width' => 0.5, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => [0, 0, 255]]);
+$pdf->SetFillColor(255, 255, 0);
+$pdf->SetTextColor(0, 0, 255);
 $pdf->MultiCell(60, 4, $text, 1, 'C', 1, 0);
 
-$pdf->SetLineStyle(array('width' => 0.5, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(255, 255, 0)));
-$pdf->SetFillColor(0,0,255);
-$pdf->SetTextColor(255,255,0);
+$pdf->SetLineStyle(['width' => 0.5, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => [255, 255, 0]]);
+$pdf->SetFillColor(0, 0, 255);
+$pdf->SetTextColor(255, 255, 0);
 $pdf->MultiCell(60, 4, $text, 'TB', 'C', 1, 0);
 
-$pdf->SetLineStyle(array('width' => 0.5, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(255, 0, 255)));
-$pdf->SetFillColor(0,255,0);
-$pdf->SetTextColor(255,0,255);
+$pdf->SetLineStyle(['width' => 0.5, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => [255, 0, 255]]);
+$pdf->SetFillColor(0, 255, 0);
+$pdf->SetTextColor(255, 0, 255);
 $pdf->MultiCell(60, 4, $text, 1, 'C', 1, 1);
 
 // ---------------------------------------------------------
@@ -111,6 +111,5 @@ $pdf->MultiCell(60, 4, $text, 1, 'C', 1, 1);
 $pdf->Output('example_035.pdf', 'I');
 
 //============================================================+
-// END OF FILE                                                 
+// END OF FILE
 //============================================================+
-?>

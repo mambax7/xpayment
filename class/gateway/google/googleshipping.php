@@ -110,7 +110,7 @@ class GoogleCarrierCalculatedShipping
     public $name;
     public $type = 'carrier-calculated-shipping';
 
-    public $CarrierCalculatedShippingOptions = array();
+    public $CarrierCalculatedShippingOptions = [];
     //    var $ShippingPackages = array();
     public $ShippingPackage;
 
@@ -335,15 +335,15 @@ class GoogleShippingFilters
 
     public function __construct()
     {
-        $this->allowed_country_codes_arr   = array();
-        $this->allowed_postal_patterns_arr = array();
-        $this->allowed_state_areas_arr     = array();
-        $this->allowed_zip_patterns_arr    = array();
+        $this->allowed_country_codes_arr   = [];
+        $this->allowed_postal_patterns_arr = [];
+        $this->allowed_state_areas_arr     = [];
+        $this->allowed_zip_patterns_arr    = [];
 
-        $this->excluded_country_codes_arr   = array();
-        $this->excluded_postal_patterns_arr = array();
-        $this->excluded_state_areas_arr     = array();
-        $this->excluded_zip_patterns_arr    = array();
+        $this->excluded_country_codes_arr   = [];
+        $this->excluded_postal_patterns_arr = [];
+        $this->excluded_state_areas_arr     = [];
+        $this->excluded_zip_patterns_arr    = [];
     }
 
     /**

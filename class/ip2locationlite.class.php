@@ -2,7 +2,7 @@
 if (!class_exists('ip2location_lite')) {
     final class ip2location_lite
     {
-        protected $errors  = array();
+        protected $errors  = [];
         protected $service = 'api.ipinfodb.com';
         protected $version = 'v3';
         protected $apiKey  = '';
@@ -83,7 +83,7 @@ if (!function_exists('fraudQuery')) {
             try {
                 $answer = new SimpleXMLElement($backup);
             } catch (Exception $e) {
-                return array('fraud_ipdb_errors' => $e->getMessage());
+                return ['fraud_ipdb_errors' => $e->getMessage()];
             }
             if (!$backup) {
                 return false;
@@ -99,11 +99,11 @@ if (!function_exists('fraudQuery')) {
             try {
                 $answer = new SimpleXMLElement($d);
             } catch (Exception $e) {
-                return array('fraud_ipdb_errors' => substr($e->getMessage(), 0, 999));
+                return ['fraud_ipdb_errors' => substr($e->getMessage(), 0, 999)];
             }
         }
 
-        return array(
+        return [
             'fraud_ipdb_errors'        => $answer->Errors,
             'fraud_ipdb_warnings'      => $answer->Warnings,
             'fraud_ipdb_messages'      => $answer->Messages,
@@ -117,6 +117,6 @@ if (!function_exists('fraudQuery')) {
             'fraud_ipdb_score'         => $answer->Score,
             'fraud_ipdb_accuracyscore' => $answer->AccuracyScore,
             'fraud_ipdb_scoredetails'  => $answer->ScoreDetails
-        );
+        ];
     }
 }

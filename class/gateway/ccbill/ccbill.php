@@ -27,7 +27,7 @@ class CcbillGatewaysPlugin
 {
     public $_invoice  = '';
     public $_gateway  = '';
-    public $_currcode = array(
+    public $_currcode = [
         'AFN' => '971',
         'EUR' => '978',
         'ALL' => '008',
@@ -304,7 +304,7 @@ class CcbillGatewaysPlugin
         'XTS' => '963',
         'XXX' => '999',
         'EUR' => '978'
-    );
+    ];
 
     public function __construct($invoice, $gateway)
     {
@@ -562,7 +562,7 @@ class CcbillGatewaysPlugin
             $request = $_REQUEST;
         }
 
-        return array(
+        return [
             'iid'            => $this->_invoice->getVar('iid'),
             'transactionid'  => $this->getTransactionId($request),
             'email'          => $this->getEmail($request),
@@ -587,7 +587,7 @@ class CcbillGatewaysPlugin
             'payer_status'   => $this->getPayerStatus($request),
             'gateway'        => $this->_invoice->getVar('gateway'),
             'plugin'         => $this->_invoice->getVar('plugin')
-        );
+        ];
     }
 
     public function checkCustom($request)
