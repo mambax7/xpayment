@@ -55,58 +55,78 @@ $moduleInfo                = $moduleHandler->get($GLOBALS['xpaymentModule']->get
 $pathIcon32                = Admin::menuIconPath('');
 $pathModIcon32             = $moduleHelper->getModule()->getInfo('modicons32');
 
-$adminmenu = [];
-$i         = 0;
+//$adminmenu[] = [
 //$adminmenu[$i]["title"] = _XPY_ADMENU0;
-//$adminmenu[$i]['link'] = "admin/index.php";
+//'link' =>  "admin/index.php",
 //$adminmenu[$i]["icon"]  = $pathIcon322 . '/home.png';
-//++$i;
-$adminmenu[$i]['title'] = _XPY_ADMENU8;
-$adminmenu[$i]['icon']  = $pathIcon32 . '/home.png';
-$adminmenu[$i]['image'] = $pathIcon32 . '/home.png';
-$adminmenu[$i]['link']  = 'admin/main.php?op=dashboard';
-++$i;
-$adminmenu[$i]['title'] = _XPY_ADMENU1;
-$adminmenu[$i]['icon']  = $pathModIcon32 . '/xpayment.invoices.png';
-$adminmenu[$i]['image'] = $pathModIcon32 . '/xpayment.invoices.png';
-$adminmenu[$i]['link']  = 'admin/main.php?op=invoices&fct=list';
-++$i;
-$adminmenu[$i]['title'] = _XPY_ADMENU2;
-$adminmenu[$i]['icon']  = $pathModIcon32 . '/xpayment.transactions.png';
-$adminmenu[$i]['image'] = $pathModIcon32 . '/xpayment.transactions.png';
-$adminmenu[$i]['link']  = 'admin/main.php?op=transactions&fct=list';
-++$i;
-$adminmenu[$i]['title'] = _XPY_ADMENU3;
-$adminmenu[$i]['icon']  = $pathModIcon32 . '/xpayment.gateways.png';
-$adminmenu[$i]['image'] = $pathModIcon32 . '/xpayment.gateways.png';
-$adminmenu[$i]['link']  = 'admin/main.php?op=gateways&fct=list';
-++$i;
-$adminmenu[$i]['title'] = _XPY_ADMENU4;
-$adminmenu[$i]['icon']  = $pathModIcon32 . '/xpayment.permissions.png';
-$adminmenu[$i]['image'] = $pathModIcon32 . '/xpayment.permissions.png';
-$adminmenu[$i]['link']  = 'admin/main.php?op=permissions&fct=email';
-++$i;
-$adminmenu[$i]['title'] = _XPY_ADMENU5;
-$adminmenu[$i]['icon']  = $pathModIcon32 . '/xpayment.groups.png';
-$adminmenu[$i]['image'] = $pathModIcon32 . '/xpayment.groups.png';
-$adminmenu[$i]['link']  = 'admin/main.php?op=groups&fct=brokers';
-++$i;
-$adminmenu[$i]['title'] = _XPY_ADMENU6;
-$adminmenu[$i]['icon']  = $pathModIcon32 . '/xpayment.taxes.png';
-$adminmenu[$i]['image'] = $pathModIcon32 . '/xpayment.taxes.png';
-$adminmenu[$i]['link']  = 'admin/main.php?op=tax&fct=list';
-++$i;
-$adminmenu[$i]['title'] = _XPY_ADMENU7;
-$adminmenu[$i]['icon']  = $pathModIcon32 . '/xpayment.discounts.png';
-$adminmenu[$i]['image'] = $pathModIcon32 . '/xpayment.discounts.png';
-$adminmenu[$i]['link']  = 'admin/main.php?op=discounts&fct=list';
-++$i;
-$adminmenu[$i]['title'] = _XPY_ADMENU9;
-$adminmenu[$i]['icon']  = $pathIcon32 . '/about.png';
-$adminmenu[$i]['image'] = $pathIcon32 . '/about.png';
-$adminmenu[$i]['link']  = 'admin/main.php?op=about';
+//];
 
-//++$i;
-//$adminmenu[$i]['title'] = _AM_MODULEADMIN_ABOUT;
+$adminmenu[] = [
+    'title' => _XPY_ADMENU8,
+    'icon'  => $pathIcon32 . '/home.png',
+    'image' => $pathIcon32 . '/home.png',
+    'link'  => 'admin/main.php?op=dashboard',
+];
+
+$adminmenu[] = [
+    'title' => _XPY_ADMENU1,
+    'icon'  => $pathModIcon32 . '/xpayment.invoices.png',
+    'image' => $pathModIcon32 . '/xpayment.invoices.png',
+    'link'  => 'admin/main.php?op=invoices&fct=list',
+];
+
+$adminmenu[] = [
+    'title' => _XPY_ADMENU2,
+    'icon'  => $pathModIcon32 . '/xpayment.transactions.png',
+    'image' => $pathModIcon32 . '/xpayment.transactions.png',
+    'link'  => 'admin/main.php?op=transactions&fct=list',
+];
+
+$adminmenu[] = [
+    'title' => _XPY_ADMENU3,
+    'icon'  => $pathModIcon32 . '/xpayment.gateways.png',
+    'image' => $pathModIcon32 . '/xpayment.gateways.png',
+    'link'  => 'admin/main.php?op=gateways&fct=list',
+];
+
+$adminmenu[] = [
+    'title' => _XPY_ADMENU4,
+    'icon'  => $pathModIcon32 . '/xpayment.permissions.png',
+    'image' => $pathModIcon32 . '/xpayment.permissions.png',
+    'link'  => 'admin/main.php?op=permissions&fct=email',
+];
+
+$adminmenu[] = [
+    'title' => _XPY_ADMENU5,
+    'icon'  => $pathModIcon32 . '/xpayment.groups.png',
+    'image' => $pathModIcon32 . '/xpayment.groups.png',
+    'link'  => 'admin/main.php?op=groups&fct=brokers',
+];
+
+$adminmenu[] = [
+    'title' => _XPY_ADMENU6,
+    'icon'  => $pathModIcon32 . '/xpayment.taxes.png',
+    'image' => $pathModIcon32 . '/xpayment.taxes.png',
+    'link'  => 'admin/main.php?op=tax&fct=list',
+];
+
+$adminmenu[] = [
+    'title' => _XPY_ADMENU7,
+    'icon'  => $pathModIcon32 . '/xpayment.discounts.png',
+    'image' => $pathModIcon32 . '/xpayment.discounts.png',
+    'link'  => 'admin/main.php?op=discounts&fct=list',
+];
+
+$adminmenu[] = [
+    'title' => _XPY_ADMENU9,
+    'icon'  => $pathIcon32 . '/about.png',
+    'image' => $pathIcon32 . '/about.png',
+    'link'  => 'admin/main.php?op=about',
+];
+
+//$adminmenu[] = [
+//'title' =>  _AM_MODULEADMIN_ABOUT,
 //$adminmenu[$i]["link"]  = "admin/about.php";
 //$adminmenu[$i]["icon"]  = $pathIcon32 . '/about.png';
+//];
+
