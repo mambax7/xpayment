@@ -5678,7 +5678,7 @@ if (!class_exists('TCPDF', false)) {
         */
         protected function _getfontpath()
         {
-            if (!defined('K_PATH_FONTS') and is_dir(dirname(__FILE__).'/fonts')) {
+            if (!defined('K_PATH_FONTS') && is_dir(dirname(__FILE__).'/fonts')) {
                 define('K_PATH_FONTS', dirname(__FILE__).'/fonts/');
             }
             return defined('K_PATH_FONTS') ? K_PATH_FONTS : '';
