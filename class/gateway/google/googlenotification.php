@@ -31,7 +31,7 @@ class googlenotification
         $this->proxy        = $proxy;
 
         $this->schema_url = 'http://checkout.google.com/schema/2';
-        if (strtolower($server_type) === 'sandbox') {
+        if ('sandbox' === strtolower($server_type)) {
             $this->server_url = 'https://sandbox.google.com/checkout/';
         } else {
             $this->server_url = 'https://checkout.google.com/';
@@ -69,7 +69,7 @@ class googlenotification
 
         do {
             list($status, $response) = $this->_doReportsRequest();
-            if ($status != '200') {
+            if ('200' != $status) {
                 $this->error = [$status, $response];
 
                 return null;
@@ -82,7 +82,7 @@ class googlenotification
             $this->continue_token  = $data[$root]['continue-token']['VALUE'];
             $notifications         = $data[$root]['notifications'];
             $invalid_order_numbers = $data[$root]['invalid-order-numbers'];
-        } while ($data[$root]['has-more-notifications']['VALUE'] === 'true');
+        } while ('true' === $data[$root]['has-more-notifications']['VALUE']);
 
         return [$notifications, $invalid_order_numbers];
     }
@@ -104,7 +104,7 @@ class googlenotification
             if (is_array($this->orders) && !empty($this->orders)) {
                 $xml_data->Push('order-numbers');
                 foreach ($this->orders as $order) {
-                    if (trim($order) != '') {
+                    if ('' != trim($order)) {
                         $xml_data->Element('google-order-number', trim($order));
                     }
                 }
@@ -125,7 +125,7 @@ class googlenotification
 
     public function getError()
     {
-        if ($this->error[0] !== 'CURLERR') {
+        if ('CURLERR' !== $this->error[0]) {
             $xml_parser = new gc_XmlParser($this->error[1]);
             $data       = $xml_parser->getData();
             $error      = $data['error']['error-message']['VALUE'];
@@ -179,7 +179,7 @@ class googlenotification
         }
 
         // Check for errors
-        if ($status_code == '200') {
+        if ('200' == $status_code) {
             $this->log->LogResponse($body);
         } else {
             $this->log->LogError($body);

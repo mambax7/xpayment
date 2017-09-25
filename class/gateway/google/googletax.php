@@ -139,7 +139,7 @@ class GoogleAlternateTaxTable
 
     public function __construct($name = '', $standalone = 'false')
     {
-        if ($name != '') {
+        if ('' != $name) {
             $this->name          = $name;
             $this->tax_rules_arr = [];
             $this->standalone    = $standalone;

@@ -163,7 +163,7 @@ function xoops_module_update_xpayment($module, $oldversion)
 
     $groupsHandler = xoops_getHandler('group');
     $criteria      = new Criteria('group_type', _XPY_MI_GROUP_TYPE_BROKER);
-    if (count($groupsHandler->getObjects($criteria)) == 0) {
+    if (0 == count($groupsHandler->getObjects($criteria))) {
         $group = $groupsHandler->create();
         $group->setVar('name', _XPY_MI_GROUP_NAME_BROKER);
         $group->setVar('description', _XPY_MI_GROUP_DESC_BROKER);
@@ -173,7 +173,7 @@ function xoops_module_update_xpayment($module, $oldversion)
 
     $groupsHandler = xoops_getHandler('group');
     $criteria      = new Criteria('group_type', _XPY_MI_GROUP_TYPE_ACCOUNTS);
-    if (count($groupsHandler->getObjects($criteria)) == 0) {
+    if (0 == count($groupsHandler->getObjects($criteria))) {
         $group = $groupsHandler->create();
         $group->setVar('name', _XPY_MI_GROUP_NAME_ACCOUNTS);
         $group->setVar('description', _XPY_MI_GROUP_DESC_ACCOUNTS);
@@ -183,7 +183,7 @@ function xoops_module_update_xpayment($module, $oldversion)
 
     $groupsHandler = xoops_getHandler('group');
     $criteria      = new Criteria('group_type', _XPY_MI_GROUP_TYPE_OFFICER);
-    if (count($groupsHandler->getObjects($criteria)) == 0) {
+    if (0 == count($groupsHandler->getObjects($criteria))) {
         $group = $groupsHandler->create();
         $group->setVar('name', _XPY_MI_GROUP_NAME_OFFICER);
         $group->setVar('description', _XPY_MI_GROUP_DESC_OFFICER);

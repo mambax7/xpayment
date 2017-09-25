@@ -30,13 +30,13 @@ function PaidDonationsHook($invoice)
     $xoMod         = $moduleHandler->getByDirname('donations');
     $xoConfig      = $configHandler->getConfigList($xoMod->getVar('mid'));
 
-    if ($xoConfig['change_group'] && $donation->getVar('uid') <> 0) {
+    if ($xoConfig['change_group'] && 0 <> $donation->getVar('uid')) {
         $memberHandler = xoops_getHandler('member');
         $memberHandler->addUserToGroup($xoConfig['donation_group'], $donation->getVar('uid'));
     }
 
     $xoMod = $moduleHandler->getByDirname('profile');
-    if (is_object($xoMod) && $donation->getVar('uid') <> 0) {
+    if (is_object($xoMod) && 0 <> $donation->getVar('uid')) {
         $profileHandler = xoops_getModuleHandler('profile', 'profile');
         $profile        = $profileHandler->get($donation->getVar('uid'));
         $profile->setVar($xoConfig['profile_field'], time());

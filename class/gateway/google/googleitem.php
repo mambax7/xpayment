@@ -67,7 +67,7 @@ class googleitem
         $this->unit_price       = $price;
         $this->quantity         = $qty;
 
-        if ($item_weight != '' && $numeric_weight !== '') {
+        if ('' != $item_weight && '' !== $numeric_weight) {
             switch (strtoupper($item_weight)) {
                 case 'KG':
                     $this->item_weight = strtoupper($item_weight);
@@ -202,7 +202,7 @@ class googleitem
         $xml_data->Element('item-description', $this->item_description);
         $xml_data->Element('unit-price', $this->unit_price, ['currency' => $this->currency]);
         $xml_data->Element('quantity', $this->quantity);
-        if ($this->merchant_private_item_data != '') {
+        if ('' != $this->merchant_private_item_data) {
             //          echo get_class($item->merchant_private_item_data);
             if (is_a($this->merchant_private_item_data, 'merchantprivate')) {
                 $this->merchant_private_item_data->AddMerchantPrivateToXML($xml_data);
@@ -210,14 +210,14 @@ class googleitem
                 $xml_data->Element('merchant-private-item-data', $this->merchant_private_item_data);
             }
         }
-        if ($this->merchant_item_id != '') {
+        if ('' != $this->merchant_item_id) {
             $xml_data->Element('merchant-item-id', $this->merchant_item_id);
         }
-        if ($this->tax_table_selector != '') {
+        if ('' != $this->tax_table_selector) {
             $xml_data->Element('tax-table-selector', $this->tax_table_selector);
         }
         //     recurring Carrier calculation
-        if ($this->item_weight != '' && $this->numeric_weight !== '') {
+        if ('' != $this->item_weight && '' !== $this->numeric_weight) {
             $xml_data->EmptyElement('item-weight', [
                 'unit'  => $this->item_weight,
                 'value' => $this->numeric_weight

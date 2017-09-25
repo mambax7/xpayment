@@ -129,7 +129,7 @@ class XpaymentInvoice_transactionsHandler extends XoopsPersistableObjectHandler
         $result = $GLOBALS['xoopsDB']->queryF($sql);
         list($feepercentile) = $GLOBALS['xoopsDB']->fetchRow($result);
 
-        return ($feepercentile <> 0 ? $feepercentile : false);
+        return (0 <> $feepercentile ? $feepercentile : false);
     }
 
     public function getDepositPercentile($gateway, $grand)
@@ -138,7 +138,7 @@ class XpaymentInvoice_transactionsHandler extends XoopsPersistableObjectHandler
         $result = $GLOBALS['xoopsDB']->queryF($sql);
         list($depositpercentile) = $GLOBALS['xoopsDB']->fetchRow($result);
 
-        return ($depositpercentile <> 0 ? $depositpercentile : false);
+        return (0 <> $depositpercentile ? $depositpercentile : false);
     }
 
     public function sumOfGross($iid = 0)
@@ -153,7 +153,7 @@ class XpaymentInvoice_transactionsHandler extends XoopsPersistableObjectHandler
         $invoice->setVar('paid', $gross);
         $invoiceHandler->insert($invoice);
 
-        return ($gross <> 0 ? $gross : false);
+        return (0 <> $gross ? $gross : false);
     }
 
     public function countTransactionId($transactionid)
@@ -173,24 +173,24 @@ class XpaymentInvoice_transactionsHandler extends XoopsPersistableObjectHandler
         $invoice->setVar('transactionid', $obj->getVar('transactionid'));
 
         if ($this->sumOfGross($obj->getVar('iid')) + $obj->getVar('gross') >= $invoice->getVar('grand')
-            && $invoice->getVar('mode') === 'UNPAID') {
+            && 'UNPAID' === $invoice->getVar('mode')) {
             $invoice->setVar('mode', 'PAID');
         } elseif ($this->sumOfGross($obj->getVar('iid')) + $obj->getVar('gross') < $invoice->getVar('grand')
-                  && $invoice->getVar('mode') === 'PAID') {
+                  && 'PAID' === $invoice->getVar('mode')) {
             $invoice->setVar('mode', 'UNPAID');
         }
 
-        if ($invoice->getVar('remittion') === 'SETTLED' && $invoice->getVar('mode') === 'UNPAID') {
+        if ('SETTLED' === $invoice->getVar('remittion') && 'UNPAID' === $invoice->getVar('mode')) {
             if ($this->sumOfGross($obj->getVar('iid')) + $obj->getVar('gross') >= $invoice->getVar('remittion_settled')) {
                 $invoice->setVar('mode', 'PAID');
             }
         }
 
-        if ($obj->getVar('gross') >= 0 && ($obj->getVar('mode') === 'PAYMENT' || $obj->getVar('mode') === 'REFUND')) {
+        if ($obj->getVar('gross') >= 0 && ('PAYMENT' === $obj->getVar('mode') || 'REFUND' === $obj->getVar('mode'))) {
             $obj->setVar('mode', 'PAYMENT');
         } elseif ($obj->getVar('gross') < 0
-                  && ($obj->getVar('mode') === 'PAYMENT'
-                      || $obj->getVar('mode') === 'REFUND')) {
+                  && ('PAYMENT' === $obj->getVar('mode')
+                      || 'REFUND' === $obj->getVar('mode'))) {
             $obj->setVar('mode', 'REFUND');
         }
 
@@ -223,12 +223,12 @@ class XpaymentInvoice_transactionsHandler extends XoopsPersistableObjectHandler
                 break;
         }
 
-        if ($obj->vars['mode']['changed'] === true) {
+        if (true === $obj->vars['mode']['changed']) {
             $run_plugin = true;
         }
         $tiid = parent::insert($obj, $force);
         @$invoiceHandler->insert($invoice, true);
-        if ($run_plugin === true) {
+        if (true === $run_plugin) {
             $obj->runPlugin();
         }
 

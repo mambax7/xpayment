@@ -172,8 +172,8 @@ class XpaymentInvoice extends XoopsObject
     {
         $ret = [];
         foreach (parent::toArray() as $field => $value) {
-            if ($this->vars[$field]['data_type'] == XOBJ_DTYPE_DECIMAL) {
-                if ($field === 'weight') {
+            if (XOBJ_DTYPE_DECIMAL == $this->vars[$field]['data_type']) {
+                if ('weight' === $field) {
                     $ret[$field] = number_format($value, 4);
                 } else {
                     $ret[$field] = number_format($value, 2);
@@ -216,7 +216,7 @@ class XpaymentInvoice extends XoopsObject
                 $ret['occurrence_totals'][$field] = $value;
             }
         }
-        $ret['donation'] = ($ret['donation'] === true ? _YES : _NO);
+        $ret['donation'] = (true === $ret['donation'] ? _YES : _NO);
 
         $ret['url']    = $this->getURL();
         $ret['pdfurl'] = $this->getPDFURL();
@@ -231,13 +231,13 @@ class XpaymentInvoice extends XoopsObject
         $configHandler = xoops_getHandler('config');
         $xoModule      = $moduleHandler->getByDirname('xpayment');
         $xoConfig      = $configHandler->getConfigList($xoModule->getVar('mid'));
-        if ($xoConfig['id_protect'] === true) {
+        if (true === $xoConfig['id_protect']) {
             $scape = md5($this->getVar('iid') . XOOPS_LICENSE_KEY);
         } else {
             $scape = $this->getVar('iid');
         }
 
-        if ($xoConfig['htaccess'] === true) {
+        if (true === $xoConfig['htaccess']) {
             return XOOPS_URL . '/' . $xoConfig['baseurl'] . '/' . $scape . $xoConfig['endofurl'];
         } else {
             return XOOPS_URL . '/modules/xpayment/?iid=' . $scape;
@@ -252,13 +252,13 @@ class XpaymentInvoice extends XoopsObject
         $xoModule      = $moduleHandler->getByDirname('xpayment');
         $xoConfig      = $configHandler->getConfigList($xoModule->getVar('mid'));
 
-        if ($xoConfig['id_protect'] === true) {
+        if (true === $xoConfig['id_protect']) {
             $scape = md5($this->getVar('iid') . XOOPS_LICENSE_KEY);
         } else {
             $scape = $this->getVar('iid');
         }
 
-        if ($xoConfig['htaccess'] === true) {
+        if (true === $xoConfig['htaccess']) {
             return XOOPS_URL . '/' . $xoConfig['baseurl'] . '/pdf,' . $scape . $xoConfig['endofurl_pdf'];
         } else {
             return XOOPS_URL . '/modules/xpayment/pdf.php?iid=' . $scape;
@@ -269,7 +269,7 @@ class XpaymentInvoice extends XoopsObject
     {
         if (is_a($gateway, 'XpaymentGateways')) {
             $this->_gateway = $gateway;
-        } elseif (strlen($this->getVar('gateway')) == 0) {
+        } elseif (0 == strlen($this->getVar('gateway'))) {
             $this->_gateway = $this->_gateway_h->getGateway($GLOBALS['xoopsModuleConfig']['gateway'], $this);
         } else {
             $this->_gateway = $this->_gateway_h->getGateway($this->getVar('gateway'), $this);
@@ -505,7 +505,7 @@ class XpaymentInvoiceHandler extends XoopsPersistableObjectHandler
     public function get($iid = null, $fields = null)
     {
         $gatewaysHandler = xoops_getModuleHandler('gateways', 'xpayment');
-        if (isset($iid) && $GLOBALS['xoopsModuleConfig']['id_protect'] === false || is_numeric($iid)) {
+        if (isset($iid) && false === $GLOBALS['xoopsModuleConfig']['id_protect'] || is_numeric($iid)) {
             $obj = parent::get($iid);
         } else {
             $criteria = new Criteria('offline', time(), '>=');
@@ -527,7 +527,7 @@ class XpaymentInvoiceHandler extends XoopsPersistableObjectHandler
                 $obj->setGateway($gateways[0]);
             }
         }
-        while ($obj->getVar('annum') < time() && $obj->getVar('mode') === 'UNPAID') {
+        while ($obj->getVar('annum') < time() && 'UNPAID' === $obj->getVar('mode')) {
             $obj->setVar('annum', $obj->getVar('annum') + $GLOBALS['xpaymentModuleConfig']['annum']);
             $obj->setVar('interest', $obj->getVar('interest') + ($obj->getVar('interest') + $obj->getVar('grand')) * ($obj->getVar('rate') / 100));
             $obj->setVar('grand', $obj->getVar('grand') + ($obj->getVar('interest') + $obj->getVar('grand')) * ($obj->getVar('rate') / 100));
@@ -561,7 +561,7 @@ class XpaymentInvoiceHandler extends XoopsPersistableObjectHandler
             $obj->setVar('updated', time());
         }
 
-        if ($obj->vars['user_ip']['changed'] === true) {
+        if (true === $obj->vars['user_ip']['changed']) {
             if (strlen($xoConfig['ipdb_apikey']) > 0) {
                 set_time_limit(120);
                 $ipLite = new ip2location_lite;
@@ -594,10 +594,10 @@ class XpaymentInvoiceHandler extends XoopsPersistableObjectHandler
             }
         }
 
-        if ($obj->vars['mode']['changed'] === true) {
+        if (true === $obj->vars['mode']['changed']) {
             $obj->setVar('actioned', time());
             $run_plugin = true;
-            if ($obj->getVar('mode') === 'PAID') {
+            if ('PAID' === $obj->getVar('mode')) {
                 $totalinvoices  = $this->getCount(new Criteria('drawto_email', $obj->getVar('drawto_email')));
                 $issue_discount = false;
                 if (($totalinvoices % $GLOBALS['xoopsModuleConfig']['issue_discount_every'])
@@ -610,10 +610,10 @@ class XpaymentInvoiceHandler extends XoopsPersistableObjectHandler
                     && $GLOBALS['xoopsModuleConfig']['issue_random_discount']) {
                     $issue_discount = true;
                 }
-                if ($issue_discount === true) {
+                if (true === $issue_discount) {
                     $obj->sendDiscountCode(
                         $obj->getVar('drawto_email'),
-                        ($GLOBALS['xoopsModuleConfig']['discount_validtill'] == 0 ? 0 : time() + $GLOBALS['xoopsModuleConfig']['discount_validtill']),
+                        (0 == $GLOBALS['xoopsModuleConfig']['discount_validtill'] ? 0 : time() + $GLOBALS['xoopsModuleConfig']['discount_validtill']),
                         $GLOBALS['xoopsModuleConfig']['discount_redeems'],
                                            $GLOBALS['xoopsModuleConfig']['discount_percentage'],
                         $GLOBALS['xoopsModuleConfig']['discount_prefix']
@@ -622,8 +622,8 @@ class XpaymentInvoiceHandler extends XoopsPersistableObjectHandler
             }
         }
 
-        if ($obj->vars['remittion']['changed'] === true) {
-            if ($obj->getVar('remittion') === 'NONE') {
+        if (true === $obj->vars['remittion']['changed']) {
+            if ('NONE' === $obj->getVar('remittion')) {
                 $obj->setVar('remitted', 0);
             } else {
                 $obj->setVar('remitted', time());
@@ -631,17 +631,17 @@ class XpaymentInvoiceHandler extends XoopsPersistableObjectHandler
             $run_plugin_remittence = true;
         }
 
-        if (strlen($obj->getVar('gateway')) == 0) {
+        if (0 == strlen($obj->getVar('gateway'))) {
             $obj->setVar('gateway', $GLOBALS['xoopsModuleConfig']['gateway']);
         }
 
         $iid = parent::insert($obj, $force);
 
-        if ($run_plugin === true) {
+        if (true === $run_plugin) {
             $obj->runPlugin($iid);
         }
 
-        if ($run_plugin_remittence === true) {
+        if (true === $run_plugin_remittence) {
             $obj->runRemittencePlugin($iid);
         }
 
@@ -656,16 +656,16 @@ class XpaymentInvoiceHandler extends XoopsPersistableObjectHandler
             $var = explode(',', $part);
             if (!empty($var[1]) && !is_numeric($var[0])) {
                 $object = $this->create();
-                if ($object->vars[$var[0]]['data_type'] == XOBJ_DTYPE_TXTBOX
-                    || $object->vars[$var[0]]['data_type'] == XOBJ_DTYPE_TXTAREA) {
+                if (XOBJ_DTYPE_TXTBOX == $object->vars[$var[0]]['data_type']
+                    || XOBJ_DTYPE_TXTAREA == $object->vars[$var[0]]['data_type']) {
                     $criteria->add(new Criteria('`' . $var[0] . '`', '%' . $var[1] . '%', (isset($var[2]) ? $var[2] : 'LIKE')));
-                } elseif ($object->vars[$var[0]]['data_type'] == XOBJ_DTYPE_INT
-                          || $object->vars[$var[0]]['data_type'] == XOBJ_DTYPE_DECIMAL
-                          || $object->vars[$var[0]]['data_type'] == XOBJ_DTYPE_FLOAT) {
+                } elseif (XOBJ_DTYPE_INT == $object->vars[$var[0]]['data_type']
+                          || XOBJ_DTYPE_DECIMAL == $object->vars[$var[0]]['data_type']
+                          || XOBJ_DTYPE_FLOAT == $object->vars[$var[0]]['data_type']) {
                     $criteria->add(new Criteria('`' . $var[0] . '`', $var[1], (isset($var[2]) ? $var[2] : '=')));
-                } elseif ($object->vars[$var[0]]['data_type'] == XOBJ_DTYPE_ENUM) {
+                } elseif (XOBJ_DTYPE_ENUM == $object->vars[$var[0]]['data_type']) {
                     $criteria->add(new Criteria('`' . $var[0] . '`', $var[1], (isset($var[2]) ? $var[2] : '=')));
-                } elseif ($object->vars[$var[0]]['data_type'] == XOBJ_DTYPE_ARRAY) {
+                } elseif (XOBJ_DTYPE_ARRAY == $object->vars[$var[0]]['data_type']) {
                     $criteria->add(new Criteria('`' . $var[0] . '`', '%"' . $var[1] . '";%', (isset($var[2]) ? $var[2] : 'LIKE')));
                 }
             } elseif (!empty($var[1]) && is_numeric($var[0])) {

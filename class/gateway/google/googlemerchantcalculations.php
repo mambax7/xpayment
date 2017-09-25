@@ -70,7 +70,7 @@ class googlemerchantcalculations
         $xml_data->Push('results');
 
         foreach ($this->results_arr as $result) {
-            if ($result->shipping_name != '') {
+            if ('' != $result->shipping_name) {
                 $xml_data->Push('result', [
                     'shipping-name' => $result->shipping_name,
                     'address-id'    => $result->address_id
@@ -81,11 +81,11 @@ class googlemerchantcalculations
                 $xml_data->Push('result', ['address-id' => $result->address_id]);
             }
 
-            if ($result->tax_amount != '') {
+            if ('' != $result->tax_amount) {
                 $xml_data->Element('total-tax', $result->tax_amount, ['currency' => $this->currency]);
             }
 
-            if ((count($result->coupon_arr) != 0) || (count($result->giftcert_arr) != 0)) {
+            if ((0 != count($result->coupon_arr)) || (0 != count($result->giftcert_arr))) {
                 $xml_data->Push('merchant-code-results');
 
                 foreach ($result->coupon_arr as $curr_coupon) {

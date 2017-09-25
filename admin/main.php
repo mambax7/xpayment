@@ -133,7 +133,7 @@ switch ($_REQUEST['op']) {
                                                                            . '&sort='
                                                                            . $key
                                                                            . '&order='
-                                                                           . (($key == $sort) ? ($order == 'ASC' ? 'DESC' : 'ASC') : $order)
+                                                                           . (($key == $sort) ? ('ASC' == $order ? 'DESC' : 'ASC') : $order)
                                                                            . '&op='
                                                                            . $_REQUEST['op']
                                                                            . '&fct='
@@ -224,13 +224,13 @@ switch ($_REQUEST['op']) {
 
                 $GLOBALS['xoopsTpl']->assign('invoice', $invoice->toArray());
 
-                if ($invoice->getVar('mode') == 'UNPAID') {
+                if ('UNPAID' == $invoice->getVar('mode')) {
                     $GLOBALS['xoopsTpl']->assign('payment_markup', $invoice->getAdminPaymentHtml());
                 }
 
-                if ($invoice->getVar('mode') == 'UNPAID'
-                    && ($invoice->getVar('remittion') == 'COLLECT'
-                        || $invoice->getVar('remittion') == 'SETTLED')) {
+                if ('UNPAID' == $invoice->getVar('mode')
+                    && ('COLLECT' == $invoice->getVar('remittion')
+                        || 'SETTLED' == $invoice->getVar('remittion'))) {
                     $GLOBALS['xoopsTpl']->assign('settle_markup', $invoice->getAdminSettleHtml());
                 }
 
@@ -339,7 +339,7 @@ switch ($_REQUEST['op']) {
                                                                            . '&sort='
                                                                            . $key
                                                                            . '&order='
-                                                                           . (($key == $sort) ? ($order == 'ASC' ? 'DESC' : 'ASC') : $order)
+                                                                           . (($key == $sort) ? ('ASC' == $order ? 'DESC' : 'ASC') : $order)
                                                                            . '&op='
                                                                            . $_REQUEST['op']
                                                                            . '&fct='
@@ -372,11 +372,11 @@ switch ($_REQUEST['op']) {
                 break;
             case 'create':
                 extract($_POST);
-                if ((int)$redeems == 0) {
+                if (0 == (int)$redeems) {
                     redirect_header($_SERVER['PHP_SELF'] . '?op=discounts&fct=list&sort=' . $sort . '&order=' . $order . '&start=' . $start . '&limit=' . $limit . '&filter=' . $filter, 3, _XPY_MSG_DISCOUNT_NOREDEEMS_SPECIFIED);
                     exit(0);
                 }
-                if ((int)$discount == 0) {
+                if (0 == (int)$discount) {
                     redirect_header($_SERVER['PHP_SELF'] . '?op=discounts&fct=list&sort=' . $sort . '&order=' . $order . '&start=' . $start . '&limit=' . $limit . '&filter=' . $filter, 3, _XPY_MSG_DISCOUNT_NODISCOUNT_SPECIFIED);
                     exit(0);
                 }
@@ -387,7 +387,7 @@ switch ($_REQUEST['op']) {
                 foreach (explode('|', $emails) as $email) {
                     if (preg_match("/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/i", $email)) {
                         if (!$dis = $discountHandler->getByEmail($email)) {
-                            if ($discountHandler->sendDiscountCode($email, ($validtill_infinte === true ? 0 : strtotime($validtill['date']) + $validtill['time']), (int)$redeems, (float)$discount, $prefix, 0)) {
+                            if ($discountHandler->sendDiscountCode($email, (true === $validtill_infinte ? 0 : strtotime($validtill['date']) + $validtill['time']), (int)$redeems, (float)$discount, $prefix, 0)) {
                                 ++$created;
                             }
                         } else {
@@ -397,11 +397,11 @@ switch ($_REQUEST['op']) {
                         }
                     }
                 }
-                if ($scan === true) {
+                if (true === $scan) {
                     foreach ($groups as $group) {
-                        foreach ($discountHandler->getUsersByGroup($group, ($logon === true ? strtotime($logon_datetime['date']) + $logon_datetime['time'] : 0), ($since === true ? strtotime($since_datetime['date']) + $since_datetime['time'] : 0), true) as $user) {
+                        foreach ($discountHandler->getUsersByGroup($group, (true === $logon ? strtotime($logon_datetime['date']) + $logon_datetime['time'] : 0), (true === $since ? strtotime($since_datetime['date']) + $since_datetime['time'] : 0), true) as $user) {
                             if (!$dis = $discountHandler->getByEmail($user->getVar('email'))) {
-                                if ($discountHandler->sendDiscountCode($user->getVar('email'), ($validtill_infinte === true ? 0 : strtotime($validtill['date']) + $validtill['time']), (int)$redeems, (float)$discount, $prefix, $user->getVar('uid'))) {
+                                if ($discountHandler->sendDiscountCode($user->getVar('email'), (true === $validtill_infinte ? 0 : strtotime($validtill['date']) + $validtill['time']), (int)$redeems, (float)$discount, $prefix, $user->getVar('uid'))) {
                                     ++$created;
                                 }
                             } else {
@@ -455,7 +455,7 @@ switch ($_REQUEST['op']) {
                                                                . '&sort='
                                                                . $key
                                                                . '&order='
-                                                               . (($key == $sort) ? ($order == 'ASC' ? 'DESC' : 'ASC') : $order)
+                                                               . (($key == $sort) ? ('ASC' == $order ? 'DESC' : 'ASC') : $order)
                                                                . '&op='
                                                                . $_REQUEST['op']
                                                                . '&fct='
@@ -492,7 +492,7 @@ switch ($_REQUEST['op']) {
                 $order = !empty($_REQUEST['order']) ? $_REQUEST['order'] : 'DESC';
                 $sort  = !empty($_REQUEST['sort']) ? $_REQUEST['sort'] : 'date';
 
-                if (!isset($_GET['iid']) || $_GET['iid'] == 0) {
+                if (!isset($_GET['iid']) || 0 == $_GET['iid']) {
                     //            if ($_GET['iid']==0) {
                     $pagenav = new XoopsPageNav($ttl, $limit, $start, 'start', 'limit=' . $limit . '&sort=' . $sort . '&order=' . $order . '&op=' . $_REQUEST['op'] . '&fct=' . $_REQUEST['fct']);
                     $GLOBALS['xoopsTpl']->assign('pagenav', $pagenav->renderNav());
@@ -523,7 +523,7 @@ switch ($_REQUEST['op']) {
                     $GLOBALS['xoopsTpl']->append('transactions', $transaction->toArray());
                 }
 
-                if (!isset($_GET['iid']) || $_GET['iid'] == 0) {
+                if (!isset($_GET['iid']) || 0 == $_GET['iid']) {
                     foreach ([
                                  'transactionid',
                                  'email',
@@ -557,7 +557,7 @@ switch ($_REQUEST['op']) {
                                                                    . '&sort='
                                                                    . $key
                                                                    . '&order='
-                                                                   . (($key == $sort) ? ($order == 'ASC' ? 'DESC' : 'ASC') : $order)
+                                                                   . (($key == $sort) ? ('ASC' == $order ? 'DESC' : 'ASC') : $order)
                                                                    . '&op='
                                                                    . $_REQUEST['op']
                                                                    . '&fct='
@@ -600,7 +600,7 @@ switch ($_REQUEST['op']) {
                                                                    . '&sort='
                                                                    . $key
                                                                    . '&order='
-                                                                   . (($key == $sort) ? ($order == 'ASC' ? 'DESC' : 'ASC') : $order)
+                                                                   . (($key == $sort) ? ('ASC' == $order ? 'DESC' : 'ASC') : $order)
                                                                    . '&op='
                                                                    . $_REQUEST['op']
                                                                    . '&fct='
@@ -655,7 +655,7 @@ switch ($_REQUEST['op']) {
                                                                            . '&sort='
                                                                            . $key
                                                                            . '&order='
-                                                                           . (($key == $sort) ? ($order == 'ASC' ? 'DESC' : 'ASC') : $order)
+                                                                           . (($key == $sort) ? ('ASC' == $order ? 'DESC' : 'ASC') : $order)
                                                                            . '&op='
                                                                            . $_REQUEST['op']
                                                                            . '&fct='
@@ -726,7 +726,7 @@ switch ($_REQUEST['op']) {
                 $gateways        = $gatewaysHandler->getObjects(null, true);
 
                 foreach ($gateways as $gid => $gateway) {
-                    $gateway->setVar('testmode', ($_POST['testmode'][$gid] === true ? true : false));
+                    $gateway->setVar('testmode', (true === $_POST['testmode'][$gid] ? true : false));
                     $gatewaysHandler->insert($gateway);
                 }
                 redirect_header($_SERVER['PHP_SELF'] . '?op=gateways&fct=list', 3, _XPY_MSG_TESTMODES_SAVED);
@@ -911,7 +911,7 @@ switch ($_REQUEST['op']) {
                                                                            . '&sort='
                                                                            . $key
                                                                            . '&order='
-                                                                           . (($key == $sort) ? ($order == 'ASC' ? 'DESC' : 'ASC') : $order)
+                                                                           . (($key == $sort) ? ('ASC' == $order ? 'DESC' : 'ASC') : $order)
                                                                            . '&op='
                                                                            . $_REQUEST['op']
                                                                            . '&fct='
@@ -956,7 +956,7 @@ switch ($_REQUEST['op']) {
                 break;
             case 'save':
                 $groupsHandler = xoops_getModuleHandler('groups', 'xpayment');
-                if ($_REQUEST['rid'] == 0) {
+                if (0 == $_REQUEST['rid']) {
                     $group = $groupsHandler->create();
                 } else {
                     $group = $groupsHandler->get($_REQUEST['rid']);
@@ -988,7 +988,7 @@ switch ($_REQUEST['op']) {
 
             case 'edit':
                 $groupsHandler = xoops_getModuleHandler('groups', 'xpayment');
-                if ($_REQUEST['rid'] == 0) {
+                if (0 == $_REQUEST['rid']) {
                     $group = $groupsHandler->create();
                 } else {
                     $group = $groupsHandler->get($_REQUEST['rid']);
@@ -1071,26 +1071,26 @@ switch ($_REQUEST['op']) {
         ];
         foreach (array_reverse($parts) as $title => $part) {
             foreach ($invoiceHandler->getCurrenciesUsed($part) as $currency) {
-                if ($invoiceHandler->getSumByField('`grand`', '`mode`', 'UNPAID', array_merge([
+                if ('0.00' != $invoiceHandler->getSumByField('`grand`', '`mode`', 'UNPAID', array_merge([
                                                                                                   '`currency`' => [
                                                                                                       'value'    => $currency,
                                                                                                       'operator' => '='
                                                                                                   ]
-                                                                                              ], $part)) != '0.00'
-                    || $invoiceHandler->getSumByField('`grand`', '`mode`', 'PAID', array_merge([
+                                                                                              ], $part))
+                    || '0.00' != $invoiceHandler->getSumByField('`grand`', '`mode`', 'PAID', array_merge([
                                                                                                    '`currency`' => [
                                                                                                        'value'    => $currency,
                                                                                                        'operator' => '='
                                                                                                    ]
-                                                                                               ], $part)) != '0.00'
-                    || $invoiceHandler->getSumByField('`grand`', '`mode`', 'CANCEL', array_merge([
+                                                                                               ], $part))
+                    || '0.00' != $invoiceHandler->getSumByField('`grand`', '`mode`', 'CANCEL', array_merge([
                                                                                                      '`currency`' => [
                                                                                                          'value'    => $currency,
                                                                                                          'operator' => '='
                                                                                                      ]
-                                                                                                 ], $part)) != '0.00') {
+                                                                                                 ], $part))) {
                     $adminObject->addInfoBox(sprintf(_XPY_AM_INVOICES_SUM_TOTAL, $title, $currency));
-                    if ($part['`created`']['value'] != 0) {
+                    if (0 != $part['`created`']['value']) {
                         $adminObject->addInfoBoxLine(sprintf(_XPY_AM_INVOICES_SUM_TOTAL, $title, $currency), '<label>' . _XPY_AM_INVOICES_FROM . '</label>', date(_DATESTRING, time()), 'Red');
                         $adminObject->addInfoBoxLine(sprintf(_XPY_AM_INVOICES_SUM_TOTAL, $title, $currency), '<label>' . _XPY_AM_INVOICES_TO . '</label>', date(_DATESTRING, $part['`created`']['value']), 'Red');
                     }
@@ -1351,26 +1351,26 @@ switch ($_REQUEST['op']) {
                                                                                                                                                                                                                                                        ])), 'Green');
                 }
 
-                if ($invoiceHandler->getSumByField('`tax`', '`mode`', 'UNPAID', array_merge([
+                if ('0.00' != $invoiceHandler->getSumByField('`tax`', '`mode`', 'UNPAID', array_merge([
                                                                                                 '`currency`' => [
                                                                                                     'value'    => $currency,
                                                                                                     'operator' => '='
                                                                                                 ]
-                                                                                            ], $part)) != '0.00'
-                    || $invoiceHandler->getSumByField('`tax`', '`mode`', 'PAID', array_merge([
+                                                                                            ], $part))
+                    || '0.00' != $invoiceHandler->getSumByField('`tax`', '`mode`', 'PAID', array_merge([
                                                                                                  '`currency`' => [
                                                                                                      'value'    => $currency,
                                                                                                      'operator' => '='
                                                                                                  ]
-                                                                                             ], $part)) != '0.00'
-                    || $invoiceHandler->getSumByField('`tax`', '`mode`', 'CANCEL', array_merge([
+                                                                                             ], $part))
+                    || '0.00' != $invoiceHandler->getSumByField('`tax`', '`mode`', 'CANCEL', array_merge([
                                                                                                    '`currency`' => [
                                                                                                        'value'    => $currency,
                                                                                                        'operator' => '='
                                                                                                    ]
-                                                                                               ], $part)) != '0.00') {
+                                                                                               ], $part))) {
                     $adminObject->addInfoBox(sprintf(_XPY_AM_INVOICES_TAX_TOTAL, $title, $currency));
-                    if ($part['`created`']['value'] != 0) {
+                    if (0 != $part['`created`']['value']) {
                         $adminObject->addInfoBoxLine(sprintf(_XPY_AM_INVOICES_TAX_TOTAL, $title, $currency), '<label>' . _XPY_AM_INVOICES_FROM . '</label>', date(_DATESTRING, time()), 'Red');
                         $adminObject->addInfoBoxLine(sprintf(_XPY_AM_INVOICES_TAX_TOTAL, $title, $currency), '<label>' . _XPY_AM_INVOICES_TO . '</label>', date(_DATESTRING, $part['`created`']['value']), 'Red');
                     }
@@ -1592,26 +1592,26 @@ switch ($_REQUEST['op']) {
                                                                                                                                                                                                                                                      ])), 'Green');
                 }
 
-                if ($invoiceHandler->getAverageByField('`grand`', '`mode`', 'UNPAID', array_merge([
+                if ('0.00' != $invoiceHandler->getAverageByField('`grand`', '`mode`', 'UNPAID', array_merge([
                                                                                                       '`currency`' => [
                                                                                                           'value'    => $currency,
                                                                                                           'operator' => '='
                                                                                                       ]
-                                                                                                  ], $part)) != '0.00'
-                    || $invoiceHandler->getAverageByField('`grand`', '`mode`', 'PAID', array_merge([
+                                                                                                  ], $part))
+                    || '0.00' != $invoiceHandler->getAverageByField('`grand`', '`mode`', 'PAID', array_merge([
                                                                                                        '`currency`' => [
                                                                                                            'value'    => $currency,
                                                                                                            'operator' => '='
                                                                                                        ]
-                                                                                                   ], $part)) != '0.00'
-                    || $invoiceHandler->getAverageByField('`grand`', '`mode`', 'CANCEL', array_merge([
+                                                                                                   ], $part))
+                    || '0.00' != $invoiceHandler->getAverageByField('`grand`', '`mode`', 'CANCEL', array_merge([
                                                                                                          '`currency`' => [
                                                                                                              'value'    => $currency,
                                                                                                              'operator' => '='
                                                                                                          ]
-                                                                                                     ], $part)) != '0.00') {
+                                                                                                     ], $part))) {
                     $adminObject->addInfoBox(sprintf(_XPY_AM_INVOICES_AVG_TOTAL, $title, $currency));
-                    if ($part['`created`']['value'] != 0) {
+                    if (0 != $part['`created`']['value']) {
                         $adminObject->addInfoBoxLine(sprintf(_XPY_AM_INVOICES_AVG_TOTAL, $title, $currency), '<label>' . _XPY_AM_INVOICES_FROM . '</label>', date(_DATESTRING, time()), 'Red');
                         $adminObject->addInfoBoxLine(sprintf(_XPY_AM_INVOICES_AVG_TOTAL, $title, $currency), '<label>' . _XPY_AM_INVOICES_TO . '</label>', date(_DATESTRING, $part['`created`']['value']), 'Red');
                     }
@@ -1870,26 +1870,26 @@ switch ($_REQUEST['op']) {
                                                                                                                                                                                                                                                                ]
                                                                                                                                                                                                                                                            ])), 'Green');
                 }
-                if ($invoiceHandler->getMaximumByField('`grand`', '`mode`', 'UNPAID', array_merge([
+                if ('0.00' != $invoiceHandler->getMaximumByField('`grand`', '`mode`', 'UNPAID', array_merge([
                                                                                                       '`currency`' => [
                                                                                                           'value'    => $currency,
                                                                                                           'operator' => '='
                                                                                                       ]
-                                                                                                  ], $part)) != '0.00'
-                    || $invoiceHandler->getMaximumByField('`grand`', '`mode`', 'PAID', array_merge([
+                                                                                                  ], $part))
+                    || '0.00' != $invoiceHandler->getMaximumByField('`grand`', '`mode`', 'PAID', array_merge([
                                                                                                        '`currency`' => [
                                                                                                            'value'    => $currency,
                                                                                                            'operator' => '='
                                                                                                        ]
-                                                                                                   ], $part)) != '0.00'
-                    || $invoiceHandler->getMaximumByField('`grand`', '`mode`', 'CANCEL', array_merge([
+                                                                                                   ], $part))
+                    || '0.00' != $invoiceHandler->getMaximumByField('`grand`', '`mode`', 'CANCEL', array_merge([
                                                                                                          '`currency`' => [
                                                                                                              'value'    => $currency,
                                                                                                              'operator' => '='
                                                                                                          ]
-                                                                                                     ], $part)) != '0.00') {
+                                                                                                     ], $part))) {
                     $adminObject->addInfoBox(sprintf(_XPY_AM_INVOICES_MAX_TOTAL, $title, $currency));
-                    if ($part['`created`']['value'] != 0) {
+                    if (0 != $part['`created`']['value']) {
                         $adminObject->addInfoBoxLine(sprintf(_XPY_AM_INVOICES_MAX_TOTAL, $title, $currency), '<label>' . _XPY_AM_INVOICES_FROM . '</label>', date(_DATESTRING, time()), 'Red');
                         $adminObject->addInfoBoxLine(sprintf(_XPY_AM_INVOICES_MAX_TOTAL, $title, $currency), '<label>' . _XPY_AM_INVOICES_TO . '</label>', date(_DATESTRING, $part['`created`']['value']), 'Red');
                     }
@@ -2149,26 +2149,26 @@ switch ($_REQUEST['op']) {
                                                                                                                                                                                                                                                            ])), 'Green');
                 }
 
-                if ($invoiceHandler->getCountByField('*', '`mode`', 'UNPAID', array_merge([
+                if ('0' != $invoiceHandler->getCountByField('*', '`mode`', 'UNPAID', array_merge([
                                                                                               '`currency`' => [
                                                                                                   'value'    => $currency,
                                                                                                   'operator' => '='
                                                                                               ]
-                                                                                          ], $part)) != '0'
-                    || $invoiceHandler->getCountByField('*', '`mode`', 'PAID', array_merge([
+                                                                                          ], $part))
+                    || '0' != $invoiceHandler->getCountByField('*', '`mode`', 'PAID', array_merge([
                                                                                                '`currency`' => [
                                                                                                    'value'    => $currency,
                                                                                                    'operator' => '='
                                                                                                ]
-                                                                                           ], $part)) != '0'
-                    || $invoiceHandler->getCountByField('*', '`mode`', 'CANCEL', array_merge([
+                                                                                           ], $part))
+                    || '0' != $invoiceHandler->getCountByField('*', '`mode`', 'CANCEL', array_merge([
                                                                                                  '`currency`' => [
                                                                                                      'value'    => $currency,
                                                                                                      'operator' => '='
                                                                                                  ]
-                                                                                             ], $part)) != '0') {
+                                                                                             ], $part))) {
                     $adminObject->addInfoBox(sprintf(_XPY_AM_INVOICES_COUNTS_TOTAL, $title, $currency));
-                    if ($part['`created`']['value'] != 0) {
+                    if (0 != $part['`created`']['value']) {
                         $adminObject->addInfoBoxLine(sprintf(_XPY_AM_INVOICES_COUNTS_TOTAL, $title, $currency), '<label>' . _XPY_AM_INVOICES_FROM . '</label>', date(_DATESTRING, time()), 'Red');
                         $adminObject->addInfoBoxLine(sprintf(_XPY_AM_INVOICES_COUNTS_TOTAL, $title, $currency), '<label>' . _XPY_AM_INVOICES_TO . '</label>', date(_DATESTRING, $part['`created`']['value']), 'Red');
                     }

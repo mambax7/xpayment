@@ -124,7 +124,7 @@ class GoogleCart
         $this->merchant_key = $key;
         $this->currency     = $currency;
 
-        if (strtolower($server_type) === 'sandbox') {
+        if ('sandbox' === strtolower($server_type)) {
             $this->server_url = 'https://sandbox.google.com/checkout/';
         } else {
             $this->server_url = 'https://checkout.google.com/';
@@ -419,7 +419,7 @@ class GoogleCart
         $xml_data->Push('shopping-cart');
 
         //Add cart expiration if set
-        if ($this->cart_expiration != '') {
+        if ('' != $this->cart_expiration) {
             $xml_data->Push('cart-expiration');
             $xml_data->Element('good-until-date', $this->cart_expiration);
             $xml_data->Pop('cart-expiration');
@@ -433,7 +433,7 @@ class GoogleCart
             $xml_data->Element('item-description', $item->item_description);
             $xml_data->Element('unit-price', $item->unit_price, ['currency' => $this->currency]);
             $xml_data->Element('quantity', $item->quantity);
-            if ($item->merchant_private_item_data != '') {
+            if ('' != $item->merchant_private_item_data) {
                 //          echo get_class($item->merchant_private_item_data);
                 if (is_a($item->merchant_private_item_data, 'merchantprivate')) {
                     $item->merchant_private_item_data->AddMerchantPrivateToXML($xml_data);
@@ -441,14 +441,14 @@ class GoogleCart
                     $xml_data->Element('merchant-private-item-data', $item->merchant_private_item_data);
                 }
             }
-            if ($item->merchant_item_id != '') {
+            if ('' != $item->merchant_item_id) {
                 $xml_data->Element('merchant-item-id', $item->merchant_item_id);
             }
-            if ($item->tax_table_selector != '') {
+            if ('' != $item->tax_table_selector) {
                 $xml_data->Element('tax-table-selector', $item->tax_table_selector);
             }
             //      Carrier calculation
-            if ($item->item_weight != '' && $item->numeric_weight !== '') {
+            if ('' != $item->item_weight && '' !== $item->numeric_weight) {
                 $xml_data->EmptyElement('item-weight', [
                     'unit'  => $item->item_weight,
                     'value' => $item->numeric_weight
@@ -488,13 +488,13 @@ class GoogleCart
                 if (!empty($sub->recurrent_item)) {
                     $recurrent_item = $sub->recurrent_item;
                     //Google Handled Subscriptions
-                    if ($sub->subscription_type === 'google') {
+                    if ('google' === $sub->subscription_type) {
                         $xml_data->Push('recurrent-item');
                         $xml_data->Element('item-name', $recurrent_item->item_name);
                         $xml_data->Element('item-description', $recurrent_item->item_description);
                         $xml_data->Element('unit-price', $recurrent_item->unit_price, ['currency' => $this->currency]);
                         $xml_data->Element('quantity', $recurrent_item->quantity);
-                        if ($recurrent_item->merchant_private_item_data != '') {
+                        if ('' != $recurrent_item->merchant_private_item_data) {
                             //          echo get_class($item->merchant_private_item_data);
                             if (is_a($recurrent_item->merchant_private_item_data, 'merchantprivate')) {
                                 $recurrent_item->merchant_private_item_data->AddMerchantPrivateToXML($xml_data);
@@ -502,14 +502,14 @@ class GoogleCart
                                 $xml_data->Element('merchant-private-item-data', $recurrent_item->merchant_private_item_data);
                             }
                         }
-                        if ($recurrent_item->merchant_item_id != '') {
+                        if ('' != $recurrent_item->merchant_item_id) {
                             $xml_data->Element('merchant-item-id', $recurrent_item->merchant_item_id);
                         }
-                        if ($recurrent_item->tax_table_selector != '') {
+                        if ('' != $recurrent_item->tax_table_selector) {
                             $xml_data->Element('tax-table-selector', $recurrent_item->tax_table_selector);
                         }
                         //     recurring Carrier calculation
-                        if ($recurrent_item->item_weight != '' && $recurrent_item->numeric_weight !== '') {
+                        if ('' != $recurrent_item->item_weight && '' !== $recurrent_item->numeric_weight) {
                             $xml_data->EmptyElement('item-weight', [
                                 'unit'  => $recurrent_item->item_weight,
                                 'value' => $recurrent_item->numeric_weight
@@ -541,7 +541,7 @@ class GoogleCart
         }
         $xml_data->Pop('items');
 
-        if ($this->merchant_private_data != '') {
+        if ('' != $this->merchant_private_data) {
             if (is_a($this->merchant_private_data, 'merchantprivate')) {
                 $this->merchant_private_data->AddMerchantPrivateToXML($xml_data);
             } else {
@@ -552,10 +552,10 @@ class GoogleCart
 
         $xml_data->Push('checkout-flow-support');
         $xml_data->Push('merchant-checkout-flow-support');
-        if ($this->edit_cart_url != '') {
+        if ('' != $this->edit_cart_url) {
             $xml_data->Element('edit-cart-url', $this->edit_cart_url);
         }
-        if ($this->continue_shopping_url != '') {
+        if ('' != $this->continue_shopping_url) {
             $xml_data->Element('continue-shopping-url', $this->continue_shopping_url);
         }
 
@@ -566,7 +566,7 @@ class GoogleCart
         //Add the shipping methods
         foreach ($this->shipping_arr as $ship) {
             //Pickup shipping handled in else part
-            if ($ship->type === 'flat-rate-shipping' || $ship->type === 'merchant-calculated-shipping'
+            if ('flat-rate-shipping' === $ship->type || 'merchant-calculated-shipping' === $ship->type
                 //  If shipping-company calc support addr-filtering and shipping restrictions as a subatag of shipping-company-calculated-shipping
                 //           ||$ship->type == "shipping-company-calculated-shipping"
             ) {
@@ -577,7 +577,7 @@ class GoogleCart
                 if (isset($shipping_restrictions)) {
                     $xml_data->Push('shipping-restrictions');
 
-                    if ($shipping_restrictions->allow_us_po_box === true) {
+                    if (true === $shipping_restrictions->allow_us_po_box) {
                         $xml_data->Element('allow-us-po-box', 'true');
                     } else {
                         $xml_data->Element('allow-us-po-box', 'false');
@@ -586,7 +586,7 @@ class GoogleCart
                     //Check if allowed restrictions specified
                     if ($shipping_restrictions->allowed_restrictions) {
                         $xml_data->Push('allowed-areas');
-                        if ($shipping_restrictions->allowed_country_area != '') {
+                        if ('' != $shipping_restrictions->allowed_country_area) {
                             $xml_data->EmptyElement('us-country-area', [
                                 'country-area' => $shipping_restrictions->allowed_country_area
                             ]);
@@ -601,7 +601,7 @@ class GoogleCart
                             $xml_data->Element('zip-pattern', $current);
                             $xml_data->Pop('us-zip-area');
                         }
-                        if ($shipping_restrictions->allowed_world_area === true) {
+                        if (true === $shipping_restrictions->allowed_world_area) {
                             $xml_data->EmptyElement('world-area');
                         }
                         for ($i = 0, $iMax = count($shipping_restrictions->allowed_country_codes_arr); $i < $iMax; ++$i) {
@@ -609,7 +609,7 @@ class GoogleCart
                             $country_code   = $shipping_restrictions->allowed_country_codes_arr[$i];
                             $postal_pattern = $shipping_restrictions->allowed_postal_patterns_arr[$i];
                             $xml_data->Element('country-code', $country_code);
-                            if ($postal_pattern != '') {
+                            if ('' != $postal_pattern) {
                                 $xml_data->Element('postal-code-pattern', $postal_pattern);
                             }
                             $xml_data->Pop('postal-area');
@@ -622,7 +622,7 @@ class GoogleCart
                             $xml_data->EmptyElement('allowed-areas');
                         }
                         $xml_data->Push('excluded-areas');
-                        if ($shipping_restrictions->excluded_country_area != '') {
+                        if ('' != $shipping_restrictions->excluded_country_area) {
                             $xml_data->EmptyElement('us-country-area', [
                                 'country-area' => $shipping_restrictions->excluded_country_area
                             ]);
@@ -642,7 +642,7 @@ class GoogleCart
                             $country_code   = $shipping_restrictions->excluded_country_codes_arr[$i];
                             $postal_pattern = $shipping_restrictions->excluded_postal_patterns_arr[$i];
                             $xml_data->Element('country-code', $country_code);
-                            if ($postal_pattern != '') {
+                            if ('' != $postal_pattern) {
                                 $xml_data->Element('postal-code-pattern', $postal_pattern);
                             }
                             $xml_data->Pop('postal-area');
@@ -652,12 +652,12 @@ class GoogleCart
                     $xml_data->Pop('shipping-restrictions');
                 }
 
-                if ($ship->type === 'merchant-calculated-shipping') {
+                if ('merchant-calculated-shipping' === $ship->type) {
                     $address_filters = $ship->address_filters;
                     if (isset($address_filters)) {
                         $xml_data->Push('address-filters');
 
-                        if ($address_filters->allow_us_po_box === true) {
+                        if (true === $address_filters->allow_us_po_box) {
                             $xml_data->Element('allow-us-po-box', 'true');
                         } else {
                             $xml_data->Element('allow-us-po-box', 'false');
@@ -666,7 +666,7 @@ class GoogleCart
                         //Check if allowed restrictions specified
                         if ($address_filters->allowed_restrictions) {
                             $xml_data->Push('allowed-areas');
-                            if ($address_filters->allowed_country_area != '') {
+                            if ('' != $address_filters->allowed_country_area) {
                                 $xml_data->EmptyElement('us-country-area', [
                                     'country-area' => $address_filters->allowed_country_area
                                 ]);
@@ -681,7 +681,7 @@ class GoogleCart
                                 $xml_data->Element('zip-pattern', $current);
                                 $xml_data->Pop('us-zip-area');
                             }
-                            if ($address_filters->allowed_world_area === true) {
+                            if (true === $address_filters->allowed_world_area) {
                                 $xml_data->EmptyElement('world-area');
                             }
                             for ($i = 0, $iMax = count($address_filters->allowed_country_codes_arr); $i < $iMax; ++$i) {
@@ -689,7 +689,7 @@ class GoogleCart
                                 $country_code   = $address_filters->allowed_country_codes_arr[$i];
                                 $postal_pattern = $address_filters->allowed_postal_patterns_arr[$i];
                                 $xml_data->Element('country-code', $country_code);
-                                if ($postal_pattern != '') {
+                                if ('' != $postal_pattern) {
                                     $xml_data->Element('postal-code-pattern', $postal_pattern);
                                 }
                                 $xml_data->Pop('postal-area');
@@ -702,7 +702,7 @@ class GoogleCart
                                 $xml_data->EmptyElement('allowed-areas');
                             }
                             $xml_data->Push('excluded-areas');
-                            if ($address_filters->excluded_country_area != '') {
+                            if ('' != $address_filters->excluded_country_area) {
                                 $xml_data->EmptyElement('us-country-area', [
                                     'country-area' => $address_filters->excluded_country_area
                                 ]);
@@ -722,7 +722,7 @@ class GoogleCart
                                 $country_code   = $address_filters->excluded_country_codes_arr[$i];
                                 $postal_pattern = $address_filters->excluded_postal_patterns_arr[$i];
                                 $xml_data->Element('country-code', $country_code);
-                                if ($postal_pattern != '') {
+                                if ('' != $postal_pattern) {
                                     $xml_data->Element('postal-code-pattern', $postal_pattern);
                                 }
                                 $xml_data->Pop('postal-area');
@@ -733,7 +733,7 @@ class GoogleCart
                     }
                 }
                 $xml_data->Pop($ship->type);
-            } elseif ($ship->type === 'carrier-calculated-shipping') {
+            } elseif ('carrier-calculated-shipping' === $ship->type) {
                 //          $xml_data->Push($ship->type, array('name' => $ship->name));
                 $xml_data->Push($ship->type);
                 $xml_data->Push('carrier-calculated-shipping-options');
@@ -780,7 +780,7 @@ class GoogleCart
                 $xml_data->Pop('shipping-packages');
 
                 $xml_data->Pop($ship->type);
-            } elseif ($ship->type === 'pickup') {
+            } elseif ('pickup' === $ship->type) {
                 $xml_data->Push('pickup', ['name' => $ship->name]);
                 $xml_data->Element('price', $ship->price, ['currency' => $this->currency]);
                 $xml_data->Pop('pickup');
@@ -790,17 +790,17 @@ class GoogleCart
             $xml_data->Pop('shipping-methods');
         }
 
-        if ($this->request_buyer_phone != '') {
+        if ('' != $this->request_buyer_phone) {
             $xml_data->Element('request-buyer-phone-number', $this->request_buyer_phone);
         }
 
-        if ($this->merchant_calculations_url != '') {
+        if ('' != $this->merchant_calculations_url) {
             $xml_data->Push('merchant-calculations');
             $xml_data->Element('merchant-calculations-url', $this->merchant_calculations_url);
-            if ($this->accept_merchant_coupons != '') {
+            if ('' != $this->accept_merchant_coupons) {
                 $xml_data->Element('accept-merchant-coupons', $this->accept_merchant_coupons);
             }
-            if ($this->accept_gift_certificates != '') {
+            if ('' != $this->accept_gift_certificates) {
                 $xml_data->Element('accept-gift-certificates', $this->accept_gift_certificates);
             }
             $xml_data->Pop('merchant-calculations');
@@ -824,17 +824,17 @@ class GoogleCart
         }
 
         //Set Default and Alternate tax tables
-        if ((count($this->alternate_tax_tables_arr) != 0) || (count($this->default_tax_rules_arr) != 0)) {
-            if ($this->merchant_calculated_tax != '') {
+        if ((0 != count($this->alternate_tax_tables_arr)) || (0 != count($this->default_tax_rules_arr))) {
+            if ('' != $this->merchant_calculated_tax) {
                 $xml_data->Push('tax-tables', ['merchant-calculated' => $this->merchant_calculated_tax]);
             } else {
                 $xml_data->Push('tax-tables');
             }
-            if (count($this->default_tax_rules_arr) != 0) {
+            if (0 != count($this->default_tax_rules_arr)) {
                 $xml_data->Push('default-tax-table');
                 $xml_data->Push('tax-rules');
                 foreach ($this->default_tax_rules_arr as $curr_rule) {
-                    if ($curr_rule->country_area != '') {
+                    if ('' != $curr_rule->country_area) {
                         $xml_data->Push('default-tax-rule');
                         $xml_data->Element('shipping-taxed', $curr_rule->shipping_taxed);
                         $xml_data->Element('rate', $curr_rule->tax_rate);
@@ -877,7 +877,7 @@ class GoogleCart
                         $country_code   = $curr_rule->country_codes_arr[$i];
                         $postal_pattern = $curr_rule->postal_patterns_arr[$i];
                         $xml_data->Element('country-code', $country_code);
-                        if ($postal_pattern != '') {
+                        if ('' != $postal_pattern) {
                             $xml_data->Element('postal-code-pattern', $postal_pattern);
                         }
                         $xml_data->Pop('postal-area');
@@ -885,7 +885,7 @@ class GoogleCart
                         $xml_data->Pop('default-tax-rule');
                     }
 
-                    if ($curr_rule->world_area === true) {
+                    if (true === $curr_rule->world_area) {
                         $xml_data->Push('default-tax-rule');
                         $xml_data->Element('shipping-taxed', $curr_rule->shipping_taxed);
                         $xml_data->Element('rate', $curr_rule->tax_rate);
@@ -899,7 +899,7 @@ class GoogleCart
                 $xml_data->Pop('default-tax-table');
             }
 
-            if (count($this->alternate_tax_tables_arr) != 0) {
+            if (0 != count($this->alternate_tax_tables_arr)) {
                 $xml_data->Push('alternate-tax-tables');
                 foreach ($this->alternate_tax_tables_arr as $curr_table) {
                     $xml_data->Push('alternate-tax-table', [
@@ -909,7 +909,7 @@ class GoogleCart
                     $xml_data->Push('alternate-tax-rules');
 
                     foreach ($curr_table->tax_rules_arr as $curr_rule) {
-                        if ($curr_rule->country_area != '') {
+                        if ('' != $curr_rule->country_area) {
                             $xml_data->Push('alternate-tax-rule');
                             $xml_data->Element('rate', $curr_rule->tax_rate);
                             $xml_data->Push('tax-area');
@@ -948,7 +948,7 @@ class GoogleCart
                             $country_code   = $curr_rule->country_codes_arr[$i];
                             $postal_pattern = $curr_rule->postal_patterns_arr[$i];
                             $xml_data->Element('country-code', $country_code);
-                            if ($postal_pattern != '') {
+                            if ('' != $postal_pattern) {
                                 $xml_data->Element('postal-code-pattern', $postal_pattern);
                             }
                             $xml_data->Pop('postal-area');
@@ -956,7 +956,7 @@ class GoogleCart
                             $xml_data->Pop('alternate-tax-rule');
                         }
 
-                        if ($curr_rule->world_area === true) {
+                        if (true === $curr_rule->world_area) {
                             $xml_data->Push('alternate-tax-rule');
                             $xml_data->Element('rate', $curr_rule->tax_rate);
                             $xml_data->Push('tax-area');
@@ -973,13 +973,13 @@ class GoogleCart
             $xml_data->Pop('tax-tables');
         }
 
-        if (($this->rounding_mode != '') && ($this->rounding_rule != '')) {
+        if (('' != $this->rounding_mode) && ('' != $this->rounding_rule)) {
             $xml_data->Push('rounding-policy');
             $xml_data->Element('mode', $this->rounding_mode);
             $xml_data->Element('rule', $this->rounding_rule);
             $xml_data->Pop('rounding-policy');
         }
-        if ($this->analytics_data != '') {
+        if ('' != $this->analytics_data) {
             $xml_data->Element('analytics-data', $this->analytics_data);
         }
 
@@ -1028,7 +1028,7 @@ class GoogleCart
     public function CheckoutServer2Server($proxy = [], $certPath = '')
     {
         require_once __DIR__ . '/googlerequest.php';
-        $GRequest = new GoogleRequest($this->merchant_id, $this->merchant_key, $this->server_url === 'https://checkout.google.com/' ? 'Production' : 'sandbox', $this->currency);
+        $GRequest = new GoogleRequest($this->merchant_id, $this->merchant_key, 'https://checkout.google.com/' === $this->server_url ? 'Production' : 'sandbox', $this->currency);
         $GRequest->SetProxy($proxy);
         $GRequest->SetCertificatePath($certPath);
 
@@ -1083,7 +1083,7 @@ class GoogleCart
                 break;
         }
 
-        if ($this->variant === false) {
+        if (false === $this->variant) {
             switch ($variant) {
                 case false:
                     $this->variant = 'disabled';
@@ -1095,7 +1095,7 @@ class GoogleCart
             }
         }
         $data = "<div style=\"width: " . $width . "px\">";
-        if ($this->variant === 'text') {
+        if ('text' === $this->variant) {
             $data .= "<div align=\"center\"><form method=\"post\" action=\"" . $url . "\"" . ($this->googleAnalytics_id ? " onsubmit=\"setUrchinInputCode();\"" : '') . ">
                 <input type=\"image\" name=\"Checkout\" alt=\"Checkout\"
                 src=\"" . $this->server_url . 'buttons/checkout.gif?merchant_id=' . $this->merchant_id . '&amp;w=' . $width . '&amp;h=' . $height . '&amp;style=' . $style . '&amp;variant=' . $this->variant . '&amp;loc=' . $loc . "\"
@@ -1189,7 +1189,7 @@ class GoogleCart
                 break;
         }
 
-        if ($this->variant === false) {
+        if (false === $this->variant) {
             switch ($variant) {
                 case false:
                     $this->variant = 'disabled';
@@ -1202,7 +1202,7 @@ class GoogleCart
         }
 
         $data = "<div style=\"width: " . $width . "px\">";
-        if ($this->variant === 'text') {
+        if ('text' === $this->variant) {
             $data .= "<div align=\"center\"><form method=\"post\" action=\"" . $this->checkout_url . "\"" . ($this->googleAnalytics_id ? " onsubmit=\"setUrchinInputCode();\"" : '') . ">
                 <input type=\"hidden\" name=\"cart\" value=\"" . base64_encode($this->getXML()) . "\">
                 <input type=\"hidden\" name=\"signature\" value=\"" . base64_encode($this->CalcHmacSha1($this->getXML())) . "\">
@@ -1282,7 +1282,7 @@ class GoogleCart
                 break;
         }
 
-        if ($this->variant === false) {
+        if (false === $this->variant) {
             switch ($variant) {
                 case false:
                     $this->variant = 'disabled';
@@ -1295,7 +1295,7 @@ class GoogleCart
         }
 
         $data = "<div style=\"width: " . $width . "px\">";
-        if ($this->variant === 'text') {
+        if ('text' === $this->variant) {
             $data .= "<div align=\"center\"><form method=\"post\" action=\"" . $this->checkout_url . "\"" . ($this->googleAnalytics_id ? " onsubmit=\"setUrchinInputCode();\"" : '') . ">
                 <input type=\"hidden\" name=\"buyButtonCart\" value=\"" . base64_encode($this->getXML()) . '//separator//' . base64_encode($this->CalcHmacSha1($this->getXML())) . "\">
                 <input type=\"image\" name=\"Checkout\" alt=\"BuyNow\"
@@ -1399,7 +1399,7 @@ class GoogleCart
                 break;
         }
 
-        if ($this->variant === false) {
+        if (false === $this->variant) {
             switch ($variant) {
                 case false:
                     $this->variant = 'disabled';
@@ -1412,7 +1412,7 @@ class GoogleCart
         }
 
         $data = "<div style=\"width: " . $width . "px\">";
-        if ($this->variant === 'text') {
+        if ('text' === $this->variant) {
             $data .= "<div align=\"center\"><form method=\"post\" action=\"" . $this->checkoutForm_url . "\"" . ($this->googleAnalytics_id ? " onsubmit=\"setUrchinInputCode();\"" : '') . '>';
 
             $request = $this->getXML();
@@ -1504,7 +1504,7 @@ class GoogleCart
                 $this->xml2html($tag, $new_path, $rta);
             } else {
                 $new_path = $path;
-                if ($tag_name !== 'VALUE') {
+                if ('VALUE' !== $tag_name) {
                     $new_path = $path . '.' . $tag_name;
                 }
                 $rta .= '<input type="hidden" name="' . $new_path . '" value="' . $tag . '">' . "\n";
@@ -1638,7 +1638,7 @@ class GoogleCart
     public function _SetBooleanValue($string, $value, $default)
     {
         $value = strtolower($value);
-        if ($value === 'true' || $value === 'false') {
+        if ('true' === $value || 'false' === $value) {
             eval('$this->' . $string . '="' . $value . '";');
         } else {
             eval('$this->' . $string . '="' . $default . '";');

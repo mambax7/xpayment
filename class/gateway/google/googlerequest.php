@@ -71,7 +71,7 @@ class GoogleRequest
         $this->merchant_key = $key;
         $this->currency     = $currency;
 
-        if (strtolower($server_type) === 'sandbox') {
+        if ('sandbox' === strtolower($server_type)) {
             $this->server_url = 'https://sandbox.google.com/checkout/';
         } else {
             $this->server_url = 'https://checkout.google.com/';
@@ -124,7 +124,7 @@ class GoogleRequest
     public function SendServer2ServerCart($xml_cart, $die = true)
     {
         list($status, $body) = $this->SendReq($this->merchant_checkout, $this->getAuthenticationHeaders(), $xml_cart);
-        if ($status != 200) {
+        if (200 != $status) {
             return [$status, $body];
         } else {
             require_once __DIR__ . '/xml-processing/gc_xmlparser.php';
@@ -135,7 +135,7 @@ class GoogleRequest
 
             $redirect_url = $data[$root]['redirect-url']['VALUE'];
             $this->log->LogRequest('Redirecting to: ' . $redirect_url);
-            if (strpos($redirect_url, 'shoppingcartshoppingcart') !== false) {
+            if (false !== strpos($redirect_url, 'shoppingcartshoppingcart')) {
                 $redirect_url = str_replace('shoppingcartshoppingcart', 'shoppingcart&shoppingcart', $redirect_url);
             }
             header('Location: ' . $redirect_url);
@@ -161,7 +161,7 @@ class GoogleRequest
     {
         $postargs = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
                   <charge-order xmlns=\"" . $this->schema_url . "\" google-order-number=\"" . $google_order . "\">";
-        if ($amount != '') {
+        if ('' != $amount) {
             $postargs .= "<amount currency=\"" . $this->currency . "\">" . $amount . '</amount>';
         }
         $postargs .= '</charge-order>';
@@ -216,7 +216,7 @@ class GoogleRequest
     {
         $postargs = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
                   <refund-order xmlns=\"" . $this->schema_url . "\" google-order-number=\"" . $google_order . "\">" . '<reason>' . $reason . '</reason>';
-        if ($amount != 0) {
+        if (0 != $amount) {
             $postargs .= "<amount currency=\"" . $this->currency . "\">" . htmlentities($amount) . '</amount>';
         }
         $postargs .= '<comment>' . htmlentities($comment) . '</comment>
@@ -389,7 +389,7 @@ class GoogleRequest
     {
         $postargs = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
                   <deliver-order xmlns=\"" . $this->schema_url . "\" google-order-number=\"" . $google_order . "\">";
-        if ($carrier != '' && $tracking_no != '') {
+        if ('' != $carrier && '' != $tracking_no) {
             $postargs .= '<tracking-data>
                   <carrier>' . htmlentities($carrier) . '</carrier>
             <tracking-number>' . htmlentities($tracking_no) . '</tracking-number>
@@ -683,7 +683,7 @@ class GoogleRequest
         if (is_array($this->proxy) && count($this->proxy)) {
             curl_setopt($session, CURLOPT_PROXY, $this->proxy['host'] . ':' . $this->proxy['port']);
         }
-        if ($timeout !== false) {
+        if (false !== $timeout) {
             curl_setopt($session, CURLOPT_TIMEOUT, $timeout);
         }
         // Do the POST and then close the session
@@ -781,14 +781,14 @@ class GoogleRequest
     {
         $fp = explode(ENTER, $heads);
         foreach ($fp as $header) {
-            if ($header == '') {
+            if ('' == $header) {
                 $eoheader = true;
                 break;
             } else {
                 $header = trim($header);
             }
 
-            if ($format == 1) {
+            if (1 == $format) {
                 $key = array_shift(explode(':', $header));
                 if ($key == $header) {
                     $headers[] = $header;
@@ -831,7 +831,7 @@ class GoogleShipItem
 
     public function AddTrackingData($carrier, $tracking_no)
     {
-        if ($carrier != '' && $tracking_no != '') {
+        if ('' != $carrier && '' != $tracking_no) {
             $this->tracking_data_list[] = [
                 'carrier'         => $carrier,
                 'tracking-number' => $tracking_no

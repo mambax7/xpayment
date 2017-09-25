@@ -320,7 +320,7 @@ class ZombaioGatewaysPlugin
         $invoice_transactionsHandler = xoops_getModuleHandler('invoice_transactions', 'xpayment');
         $transaction                 = $invoice_transactionsHandler->create();
         $transaction->setVars($this->getTransactionArray($request));
-        if ($invoice_transactionsHandler->countTransactionId($this->getTransactionId($request)) == 0) {
+        if (0 == $invoice_transactionsHandler->countTransactionId($this->getTransactionId($request))) {
             if ($tiid = $invoice_transactionsHandler->insert($transaction)) {
                 $gross = $invoice_transactionsHandler->sumOfGross($this->_invoice->getVar('iid'));
                 foreach ($this->getTransactionArray() as $key => $value) {
@@ -383,12 +383,12 @@ class ZombaioGatewaysPlugin
             exit;
         }
 
-        if (@$request['Action'] == 'user.addcredits') {
+        if ('user.addcredits' == @$request['Action']) {
             if ($request['Hash'] == md5($this->_invoice->getVar('iid') . $ZombaioGWPass . $request['Credits'] . $this->_gateway->_options['siteid'])) {
                 $invoice_transactionsHandler = xoops_getModuleHandler('invoice_transactions', 'xpayment');
                 $transaction                 = $invoice_transactionsHandler->create();
                 $transaction->setVars($this->getTransactionArray($request));
-                if ($invoice_transactionsHandler->countTransactionId($this->getTransactionId($request)) == 0) {
+                if (0 == $invoice_transactionsHandler->countTransactionId($this->getTransactionId($request))) {
                     if ($tiid = $invoice_transactionsHandler->insert($transaction)) {
                         $gross = $invoice_transactionsHandler->sumOfGross($this->_invoice->getVar('iid'));
 
@@ -414,7 +414,7 @@ class ZombaioGatewaysPlugin
                     }
                 }
             }
-        } elseif (@$request['Action'] == 'create.htaccess') {
+        } elseif ('create.htaccess' == @$request['Action']) {
 
             // sätter full behörighet på path
             chmod($path, 0777);
@@ -485,15 +485,15 @@ class ZombaioGatewaysPlugin
             chmod($passFile, 0777);
 
             echo 'OK|OK';
-        } elseif (@$request['Action'] == 'get.path') {
+        } elseif ('get.path' == @$request['Action']) {
 
             //return path
             echo $path;
-        } elseif (@$request['Action'] == 'get.passfile') {
+        } elseif ('get.passfile' == @$request['Action']) {
 
             //return pass file
             echo $passFile;
-        } elseif (@$request['Action'] == 'user.add') {
+        } elseif ('user.add' == @$request['Action']) {
             $username = trim(@$request['username']);
             $password = trim(@$request['password']);
 
@@ -512,7 +512,7 @@ class ZombaioGatewaysPlugin
 
             echo 'OK|User added!';
             exit;
-        } elseif (@$request['Action'] == 'user.delete') {
+        } elseif ('user.delete' == @$request['Action']) {
 
             // delete user from password file
             $username = trim(@$request['username']);
@@ -529,7 +529,7 @@ class ZombaioGatewaysPlugin
 
             $userid = $this->who_is_user($username);
 
-            if ($userid == '999999999999999') {
+            if ('999999999999999' == $userid) {
                 echo 'USER_DOES_NOT_EXIST|User does not exist!';
                 exit;
             }
@@ -557,7 +557,7 @@ class ZombaioGatewaysPlugin
         }
 
         for ($i = 0, $iMax = strlen($cfgBadChars); $i < $iMax; ++$i) {
-            if (strpos($string, $cfgBadChars[$i]) !== false) {
+            if (false !== strpos($string, $cfgBadChars[$i])) {
                 return true;
             }
         }
@@ -574,7 +574,7 @@ class ZombaioGatewaysPlugin
         }
 
         for ($i = 0, $iMax = strlen($cfgBadCharsE); $i < $iMax; ++$i) {
-            if (strpos($string, $cfgBadCharsE[$i]) !== false) {
+            if (false !== strpos($string, $cfgBadCharsE[$i])) {
                 return true;
             }
         }
@@ -619,7 +619,7 @@ class ZombaioGatewaysPlugin
                 $fpData[1] = rtrim(trim($fpData[1]));
             }
 
-            if (empty($fpLine) || $fpLine[0] == '#' || $fpLine[0] == '*' || empty($fpData[0]) || empty($fpData[1])) {
+            if (empty($fpLine) || '#' == $fpLine[0] || '*' == $fpLine[0] || empty($fpData[0]) || empty($fpData[1])) {
                 continue;
             }
 
@@ -686,7 +686,7 @@ class ZombaioGatewaysPlugin
 
         if (false !== strpos(strtoupper(PHP_OS), 'WINNT') || false !== strpos(strtoupper(PHP_OS), 'WINDOWS')) {
             $temp = exec("\"" . $cfghtpasswdEXE . "\" -nmb $username $password", $result, $retval);
-            if ($retval == 0) {
+            if (0 == $retval) {
                 $data = explode(':', $result[0], 2);
 
                 return $data[1];
@@ -758,7 +758,7 @@ class ZombaioGatewaysPlugin
 
         $html .= '<div>' . _XPY_MF_TOTAL . number_format($grand, 2) . ' ' . $this->_invoice->getVar('currency') . '</div><b>';
 
-        if ($this->_gateway->getVar('testmode') === true) {
+        if (true === $this->_gateway->getVar('testmode')) {
             $html .= '<form action="' . $this->_gateway->_options['url'] . '?' . $this->_gateway->_options['siteid'] . '.' . $this->_gateway->_options['pricingid'] . '.' . $this->_gateway->_options['lang'] . '"  name="gateway" id="gateway" method="post">';
         } else {
             $html .= '<form action="' . $this->_gateway->_options['url'] . '?' . $this->_gateway->_options['siteid'] . '.' . $this->_gateway->_options['pricingid'] . '.' . $this->_gateway->_options['lang'] . '"  name="gateway" id="gateway" method="post">';

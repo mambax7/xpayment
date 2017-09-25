@@ -93,19 +93,19 @@ class GooglePoll
         $GRequest = new GoogleRequest($this->merchant_id, $this->merchant_key);
         $GRequest->SetCertificatePath($this->certificate_path);
 
-        while ($this->has_more_notifications === 'true') {
+        while ('true' === $this->has_more_notifications) {
             $this->poll_request_xml = $this->getPollRequestXML();
             $this->poll_result      = $GRequest->SendReq($this->server_url, $GRequest->getAuthenticationHeaders(), $this->poll_request_xml);
 
             //Check response code
-            if ($this->poll_result[0] == '200') {
+            if ('200' == $this->poll_result[0]) {
                 $this->ExtractNotifications();
             } else {
                 return false;
             }
 
-            if ($this->get_all_notifications === false) {
-                $this->has_more_notifications === 'false';
+            if (false === $this->get_all_notifications) {
+                'false' === $this->has_more_notifications;
             }
         }
 
@@ -200,7 +200,7 @@ class ContinueTokenRequest
 
     public function getContinueToken()
     {
-        if ($this->continue_token != '') {
+        if ('' != $this->continue_token) {
             return $this->continue_token;
         } else {
             return false;
@@ -220,7 +220,7 @@ class ContinueTokenRequest
         $this->token_response_xml = $GRequest->SendReq($this->server_url, $GRequest->getAuthenticationHeaders(), $this->request_token_xml);
 
         //Check response code
-        if ($this->token_response_xml[0] == '200') {
+        if ('200' == $this->token_response_xml[0]) {
             require_once __DIR__ . '/xml-processing/gc_xmlparser.php';
             $GXmlParser = new gc_XmlParser($this->token_response_xml[1]);
             $data       = $GXmlParser->getData();

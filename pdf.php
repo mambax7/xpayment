@@ -29,9 +29,9 @@ $GLOBALS['xoopsLogger']->activated = false;
 $invoiceHandler       = xoops_getModuleHandler('invoice', 'xpayment');
 $invoice_itemsHandler = xoops_getModuleHandler('invoice_items', 'xpayment');
 
-if (isset($_GET['iid']) && $GLOBALS['xoopsModuleConfig']['id_protect'] === false) {
+if (isset($_GET['iid']) && false === $GLOBALS['xoopsModuleConfig']['id_protect']) {
     $invoice =& $invoiceHandler->get($_GET['iid']);
-} elseif (isset($_GET['invoicenum']) && $GLOBALS['xoopsModuleConfig']['id_protect'] === false) {
+} elseif (isset($_GET['invoicenum']) && false === $GLOBALS['xoopsModuleConfig']['id_protect']) {
     $invoice =& $invoiceHandler->getInvoiceNumber($_GET['invoicenum']);
 } else {
     $key      = $_GET['iid'];
@@ -53,7 +53,7 @@ if (!is_object($invoice)) {
     exit(0);
 }
 
-if (!strpos($invoice->getPDFURL(), $_SERVER['REQUEST_URI']) && $GLOBALS['xoopsModuleConfig']['htaccess'] === true) {
+if (!strpos($invoice->getPDFURL(), $_SERVER['REQUEST_URI']) && true === $GLOBALS['xoopsModuleConfig']['htaccess']) {
     header('HTTP/1.1 301 Moved Permanently');
     header('Location: ' . $invoice->getPDFURL());
     exit(0);
@@ -73,14 +73,14 @@ $GLOBALS['xoopsTpl'] = new XoopsTpl();
 $GLOBALS['xoopsTpl']->assign('invoice', $invoice->toArray());
 $GLOBALS['xoopsTpl']->assign('xoConfig', $GLOBALS['xoopsModuleConfig']);
 
-if ($invoice->getVar('mode') == 'UNPAID') {
+if ('UNPAID' == $invoice->getVar('mode')) {
     $GLOBALS['xoopsTpl']->assign('payment_markup', $invoice->getPaymentHtml());
 }
 
 $criteria = new Criteria('iid', $invoice->getVar('iid'));
 $items    = $invoice_itemsHandler->getObjects($criteria, true);
 foreach ($items as $iiid => $item) {
-    $GLOBALS['xoopsTpl']->append('items', array_merge(['totals' => $item->getTotalsArray($invoice->getVar('did') != 0)], $item->toArray($invoice->getVar('did') != 0)));
+    $GLOBALS['xoopsTpl']->append('items', array_merge(['totals' => $item->getTotalsArray(0 != $invoice->getVar('did'))], $item->toArray(0 != $invoice->getVar('did'))));
 }
 
 ob_start();
@@ -108,7 +108,7 @@ if (file_exists($filename)) {
 /** @var XoopsModuleHandler $moduleHandler */
 $moduleHandler = xoops_getHandler('module');
 $xlanguage     = $moduleHandler->getByDirname('xlanguage');
-if (is_object($xlanguage) && $xlanguage->getVar('isactive') === true) {
+if (is_object($xlanguage) && true === $xlanguage->getVar('isactive')) {
     $xlang = true;
 } else {
     $xlang = false;
@@ -118,7 +118,7 @@ $content = '';
 $content .= $myts->undoHtmlSpecialChars($pdf_data['content']);
 
 //DNPROSSI Added - Get correct language and remove tags from text to be sent to PDF
-if ($xlang === true) {
+if (true === $xlang) {
     require_once XOOPS_ROOT_PATH . '/modules/xlanguage/include/functions.php';
     $content = xlanguage_ml($content);
 }

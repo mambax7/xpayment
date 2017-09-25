@@ -635,7 +635,7 @@ class CcbillGatewaysPlugin
         $invoice_transactionsHandler = xoops_getModuleHandler('invoice_transactions', 'xpayment');
         $transaction                 = $invoice_transactionsHandler->create();
         $transaction->setVars($this->getTransactionArray($request));
-        if ($invoice_transactionsHandler->countTransactionId($this->getTransactionId($request)) == 0) {
+        if (0 == $invoice_transactionsHandler->countTransactionId($this->getTransactionId($request))) {
             if ($tiid = $invoice_transactionsHandler->insert($transaction)) {
                 $gross = $invoice_transactionsHandler->sumOfGross($this->_invoice->getVar('iid'));
                 $this->_invoice->setVar('transactionid', $transaction->getVar('transactionid'));
@@ -659,14 +659,14 @@ class CcbillGatewaysPlugin
             return false;
         }
 
-        if ($request('reasonForDeclineCode') != 0) {
+        if (0 != $request('reasonForDeclineCode')) {
             $request['gross'] = 0;
         }
 
         $invoice_transactionsHandler = xoops_getModuleHandler('invoice_transactions', 'xpayment');
         $transaction                 = $invoice_transactionsHandler->create();
         $transaction->setVars($this->getTransactionArray($request));
-        if ($invoice_transactionsHandler->countTransactionId($this->getTransactionId($request)) == 0) {
+        if (0 == $invoice_transactionsHandler->countTransactionId($this->getTransactionId($request))) {
             if ($tiid = $invoice_transactionsHandler->insert($transaction)) {
                 $gross = $invoice_transactionsHandler->sumOfGross($this->_invoice->getVar('iid'));
                 $this->_invoice->setVar('transactionid', $transaction->getVar('transactionid'));

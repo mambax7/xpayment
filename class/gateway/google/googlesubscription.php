@@ -49,10 +49,10 @@ class googlesubscription
         $this->subscription_type   = $type;
         $this->subscription_period = $period;
         $this->maximum_charge      = $maximum;
-        if ($times != '') {
+        if ('' != $times) {
             $this->subscription_payment_times = $times;
         }
-        if ($item != '') {
+        if ('' != $item) {
             $this->recurrent_item = $item;
         }
     }

@@ -40,7 +40,7 @@ class htmlSignatureGen
         $param_name  = trim($param_name, ' ');
         $param_value = trim($param_value, ' ');
 
-        if (in_array($param_name, $this->excluded_param_names) === true) {
+        if (true === in_array($param_name, $this->excluded_param_names)) {
             //Ignore this excluded parameter
         } else {
             //$this->html_params[] = array('name' => $param_name, 'value' => $param_value);

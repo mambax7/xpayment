@@ -33,7 +33,7 @@ function xpayment_adminpayment($invoice)
     $invoice_transactionsHandler = xoops_getModuleHandler('invoice_transactions', 'xpayment');
     $gross                       = $invoice_transactionsHandler->sumOfGross($invoice->getVar('iid'));
     $left                        = $invoice->getVar('grand') - $gross;
-    if ($left <> 0) {
+    if (0 <> $left) {
         $formobj['amount'] = new XoopsFormText(_XPY_AM_TH_AMOUNT, 'amount', 15, 15, $left);
     } else {
         return false;
@@ -70,7 +70,7 @@ function xpayment_adminsettle($invoice)
     $invoice_transactionsHandler = xoops_getModuleHandler('invoice_transactions', 'xpayment');
     $gross                       = $invoice_transactionsHandler->sumOfGross($invoice->getVar('iid'));
     $left                        = $invoice->getVar('grand') - $gross;
-    if ($left <> 0) {
+    if (0 <> $left) {
         $formobj['settlement'] = new XoopsFormText(_XPY_AM_TH_AMOUNT, 'settlement', 15, 15, $left);
     } else {
         return false;
@@ -105,7 +105,7 @@ function xpayment_adminrule($rid, $group_id)
     $eletray = [];
 
     $groupsHandler = xoops_getModuleHandler('groups', 'xpayment');
-    if ($rid == 0) {
+    if (0 == $rid) {
         $group = $groupsHandler->create();
     } else {
         $group = $groupsHandler->get($rid);

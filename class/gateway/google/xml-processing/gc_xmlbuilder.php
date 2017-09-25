@@ -96,7 +96,7 @@ class gc_XmlBuilder
 
     public function getXML()
     {
-        if (count($this->stack) != 0) {
+        if (0 != count($this->stack)) {
             die('XML Error: No matching closing tag found for " ' . array_pop($this->stack) . '"');
         } else {
             return $this->xml;

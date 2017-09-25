@@ -55,7 +55,7 @@ class XpaymentInvoice_items extends XoopsObject
     {
         $ret = parent::toArray();
         foreach ($this->getTotalsArray($apply_discount) as $field => $value) {
-            if ($field === 'weight') {
+            if ('weight' === $field) {
                 $ret['totals'][$field] = number_format($value, 4);
             } else {
                 $ret['totals'][$field] = number_format($value, 2);
@@ -76,7 +76,7 @@ class XpaymentInvoice_items extends XoopsObject
             $invoice        = $invoiceHandler->get($this->getVar('iid'));
         }
 
-        return (float)str_replace(',', '', number_format(($apply_discount === false ? 0 : ($this->getVar('shipping') * $this->getVar('quantity')) * ($invoice->getVar('discount') / 100)), 2));
+        return (float)str_replace(',', '', number_format((false === $apply_discount ? 0 : ($this->getVar('shipping') * $this->getVar('quantity')) * ($invoice->getVar('discount') / 100)), 2));
     }
 
     public function getDiscountHandling($apply_discount = true)
@@ -87,7 +87,7 @@ class XpaymentInvoice_items extends XoopsObject
             $invoice        = $invoiceHandler->get($this->getVar('iid'));
         }
 
-        return (float)str_replace(',', '', number_format(($apply_discount === false ? 0 : ($this->getVar('handling') * $this->getVar('quantity')) * ($invoice->getVar('discount') / 100)), 2));
+        return (float)str_replace(',', '', number_format((false === $apply_discount ? 0 : ($this->getVar('handling') * $this->getVar('quantity')) * ($invoice->getVar('discount') / 100)), 2));
     }
 
     public function getDiscountAmount($apply_discount = true)
@@ -98,7 +98,7 @@ class XpaymentInvoice_items extends XoopsObject
             $invoice        = $invoiceHandler->get($this->getVar('iid'));
         }
 
-        return (float)str_replace(',', '', number_format(($apply_discount === false ? 0 : ($this->getVar('amount') * $this->getVar('quantity')) * ($invoice->getVar('discount') / 100)), 2));
+        return (float)str_replace(',', '', number_format((false === $apply_discount ? 0 : ($this->getVar('amount') * $this->getVar('quantity')) * ($invoice->getVar('discount') / 100)), 2));
     }
 
     public function getTotalShipping($apply_discount = true)
@@ -124,12 +124,12 @@ class XpaymentInvoice_items extends XoopsObject
     public function getTotalTax($apply_discount = true)
     {
         if ($this->getVar('tax') > 0) {
-            return (float)str_replace(',', '', number_format(($this->getTotalAmount($apply_discount === true
-                                                                                    && $GLOBALS['xoopsModuleConfig']['discount_amount'] === true) + $this->getTotalShipping($apply_discount === true
-                                                                                                                                                                            && $GLOBALS['xoopsModuleConfig']['discount_shipping'] === true) + $this->getTotalHandling($apply_discount === true
-                                                                                                                                                                                                                                                                      && $GLOBALS['xoopsModuleConfig']['discount_handling']
-                                                                                                                                                                                                                                                                         === true)) * ($this->getVar('tax')
-                                                                                                                                                                                                                                                                                       / 100), 2));
+            return (float)str_replace(',', '', number_format(($this->getTotalAmount(true === $apply_discount
+                                                                                    && true === $GLOBALS['xoopsModuleConfig']['discount_amount']) + $this->getTotalShipping(true === $apply_discount
+                                                                                                                                                                            && true === $GLOBALS['xoopsModuleConfig']['discount_shipping']) + $this->getTotalHandling(true === $apply_discount
+                                                                                                                                                                                                                                                                      && true
+                                                                                                                                                                                                                                                                         === $GLOBALS['xoopsModuleConfig']['discount_handling'])) * ($this->getVar('tax')
+                                                                                                                                                                                                                                                                                                                                     / 100), 2));
         }
 
         return 0;
@@ -138,30 +138,30 @@ class XpaymentInvoice_items extends XoopsObject
     public function getTotalsArray($apply_discount = true)
     {
         return [
-            'amount'            => $this->getTotalAmount($apply_discount === true
-                                                         && $GLOBALS['xoopsModuleConfig']['discount_amount'] === true),
-            'handling'          => $this->getTotalHandling($apply_discount === true
-                                                           && $GLOBALS['xoopsModuleConfig']['discount_handling'] === true),
+            'amount'            => $this->getTotalAmount(true === $apply_discount
+                                                         && true === $GLOBALS['xoopsModuleConfig']['discount_amount']),
+            'handling'          => $this->getTotalHandling(true === $apply_discount
+                                                           && true === $GLOBALS['xoopsModuleConfig']['discount_handling']),
             'weight'            => $this->getTotalWeight(),
-            'shipping'          => $this->getTotalShipping($apply_discount === true
-                                                           && $GLOBALS['xoopsModuleConfig']['discount_shipping'] === true),
+            'shipping'          => $this->getTotalShipping(true === $apply_discount
+                                                           && true === $GLOBALS['xoopsModuleConfig']['discount_shipping']),
             'tax'               => $this->getTotalTax($apply_discount),
-            'grand'             => $this->getTotalTax($apply_discount) + $this->getTotalShipping($apply_discount === true
-                                                                                                 && $GLOBALS['xoopsModuleConfig']['discount_shipping'] === true) + $this->getTotalHandling($apply_discount === true
-                                                                                                                                                                                           && $GLOBALS['xoopsModuleConfig']['discount_handling'] === true) + $this->getTotalAmount($apply_discount === true
-                                                                                                                                                                                                                                                                                   && $GLOBALS['xoopsModuleConfig']['discount_amount']
-                                                                                                                                                                                                                                                                                      === true),
-            'discount_amount'   => $this->getDiscountAmount($apply_discount === true
-                                                            && $GLOBALS['xoopsModuleConfig']['discount_amount'] === true),
-            'discount_handling' => $this->getDiscountHandling($apply_discount === true
-                                                              && $GLOBALS['xoopsModuleConfig']['discount_handling'] === true),
-            'discount_shipping' => $this->getDiscountShipping($apply_discount === true
-                                                              && $GLOBALS['xoopsModuleConfig']['discount_shipping'] === true),
-            'discount_grand'    => $this->getDiscountShipping($apply_discount === true
-                                                              && $GLOBALS['xoopsModuleConfig']['discount_shipping'] === true) + $this->getDiscountHandling($apply_discount === true
-                                                                                                                                                           && $GLOBALS['xoopsModuleConfig']['discount_handling'] === true) + $this->getDiscountAmount($apply_discount === true
-                                                                                                                                                                                                                                                      && $GLOBALS['xoopsModuleConfig']['discount_amount']
-                                                                                                                                                                                                                                                         === true)
+            'grand'             => $this->getTotalTax($apply_discount) + $this->getTotalShipping(true === $apply_discount
+                                                                                                 && true === $GLOBALS['xoopsModuleConfig']['discount_shipping']) + $this->getTotalHandling(true === $apply_discount
+                                                                                                                                                                                           && true === $GLOBALS['xoopsModuleConfig']['discount_handling']) + $this->getTotalAmount(true === $apply_discount
+                                                                                                                                                                                                                                                                                   && true
+                                                                                                                                                                                                                                                                                      === $GLOBALS['xoopsModuleConfig']['discount_amount']),
+            'discount_amount'   => $this->getDiscountAmount(true === $apply_discount
+                                                            && true === $GLOBALS['xoopsModuleConfig']['discount_amount']),
+            'discount_handling' => $this->getDiscountHandling(true === $apply_discount
+                                                              && true === $GLOBALS['xoopsModuleConfig']['discount_handling']),
+            'discount_shipping' => $this->getDiscountShipping(true === $apply_discount
+                                                              && true === $GLOBALS['xoopsModuleConfig']['discount_shipping']),
+            'discount_grand'    => $this->getDiscountShipping(true === $apply_discount
+                                                              && true === $GLOBALS['xoopsModuleConfig']['discount_shipping']) + $this->getDiscountHandling(true === $apply_discount
+                                                                                                                                                           && true === $GLOBALS['xoopsModuleConfig']['discount_handling']) + $this->getDiscountAmount(true === $apply_discount
+                                                                                                                                                                                                                                                      && true
+                                                                                                                                                                                                                                                         === $GLOBALS['xoopsModuleConfig']['discount_amount'])
         ];
     }
 
@@ -247,7 +247,7 @@ class XpaymentInvoice_itemsHandler extends XoopsPersistableObjectHandler
             $obj->_invoice = $obj;
         }
 
-        if ($GLOBALS['xoopsModuleConfig']['autotax'] === true) {
+        if (true === $GLOBALS['xoopsModuleConfig']['autotax']) {
             if ($obj->getVar('iid') > 0) {
                 $autotaxHandler = xoops_getModuleHandler('autotax', 'xpayment');
                 $obj->setVar('tax', $autotaxHandler->getTaxRate($obj->_invoice->getVar('user_ipdb_country_code')));
@@ -260,13 +260,13 @@ class XpaymentInvoice_itemsHandler extends XoopsPersistableObjectHandler
             $obj->setVar('updated', time());
         }
 
-        if ($obj->vars['mode']['changed'] === true) {
+        if (true === $obj->vars['mode']['changed']) {
             $obj->setVar('actioned', time());
             $run_plugin = true;
         }
 
         $iiid = parent::insert($obj, $force);
-        if ($run_plugin === true) {
+        if (true === $run_plugin) {
             $obj->runPlugin();
         }
 

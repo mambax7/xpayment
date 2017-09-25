@@ -390,7 +390,7 @@ class TwocheckoutGatewaysPlugin
                         $invoice_transactionsHandler = xoops_getModuleHandler('invoice_transactions', 'xpayment');
                         $transaction                 = $invoice_transactionsHandler->create();
                         $transaction->setVars($this->getTransactionArray($request));
-                        if ($invoice_transactionsHandler->countTransactionId($this->getTransactionId($request)) == 0) {
+                        if (0 == $invoice_transactionsHandler->countTransactionId($this->getTransactionId($request))) {
                             if ($tiid = $invoice_transactionsHandler->insert($transaction)) {
                                 $gross = $invoice_transactionsHandler->sumOfGross($this->_invoice->getVar('iid'));
 
@@ -420,7 +420,7 @@ class TwocheckoutGatewaysPlugin
 
                 $request['invoice_list_amount'] = 0;
                 for ($x = 1; $x < $request['item_count']; ++$x) {
-                    if ($request['item_type_' . $x] == 'refund') {
+                    if ('refund' == $request['item_type_' . $x]) {
                         $request['invoice_list_amount'] += ($request['item_list_amount_' . $x] * (!empty($request['item_quantity_' . $x]) ? $request['item_quantity_' . $x] : 1));
                     }
                 }
@@ -429,7 +429,7 @@ class TwocheckoutGatewaysPlugin
                 $invoice_transactionsHandler = xoops_getModuleHandler('invoice_transactions', 'xpayment');
                 $transaction                 = $invoice_transactionsHandler->create();
                 $transaction->setVars($this->getTransactionArray($request));
-                if ($invoice_transactionsHandler->countTransactionId($this->getTransactionId($request)) == 0) {
+                if (0 == $invoice_transactionsHandler->countTransactionId($this->getTransactionId($request))) {
                     if ($tiid = $invoice_transactionsHandler->insert($transaction)) {
                         $gross = $invoice_transactionsHandler->sumOfGross($this->_invoice->getVar('iid'));
                         $req   = 'cmd=refund';
@@ -455,7 +455,7 @@ class TwocheckoutGatewaysPlugin
                 $invoice_transactionsHandler = xoops_getModuleHandler('invoice_transactions', 'xpayment');
                 $transaction                 = $invoice_transactionsHandler->create();
                 $transaction->setVars($this->getTransactionArray($request));
-                if ($invoice_transactionsHandler->countTransactionId($this->getTransactionId($request)) == 0) {
+                if (0 == $invoice_transactionsHandler->countTransactionId($this->getTransactionId($request))) {
                     if ($tiid = $invoice_transactionsHandler->insert($transaction)) {
                         $gross = $invoice_transactionsHandler->sumOfGross($this->_invoice->getVar('iid'));
                         $req   = 'cmd=payment';
@@ -482,7 +482,7 @@ class TwocheckoutGatewaysPlugin
                 $invoice_transactionsHandler    = xoops_getModuleHandler('invoice_transactions', 'xpayment');
                 $transaction                    = $invoice_transactionsHandler->create();
                 $transaction->setVars($this->getTransactionArray($request));
-                if ($invoice_transactionsHandler->countTransactionId($this->getTransactionId($request)) == 0) {
+                if (0 == $invoice_transactionsHandler->countTransactionId($this->getTransactionId($request))) {
                     if ($tiid = $invoice_transactionsHandler->insert($transaction)) {
                         return true;
                     }

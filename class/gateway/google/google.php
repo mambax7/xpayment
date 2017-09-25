@@ -111,7 +111,7 @@ class GoogleGatewaysPlugin
         $invoice_transactionsHandler = xoops_getModuleHandler('invoice_transactions', 'xpayment');
         $transaction                 = $invoice_transactionsHandler->create();
         $transaction->setVars($this->getTransactionArray($request));
-        if ($invoice_transactionsHandler->countTransactionId($this->getTransactionId($request)) == 0) {
+        if (0 == $invoice_transactionsHandler->countTransactionId($this->getTransactionId($request))) {
             if ($tiid = $invoice_transactionsHandler->insert($transaction)) {
                 $gross = $invoice_transactionsHandler->sumOfGross($this->_invoice->getVar('iid'));
 
@@ -128,7 +128,7 @@ class GoogleGatewaysPlugin
 
     public function goIPN($request)
     {
-        if ($this->_gateway->getVar('testmode') === true) {
+        if (true === $this->_gateway->getVar('testmode')) {
             $merchant_id  = $this->_gateway->_options['smerchantid'];  // Your Merchant ID
             $merchant_key = $this->_gateway->_options['smerchantkey'];  // Your Merchant Key
             $server_type  = 'sandbox';
@@ -151,7 +151,7 @@ class GoogleGatewaysPlugin
         $xml_response = file_get_contents('php://input');
 
         //If serial-number-notification pull serial number and request xml
-        if (strpos($xml_response, 'xml') === false) {
+        if (false === strpos($xml_response, 'xml')) {
             //Find serial-number ack notification
             $serial_array = [];
             parse_str($xml_response, $serial_array);
@@ -160,7 +160,7 @@ class GoogleGatewaysPlugin
             //Request XML notification
             $Grequest      = new GoogleNotificationHistoryRequest($merchant_id, $merchant_key, $server_type);
             $raw_xml_array = $Grequest->SendNotificationHistoryRequest($serial_number);
-            if ($raw_xml_array[0] != 200) {
+            if (200 != $raw_xml_array[0]) {
                 //Add code here to retry with exponential backoff
             } else {
                 $raw_xml = $raw_xml_array[1];
@@ -260,7 +260,7 @@ class GoogleGatewaysPlugin
     {
         $invoice_transactionHandler = xoops_getModuleHandler('invoice_transactions', 'xpayment');
 
-        if ($this->_gateway->getVar('testmode') === true) {
+        if (true === $this->_gateway->getVar('testmode')) {
             $merchant_id  = $this->_gateway->_options['smerchantid'];  // Your Merchant ID
             $merchant_key = $this->_gateway->_options['smerchantkey'];  // Your Merchant Key
             $server_type  = 'sandbox';
@@ -275,7 +275,7 @@ class GoogleGatewaysPlugin
         $cart = new GoogleCart($merchant_id, $merchant_key, $server_type, $currency);
 
         $invoice_itemsHandler = xoops_getModuleHandler('invoice_items', 'xpayment');
-        if ($invoice_itemsHandler->getCount(new Criteria('iid', $this->_invoice->getVar('iid'))) == 1) {
+        if (1 == $invoice_itemsHandler->getCount(new Criteria('iid', $this->_invoice->getVar('iid')))) {
             $items = $invoice_itemsHandler->getObjects(new Criteria('iid', $this->_invoice->getVar('iid')), false);
             foreach ($items as $item) {
                 ++$itm;

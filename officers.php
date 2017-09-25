@@ -112,7 +112,7 @@ switch ($_REQUEST['op']) {
                                                                            . '&sort='
                                                                            . $key
                                                                            . '&order='
-                                                                           . (($key == $sort) ? ($order == 'ASC' ? 'DESC' : 'ASC') : $order)
+                                                                           . (($key == $sort) ? ('ASC' == $order ? 'DESC' : 'ASC') : $order)
                                                                            . '&op='
                                                                            . $_REQUEST['op']
                                                                            . '&fct='
@@ -145,13 +145,13 @@ switch ($_REQUEST['op']) {
 
                 $GLOBALS['xoopsTpl']->assign('invoice', $invoice->toArray());
 
-                if ($invoice->getVar('mode') == 'UNPAID') {
+                if ('UNPAID' == $invoice->getVar('mode')) {
                     $GLOBALS['xoopsTpl']->assign('payment_markup', $invoice->getAdminPaymentHtml());
                 }
 
-                if ($invoice->getVar('mode') == 'UNPAID'
-                    && ($invoice->getVar('remittion') == 'COLLECT'
-                        || $invoice->getVar('remittion') == 'SETTLED')) {
+                if ('UNPAID' == $invoice->getVar('mode')
+                    && ('COLLECT' == $invoice->getVar('remittion')
+                        || 'SETTLED' == $invoice->getVar('remittion'))) {
                     $GLOBALS['xoopsTpl']->assign('settle_markup', $invoice->getAdminSettleHtml());
                 }
 
@@ -238,7 +238,7 @@ switch ($_REQUEST['op']) {
                 $order = !empty($_REQUEST['order']) ? $_REQUEST['order'] : 'DESC';
                 $sort  = !empty($_REQUEST['sort']) ? $_REQUEST['sort'] : 'date';
 
-                if ($_GET['iid'] == 0) {
+                if (0 == $_GET['iid']) {
                     $pagenav = new XoopsPageNav($ttl, $limit, $start, 'start', 'limit=' . $limit . '&sort=' . $sort . '&order=' . $order . '&op=' . $_REQUEST['op'] . '&fct=' . $_REQUEST['fct']);
                     $GLOBALS['xoopsTpl']->assign('pagenav', $pagenav->renderNav());
 
@@ -268,7 +268,7 @@ switch ($_REQUEST['op']) {
                     $GLOBALS['xoopsTpl']->append('transactions', $transaction->toArray());
                 }
 
-                if ($_GET['iid'] == 0) {
+                if (0 == $_GET['iid']) {
                     foreach ([
                                  'transactionid',
                                  'email',
@@ -302,7 +302,7 @@ switch ($_REQUEST['op']) {
                                                                    . '&sort='
                                                                    . $key
                                                                    . '&order='
-                                                                   . (($key == $sort) ? ($order == 'ASC' ? 'DESC' : 'ASC') : $order)
+                                                                   . (($key == $sort) ? ('ASC' == $order ? 'DESC' : 'ASC') : $order)
                                                                    . '&op='
                                                                    . $_REQUEST['op']
                                                                    . '&fct='
@@ -345,7 +345,7 @@ switch ($_REQUEST['op']) {
                                                                    . '&sort='
                                                                    . $key
                                                                    . '&order='
-                                                                   . (($key == $sort) ? ($order == 'ASC' ? 'DESC' : 'ASC') : $order)
+                                                                   . (($key == $sort) ? ('ASC' == $order ? 'DESC' : 'ASC') : $order)
                                                                    . '&op='
                                                                    . $_REQUEST['op']
                                                                    . '&fct='

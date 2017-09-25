@@ -66,7 +66,7 @@ class XpaymentDiscounts extends XoopsObject
         }
         if ($this->getVar('validtill') > 0) {
             $ret['date']['validtill'] = date(_DATESTRING, $this->getVar('validtill'));
-        } elseif ($this->getVar('validtill') == 0) {
+        } elseif (0 == $this->getVar('validtill')) {
             xoops_loadLanguage('main', 'xpayment');
             $ret['date']['validtill'] = _XPY_MF_DISCOUNT_FOREVER;
         }
@@ -96,7 +96,7 @@ class XpaymentDiscounts extends XoopsObject
         $xoopsMailer->assign('REDEEMS', $this->getVar('redeems'));
         $xoopsMailer->assign('REDEEMED', $this->getVar('redeemed'));
         $xoopsMailer->assign('LEFT', $this->getVar('redeems') - $this->getVar('redeemed'));
-        $xoopsMailer->assign('VALID', ($this->getVar('validtill') == 0 ? _XPY_AM_DISCOUNT_FOREVER : date(_DATESTRING, $this->getVar('validtill'))));
+        $xoopsMailer->assign('VALID', (0 == $this->getVar('validtill') ? _XPY_AM_DISCOUNT_FOREVER : date(_DATESTRING, $this->getVar('validtill'))));
         $xoopsMailer->assign('EMAIL', $this->getVar('email'));
         $xoopsMailer->assign('SITEURL', XOOPS_URL);
         $xoopsMailer->assign('SITENAME', $GLOBALS['xoopsConfig']['sitename']);
@@ -166,7 +166,7 @@ class XpaymentDiscountsHandler extends XoopsPersistableObjectHandler
                     $ret .= substr($code, $i, 1) . '-';
                     $uu  = 0;
                 } else {
-                    if (substr($code, $i, 1) != '-') {
+                    if ('-' != substr($code, $i, 1)) {
                         $ret .= substr($code, $i, 1);
                     } else {
                         $uu--;
@@ -175,10 +175,10 @@ class XpaymentDiscountsHandler extends XoopsPersistableObjectHandler
             }
         }
         $ret = str_replace('--', '-', $ret);
-        if (substr($ret, 0, 1) == '-') {
+        if ('-' == substr($ret, 0, 1)) {
             $ret = substr($ret, 2, strlen($ret));
         }
-        if (substr($ret, strlen($ret) - 1, 1) == '-') {
+        if ('-' == substr($ret, strlen($ret) - 1, 1)) {
             $ret = substr($ret, 0, strlen($ret) - 1);
         }
 
@@ -200,13 +200,13 @@ class XpaymentDiscountsHandler extends XoopsPersistableObjectHandler
                             && $user->getVar('user_regdate') > $registered_since)) {
                         $ret[] =& $user;
                     } elseif (($logged_in_since > 0 && $user->getVar('last_login') > $logged_in_since)
-                              && ($registered_since == 0)) {
+                              && (0 == $registered_since)) {
                         $ret[] =& $user;
-                    } elseif (($logged_in_since == 0)
+                    } elseif ((0 == $logged_in_since)
                               && ($registered_since > 0
                                   && $user->getVar('user_regdate') > $registered_since)) {
                         $ret[] =& $user;
-                    } elseif (($logged_in_since == 0) && ($registered_since == 0)) {
+                    } elseif ((0 == $logged_in_since) && (0 == $registered_since)) {
                         $ret[] =& $user;
                     }
                 }
@@ -287,12 +287,12 @@ class XpaymentDiscountsHandler extends XoopsPersistableObjectHandler
                     $xoopsMailer->setHTML(true);
                     $xoopsMailer->setTemplateDir($GLOBALS['xoops']->path('modules/xpayment/language/' . $GLOBALS['xoopsConfig']['language'] . '/mail_templates/'));
                     $xoopsMailer->setTemplate('xpayment_discount_new.tpl');
-                    $xoopsMailer->setSubject(str_replace('%discount', floor($object->getVar('discount')), str_replace('%left', ($object->getVar('validtill') == 0 ? _XPY_AM_DISCOUNT_FOREVER : date(_DATESTRING, $object->getVar('validtill'))), constant('_XPY_EMAIL_DISCOUNT_SUBJECT'))));
+                    $xoopsMailer->setSubject(str_replace('%discount', floor($object->getVar('discount')), str_replace('%left', (0 == $object->getVar('validtill') ? _XPY_AM_DISCOUNT_FOREVER : date(_DATESTRING, $object->getVar('validtill'))), constant('_XPY_EMAIL_DISCOUNT_SUBJECT'))));
 
                     $xoopsMailer->assign('CODE', $object->getVar('code'));
                     $xoopsMailer->assign('DISCOUNT', $object->getVar('discount'));
                     $xoopsMailer->assign('REDEEMS', $object->getVar('redeems'));
-                    $xoopsMailer->assign('VALID', ($object->getVar('validtill') == 0 ? _XPY_MF_DISCOUNT_FOREVER : date(_DATESTRING, $object->getVar('validtill'))));
+                    $xoopsMailer->assign('VALID', (0 == $object->getVar('validtill') ? _XPY_MF_DISCOUNT_FOREVER : date(_DATESTRING, $object->getVar('validtill'))));
                     $xoopsMailer->assign('EMAIL', $object->getVar('email'));
                     $xoopsMailer->assign('SITEURL', XOOPS_URL);
                     $xoopsMailer->assign('SITENAME', $GLOBALS['xoopsConfig']['sitename']);
@@ -317,7 +317,7 @@ class XpaymentDiscountsHandler extends XoopsPersistableObjectHandler
                 return false;
             }
         } else {
-            if ($object->vars['redeemed']['changed'] === true
+            if (true === $object->vars['redeemed']['changed']
                 && $object->getVar('redeems') > $object->getVar('redeemed')) {
                 $xoopsMailer = xoops_getMailer();
                 $xoopsMailer->setHTML(true);
@@ -330,7 +330,7 @@ class XpaymentDiscountsHandler extends XoopsPersistableObjectHandler
                 $xoopsMailer->assign('REDEEMS', $object->getVar('redeems'));
                 $xoopsMailer->assign('REDEEMED', $object->getVar('redeemed'));
                 $xoopsMailer->assign('LEFT', $object->getVar('redeems') - $object->getVar('redeemed'));
-                $xoopsMailer->assign('VALID', ($object->getVar('validtill') == 0 ? _XPY_MF_DISCOUNT_FOREVER : date(_DATESTRING, $object->getVar('validtill'))));
+                $xoopsMailer->assign('VALID', (0 == $object->getVar('validtill') ? _XPY_MF_DISCOUNT_FOREVER : date(_DATESTRING, $object->getVar('validtill'))));
                 $xoopsMailer->assign('EMAIL', $object->getVar('email'));
                 $xoopsMailer->assign('SITEURL', XOOPS_URL);
                 $xoopsMailer->assign('SITENAME', $GLOBALS['xoopsConfig']['sitename']);
@@ -357,16 +357,16 @@ class XpaymentDiscountsHandler extends XoopsPersistableObjectHandler
             $var = explode(',', $part);
             if (!empty($var[1]) && !is_numeric($var[0])) {
                 $object = $this->create();
-                if ($object->vars[$var[0]]['data_type'] == XOBJ_DTYPE_TXTBOX
-                    || $object->vars[$var[0]]['data_type'] == XOBJ_DTYPE_TXTAREA) {
+                if (XOBJ_DTYPE_TXTBOX == $object->vars[$var[0]]['data_type']
+                    || XOBJ_DTYPE_TXTAREA == $object->vars[$var[0]]['data_type']) {
                     $criteria->add(new Criteria('`' . $var[0] . '`', '%' . $var[1] . '%', (isset($var[2]) ? $var[2] : 'LIKE')));
-                } elseif ($object->vars[$var[0]]['data_type'] == XOBJ_DTYPE_INT
-                          || $object->vars[$var[0]]['data_type'] == XOBJ_DTYPE_DECIMAL
-                          || $object->vars[$var[0]]['data_type'] == XOBJ_DTYPE_FLOAT) {
+                } elseif (XOBJ_DTYPE_INT == $object->vars[$var[0]]['data_type']
+                          || XOBJ_DTYPE_DECIMAL == $object->vars[$var[0]]['data_type']
+                          || XOBJ_DTYPE_FLOAT == $object->vars[$var[0]]['data_type']) {
                     $criteria->add(new Criteria('`' . $var[0] . '`', $var[1], (isset($var[2]) ? $var[2] : '=')));
-                } elseif ($object->vars[$var[0]]['data_type'] == XOBJ_DTYPE_ENUM) {
+                } elseif (XOBJ_DTYPE_ENUM == $object->vars[$var[0]]['data_type']) {
                     $criteria->add(new Criteria('`' . $var[0] . '`', $var[1], (isset($var[2]) ? $var[2] : '=')));
-                } elseif ($object->vars[$var[0]]['data_type'] == XOBJ_DTYPE_ARRAY) {
+                } elseif (XOBJ_DTYPE_ARRAY == $object->vars[$var[0]]['data_type']) {
                     $criteria->add(new Criteria('`' . $var[0] . '`', '%"' . $var[1] . '";%', (isset($var[2]) ? $var[2] : 'LIKE')));
                 }
             } elseif (!empty($var[1]) && is_numeric($var[0])) {

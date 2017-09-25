@@ -41,7 +41,7 @@ class googlelog
     public function GoogleLog($errorLogFile, $messageLogFile, $logLevel = L_ERR_RQST, $die = true)
     {
         $this->logLevel = $logLevel;
-        if ($logLevel == L_OFF) {
+        if (L_OFF == $logLevel) {
             $this->logLevel = L_OFF;
         } else {
             if (!$this->errorLogFile = @fopen($errorLogFile, 'a')) {

@@ -131,7 +131,7 @@ class gc_XmlParser
         $ary   =& $mnary;
         foreach ($vals as $r) {
             $t = $r['tag'];
-            if ($r['type'] === 'open') {
+            if ('open' === $r['type']) {
                 if (isset($ary[$t]) && !empty($ary[$t])) {
                     if (isset($ary[$t][0])) {
                         $ary[$t][] = [];
@@ -151,7 +151,7 @@ class gc_XmlParser
 
                 $cv['_p'] =& $ary;
                 $ary      =& $cv;
-            } elseif ($r['type'] === 'complete') {
+            } elseif ('complete' === $r['type']) {
                 if (isset($ary[$t]) && !empty($ary[$t])) { // same as open
                     if (isset($ary[$t][0])) {
                         $ary[$t][] = [];
@@ -168,7 +168,7 @@ class gc_XmlParser
                     }
                 }
                 $cv['VALUE'] = (isset($r['value']) ? $r['value'] : '');
-            } elseif ($r['type'] === 'close') {
+            } elseif ('close' === $r['type']) {
                 $ary =& $ary['_p'];
             }
         }
@@ -182,7 +182,7 @@ class gc_XmlParser
     public function _del_p(&$ary)
     {
         foreach ($ary as $k => $v) {
-            if ($k === '_p') {
+            if ('_p' === $k) {
                 unset($ary[$k]);
             } elseif (is_array($ary[$k])) {
                 $this->_del_p($ary[$k]);

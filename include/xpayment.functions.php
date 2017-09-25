@@ -144,7 +144,7 @@ function xpayment_getFilterURLComponents($filter, $field, $sort = 'created')
                 if (isset($var[2])) {
                     $operator = $var[2];
                 }
-            } elseif ($var[0] != 1) {
+            } elseif (1 != $var[0]) {
                 $ret[] = implode(',', $var);
             }
         }
@@ -175,7 +175,7 @@ function xpayment_install_gateway($class)
     $gatewaysHandler         = xoops_getModuleHandler('gateways', 'xpayment');
     $gateways_optionsHandler = xoops_getModuleHandler('gateways_options', 'xpayment');
 
-    if ($gatewaysHandler->getCount(new Criteria('class', $class)) == 0) {
+    if (0 == $gatewaysHandler->getCount(new Criteria('class', $class))) {
         include $GLOBALS['xoops']->path('modules/xpayment/class/gateway/' . $class . '/gateway_info.php');
 
         if (!empty($gateway)) {
@@ -213,7 +213,7 @@ function xpayment_update_gateway($class)
     $gatewaysHandler         = xoops_getModuleHandler('gateways', 'xpayment');
     $gateways_optionsHandler = xoops_getModuleHandler('gateways_options', 'xpayment');
 
-    if ($gatewaysHandler->getCount(new Criteria('class', $class)) == 1) {
+    if (1 == $gatewaysHandler->getCount(new Criteria('class', $class))) {
         include $GLOBALS['xoops']->path('modules/xpayment/class/gateway/' . $class . '/gateway_info.php');
 
         if (!empty($gateway)) {
@@ -229,7 +229,7 @@ function xpayment_update_gateway($class)
                 foreach ($gateway['options'] as $refereer => $data) {
                     $criteria = new CriteriaCompo(new Criteria('gid', $gid));
                     $criteria->add(new Criteria('refereer', $refereer));
-                    if ($gateways_optionsHandler->getCount($criteria) == 0) {
+                    if (0 == $gateways_optionsHandler->getCount($criteria)) {
                         $option = $gateways_optionsHandler->create();
                         $option->setVar('refereer', $refereer);
                         $option->setVar('name', $data['name']);
@@ -268,7 +268,7 @@ if (!function_exists('getIPData')) {
             $ret['uname'] = '';
         }
         if (!$ip) {
-            if ($_SERVER['HTTP_X_FORWARDED_FOR'] != '') {
+            if ('' != $_SERVER['HTTP_X_FORWARDED_FOR']) {
                 $ip                  = (string)$_SERVER['HTTP_X_FORWARDED_FOR'];
                 $ret['is_proxied']   = true;
                 $proxy_ip            = $_SERVER['REMOTE_ADDR'];
@@ -311,7 +311,7 @@ if (!function_exists('getIPData')) {
 if (!function_exists('is_ipv6')) {
     function is_ipv6($ip = '')
     {
-        if ($ip == '') {
+        if ('' == $ip) {
             return false;
         }
 

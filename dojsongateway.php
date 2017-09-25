@@ -64,7 +64,7 @@ if (!profile_checkpasskey($passkey)) {
 
 $invoiceHandler  = xoops_getModuleHandler('invoice', 'xpayment');
 $gatewaysHandler = xoops_getModuleHandler('gateways', 'xpayment');
-if (isset($iid) && $GLOBALS['xoopsModuleConfig']['id_protect'] === false) {
+if (isset($iid) && false === $GLOBALS['xoopsModuleConfig']['id_protect']) {
     $invoice =& $invoiceHandler->get($iid);
 } else {
     $criteria = new Criteria('offline', time(), '>=');

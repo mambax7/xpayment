@@ -163,7 +163,7 @@ class XoopsFormSelectPlugin extends XoopsFormElement
      */
     public function addOption($value, $name = '')
     {
-        if ($name != '') {
+        if ('' != $name) {
             $this->_options[$value] = $name;
         } else {
             $this->_options[$value] = $value;
@@ -217,7 +217,7 @@ class XoopsFormSelectPlugin extends XoopsFormElement
         $ele_value   = $this->getValue();
         $ele_options = $this->getOptions();
         $ret         = '<select size="' . $this->getSize() . '"' . $this->getExtra();
-        if ($this->isMultiple() !== false) {
+        if (false !== $this->isMultiple()) {
             $ret .= ' name="' . $ele_name . '[]" id="' . $ele_name . '" title="' . $ele_title . '" multiple="multiple">';
         } else {
             $ret .= ' name="' . $ele_name . '" id="' . $ele_name . '" title="' . $ele_title . '">';

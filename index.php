@@ -25,7 +25,7 @@ include __DIR__ . '/header.php';
 $invoice = '';
 
 if (isset($_POST) && !empty($_POST)) {
-    if (isset($_POST['op']) && $_POST['op'] === 'createinvoice') {
+    if (isset($_POST['op']) && 'createinvoice' === $_POST['op']) {
         $invoiceHandler = xoops_getModuleHandler('invoice', 'xpayment');
 
         // Stops Duplication
@@ -40,7 +40,7 @@ if (isset($_POST) && !empty($_POST)) {
                 $criteria->add(new Criteria('`user_ip`', $userip['ip4'] . $userip['ip6']));
                 $criteria->add(new Criteria('`user_netaddy`', $userip['network-addy']));
             }
-            if ($invoiceHandler->getCount($criteria) == 1) {
+            if (1 == $invoiceHandler->getCount($criteria)) {
                 $invoices = $invoiceHandler->getObjects($criteria, false);
                 header('HTTP/1.1 301 Moved Permanently');
                 header('Location: ' . $invoices[0]->getURL());
@@ -69,7 +69,7 @@ if (isset($_POST) && !empty($_POST)) {
         $invoice->setVar('donation', ((isset($_POST['donation']) || isset($_POST['donations'])) ? true : false));
         $invoice->setVar('comment', $_POST['comment']);
 
-        if (isset($_POST['topayment']) && $_POST['topayment'] === true) {
+        if (isset($_POST['topayment']) && true === $_POST['topayment']) {
             $invoice->setVar('topayment', time() + $GLOBALS['xpaymentModuleConfig']['secs_topayment']);
         } else {
             $invoice->setVar('topayment', 0);
@@ -81,7 +81,7 @@ if (isset($_POST) && !empty($_POST)) {
 
         if ($iid = $invoiceHandler->insert($invoice)) {
             $invoice = $invoiceHandler->get($iid);
-            if (strlen($invoice->getVar('invoicenumber')) == 0) {
+            if (0 == strlen($invoice->getVar('invoicenumber'))) {
                 $invoice->setVar('invoicenumber', $invoice->getVar('iid'));
             }
             $amount   = 0;
@@ -159,7 +159,7 @@ if (isset($_POST) && !empty($_POST)) {
             require_once $GLOBALS['xoops']->path('footer.php');
             exit(0);
         }
-    } elseif (isset($_POST['op']) && $_POST['op'] === 'discount') {
+    } elseif (isset($_POST['op']) && 'discount' === $_POST['op']) {
         $invoiceHandler = xoops_getModuleHandler('invoice', 'xpayment');
         $key            = $_POST['iid'];
         $criteria       = new Criteria('offline', time(), '>=');
@@ -188,19 +188,19 @@ if (isset($_POST) && !empty($_POST)) {
         }
         exit(0);
     } else {
-        if ($GLOBALS['xoopsModuleConfig']['htaccess'] === true) {
+        if (true === $GLOBALS['xoopsModuleConfig']['htaccess']) {
             $url = XOOPS_URL . '/' . $GLOBALS['xoopsModuleConfig']['baseurl'] . '/index' . $GLOBALS['xoopsModuleConfig']['endofurl'];
         } else {
             $url = XOOPS_URL . '/modules/xpayment/index.php';
         }
 
-        if (!strpos($url, $_SERVER['REQUEST_URI']) && $GLOBALS['xoopsModuleConfig']['htaccess'] === true) {
+        if (!strpos($url, $_SERVER['REQUEST_URI']) && true === $GLOBALS['xoopsModuleConfig']['htaccess']) {
             header('HTTP/1.1 301 Moved Permanently');
             header('Location: ' . $url);
             exit(0);
         }
 
-        if ($GLOBALS['xoopsModuleConfig']['help'] === true) {
+        if (true === $GLOBALS['xoopsModuleConfig']['help']) {
             $GLOBALS['xoopsOption']['template_main'] = 'xpayment_help.tpl';
         } else {
             $GLOBALS['xoopsOption']['template_main'] = 'xpayment_invoice.tpl';
@@ -219,9 +219,9 @@ if (isset($_POST) && !empty($_POST)) {
     $invoiceHandler       = xoops_getModuleHandler('invoice', 'xpayment');
     $invoice_itemsHandler = xoops_getModuleHandler('invoice_items', 'xpayment');
 
-    if (isset($_GET['iid']) && $GLOBALS['xoopsModuleConfig']['id_protect'] === false) {
+    if (isset($_GET['iid']) && false === $GLOBALS['xoopsModuleConfig']['id_protect']) {
         $invoice =& $invoiceHandler->get($_GET['iid']);
-    } elseif (isset($_GET['invoicenum']) && $GLOBALS['xoopsModuleConfig']['id_protect'] === false) {
+    } elseif (isset($_GET['invoicenum']) && false === $GLOBALS['xoopsModuleConfig']['id_protect']) {
         $invoice =& $invoiceHandler->getInvoiceNumber($_GET['invoicenum']);
     } else {
         $key      = isset($_GET['iid']) ? $_GET['iid'] : '';
@@ -238,19 +238,19 @@ if (isset($_POST) && !empty($_POST)) {
     }
 
     if (!is_object($invoice)) {
-        if ($GLOBALS['xoopsModuleConfig']['htaccess'] === true) {
+        if (true === $GLOBALS['xoopsModuleConfig']['htaccess']) {
             $url = XOOPS_URL . '/' . $GLOBALS['xoopsModuleConfig']['baseurl'] . '/index' . $GLOBALS['xoopsModuleConfig']['endofurl'];
         } else {
             $url = XOOPS_URL . '/modules/xpayment/index.php';
         }
 
-        if (!strpos($url, $_SERVER['REQUEST_URI']) && $GLOBALS['xoopsModuleConfig']['htaccess'] === true) {
+        if (!strpos($url, $_SERVER['REQUEST_URI']) && true === $GLOBALS['xoopsModuleConfig']['htaccess']) {
             header('HTTP/1.1 301 Moved Permanently');
             header('Location: ' . $url);
             exit(0);
         }
 
-        if ($GLOBALS['xoopsModuleConfig']['help'] === true) {
+        if (true === $GLOBALS['xoopsModuleConfig']['help']) {
             $GLOBALS['xoopsOption']['template_main'] = 'xpayment_help.tpl';
         } else {
             $GLOBALS['xoopsOption']['template_main'] = 'xpayment_invoice.tpl';
@@ -266,7 +266,7 @@ if (isset($_POST) && !empty($_POST)) {
         exit(0);
     }
 
-    if (!strpos($invoice->getURL(), $_SERVER['REQUEST_URI']) && $GLOBALS['xoopsModuleConfig']['htaccess'] === true) {
+    if (!strpos($invoice->getURL(), $_SERVER['REQUEST_URI']) && true === $GLOBALS['xoopsModuleConfig']['htaccess']) {
         header('HTTP/1.1 301 Moved Permanently');
         header('Location: ' . $invoice->getURL());
         exit(0);
@@ -284,7 +284,7 @@ if (isset($_POST) && !empty($_POST)) {
     $GLOBALS['xoopsTpl']->assign('invoice', $invoice->toArray());
     $GLOBALS['xoopsTpl']->assign('xoConfig', $GLOBALS['xoopsModuleConfig']);
 
-    if ($invoice->getVar('mode') === 'UNPAID') {
+    if ('UNPAID' === $invoice->getVar('mode')) {
         $GLOBALS['xoTheme']->addScript(XOOPS_URL . '/browse.php?Frameworks/jquery/jquery.js');
         $GLOBALS['xoTheme']->addScript(XOOPS_URL . '/modules/xpayment/assets/js/jquery.json.gateway.js');
         $GLOBALS['xoTheme']->addScript(null, ['type' => 'text/javascript'], 'function ChangeGateway(element) {
@@ -304,7 +304,7 @@ if (isset($_POST) && !empty($_POST)) {
     $criteria = new Criteria('iid', $invoice->getVar('iid'));
     $items    = $invoice_itemsHandler->getObjects($criteria, true);
     foreach ($items as $iiid => $item) {
-        $GLOBALS['xoopsTpl']->append('items', $item->toArray($invoice->getVar('did') != 0));
+        $GLOBALS['xoopsTpl']->append('items', $item->toArray(0 != $invoice->getVar('did')));
     }
 
     require_once $GLOBALS['xoops']->path('footer.php');

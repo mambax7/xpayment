@@ -353,7 +353,7 @@ class PaypalGatewaysPlugin
         $invoice_transactionsHandler = xoops_getModuleHandler('invoice_transactions', 'xpayment');
         $transaction                 = $invoice_transactionsHandler->create();
         $transaction->setVars($this->getTransactionArray($request));
-        if ($invoice_transactionsHandler->countTransactionId($this->getTransactionId($request)) == 0) {
+        if (0 == $invoice_transactionsHandler->countTransactionId($this->getTransactionId($request))) {
             if ($tiid = $invoice_transactionsHandler->insert($transaction)) {
                 $gross = $invoice_transactionsHandler->sumOfGross($this->_invoice->getVar('iid'));
 
@@ -429,7 +429,7 @@ class PaypalGatewaysPlugin
         fwrite($fp, $header . $req);
 
         // Perform PayPal email account verification
-        if (!$dbg && strcasecmp($request['business'], $this->_gateway->_options['email']) != 0) {
+        if (!$dbg && 0 != strcasecmp($request['business'], $this->_gateway->_options['email'])) {
             $this->dprt(sprintf(_XPY_MF_RCVINVALID, $receiver_email), _ERR);
             $ERR = 1;
         }
@@ -444,17 +444,17 @@ class PaypalGatewaysPlugin
         }
         while (!$dbg && !$ERR && !feof($fp)) {
             $res = fgets($fp, 1024);
-            if (strcmp($res, 'VERIFIED') == 0) {
+            if (0 == strcmp($res, 'VERIFIED')) {
                 $this->dprt(_XPY_MF_VERIFIED, _INF);
                 // Ok, PayPal has told us we have a valid IPN here
 
                 // Check for a reversal for a refund
-                if (strcmp($payment_status, 'Refunded') == 0) {
+                if (0 == strcmp($payment_status, 'Refunded')) {
                     // Verify the reversal
                     $this->dprt(_XPY_MF_REFUND, _INF);
-                    if (($NumDups == 0) || strcmp($row_Recordset1['payment_status'], 'Completed')
-                        || (strcmp($row_Recordset1['txn_type'], 'web_accept') != 0
-                            && strcmp($row_Recordset1['txn_type'], 'send_money') != 0)) {
+                    if ((0 == $NumDups) || strcmp($row_Recordset1['payment_status'], 'Completed')
+                        || (0 != strcmp($row_Recordset1['txn_type'], 'web_accept')
+                            && 0 != strcmp($row_Recordset1['txn_type'], 'send_money'))) {
                         // This is an error.  A reversal implies a pre-existing completed transaction
                         $this->dprt(_XPY_MF_TRANSMISSING, _ERR);
                         foreach ($request as $key => $val) {
@@ -462,7 +462,7 @@ class PaypalGatewaysPlugin
                         }
                         break;
                     }
-                    if ($NumDups != 1) {
+                    if (1 != $NumDups) {
                         $this->dprt(_XPY_MF_MULTITXNS, _ERR);
                         foreach ($request as $key => $val) {
                             $this->dprt("$key => $val", _ERR);
@@ -476,7 +476,7 @@ class PaypalGatewaysPlugin
                     $invoice_transactionsHandler = xoops_getModuleHandler('invoice_transactions', 'xpayment');
                     $transaction                 = $invoice_transactionsHandler->create();
                     $transaction->setVars($this->getTransactionArray($request));
-                    if ($invoice_transactionsHandler->countTransactionId($this->getTransactionId($request)) == 0) {
+                    if (0 == $invoice_transactionsHandler->countTransactionId($this->getTransactionId($request))) {
                         if ($tiid = $invoice_transactionsHandler->insert($transaction)) {
                             $req = 'cmd=refund';
                             foreach ($this->getTransactionArray() as $key => $value) {
@@ -496,16 +496,16 @@ class PaypalGatewaysPlugin
 
                     break;
                 } else { // Look for anormal payment
-                    if ((strcmp($payment_status, 'Completed') == 0)
-                        && ((strcmp($txn_type, 'web_accept') == 0)
-                            || (strcmp($txn_type, 'send_money') == 0))) {
+                    if ((0 == strcmp($payment_status, 'Completed'))
+                        && ((0 == strcmp($txn_type, 'web_accept'))
+                            || (0 == strcmp($txn_type, 'send_money')))) {
                         $this->dprt('Normal transaction', _INF);
                         if ($lp) {
                             fwrite($lp, $payer_email . ' ' . $payment_status . ' ' . $request['payment_date'] . "\n");
                         }
 
                         // Check for a duplicate txn_id
-                        if ($NumDups != 0) {
+                        if (0 != $NumDups) {
                             $this->dprt(_XPY_MF_DUPLICATETXN, _ERR);
                             foreach ($request as $key => $val) {
                                 $this->dprt("$key => $val", _ERR);
@@ -516,7 +516,7 @@ class PaypalGatewaysPlugin
                         $invoice_transactionsHandler = xoops_getModuleHandler('invoice_transactions', 'xpayment');
                         $transaction                 = $invoice_transactionsHandler->create();
                         $transaction->setVars($this->getTransactionArray($request));
-                        if ($invoice_transactionsHandler->countTransactionId($this->getTransactionId($request)) == 0) {
+                        if (0 == $invoice_transactionsHandler->countTransactionId($this->getTransactionId($request))) {
                             if ($tiid = $invoice_transactionsHandler->insert($transaction)) {
                                 $req = 'cmd=payment';
                                 foreach ($this->getTransactionArray() as $key => $value) {
@@ -543,7 +543,7 @@ class PaypalGatewaysPlugin
                         break;
                     }
                 }
-            } elseif (strcmp($res, 'INVALID') == 0) {
+            } elseif (0 == strcmp($res, 'INVALID')) {
                 // log for manual investigation
                 $this->dprt(_XPY_MF_INVALIDIPN, _ERR);
                 foreach ($request as $key => $val) {
@@ -611,7 +611,7 @@ class PaypalGatewaysPlugin
 
         $html .= '<div>' . _XPY_MF_TOTAL . number_format($handling + $this->_invoice->getVar('grand'), 2) . ' ' . $this->_invoice->getVar('currency') . '</div><b>';
 
-        if ($this->_gateway->getVar('testmode') === true) {
+        if (true === $this->_gateway->getVar('testmode')) {
             $html .= '<form action="' . $this->_gateway->_options['sandbox'] . '" name="gateway" id="gateway" method="post">';
         } else {
             $html .= '<form action="' . $this->_gateway->_options['url'] . '" name="gateway" id="gateway" method="post">';
@@ -631,7 +631,7 @@ class PaypalGatewaysPlugin
         $html                 .= '<input type="hidden" name="weight" value="' . $this->_invoice->getVar('weight') . '">';
         $html                 .= '<input type="hidden" name="item_number" value="' . strtoupper($this->_invoice->getVar('items') . substr(md5($this->_invoice->getVar('iid')), 0, 2) . substr(md5($this->_invoice->getVar('iid')), 29, 2)) . '">';
         $invoice_itemsHandler = xoops_getModuleHandler('invoice_items', 'xpayment');
-        if ($invoice_itemsHandler->getCount(new Criteria('iid', $this->_invoice->getVar('iid'))) == 1) {
+        if (1 == $invoice_itemsHandler->getCount(new Criteria('iid', $this->_invoice->getVar('iid')))) {
             $items = $invoice_itemsHandler->getObjects(new Criteria('iid', $this->_invoice->getVar('iid')), false);
             if (is_object($items[0])) {
                 $html .= '<input type="hidden" name="item_name" value="' . $items[0]->getVar('cat') . ' : ' . $items[0]->getVar('name') . '">';
